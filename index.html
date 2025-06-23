@@ -60,7 +60,7 @@
 
   <nav class="dock">
     <div class="dock-icon" onclick="openSocialWindow()">
-      <img src="imagenes/safari1.png" alt="Safari" />
+      <img src="imagenes/safari.png" alt="Safari" />
     </div>
     <div class="dock-icon" onclick="openWindow('sets')">
       <img src="imagenes/itunes.png" alt="iTunes" />
@@ -136,6 +136,7 @@
 
     <!-- Vista Detalles del Producto -->
     <div class="merch-detail-container" id="merchDetail" style="display:none;">
+      <img src="imagenes/back.png" alt="Back Icon" class="back-icon" onclick="handleRedButton('merchDetail')" />
       <div class="merch-main-view">
         <img id="mainMerchImage" src="" alt="Vista Principal">
         <h3 id="merchTitle">Titulo</h3>
@@ -197,7 +198,7 @@
       <div class="cart-total">
         Total: $<span id="totalPrice"></span>
       </div>
-      <a href="https://checkout.shopify.com/tu-checkout-link" target="_blank">
+      <a href="#" target="_blank">
         <button class="checkout-btn">CHECKOUT</button>
       </a>
     </div>
@@ -767,14 +768,25 @@ function addToCart() {
 function updateCart() {
   const cartContainer = document.getElementById("cartItems");
   const totalContainer = document.getElementById("totalPrice");
+  const checkoutButton = document.querySelector(".checkout-btn");
+  const checkoutLink = checkoutButton.closest("a");
 
   cartContainer.innerHTML = "";
   let totalPrice = 0;
+
+  // 🟣 Construir link de Shopify Cart
+  const shopifyBase = "https://1u4xh0-g9.myshopify.com/cart/";
+  const cartShopifyItems = [];
 
   cart.forEach((item, index) => {
     const numericPrice = parseInt(item.price.replace("$", "").replace("CLP", "").replace(/\./g, "").trim());
     const itemTotal = numericPrice * item.quantity;
     totalPrice += itemTotal;
+
+    const shopifyId = getShopifyProductID(item.title, item.size);
+    if (shopifyId) {
+      cartShopifyItems.push(`${shopifyId}:${item.quantity}`);
+    }
 
     const cartItem = document.createElement("div");
     cartItem.classList.add("cart-item");
@@ -793,6 +805,32 @@ function updateCart() {
   });
 
   totalContainer.textContent = formatCLP(totalPrice);
+
+  // Actualizar el link del botón de Checkout
+  if (cartShopifyItems.length > 0) {
+    checkoutLink.href = shopifyBase + cartShopifyItems.join(",");
+  } else {
+    checkoutLink.href = "#";
+  }
+}
+
+function getShopifyProductID(title, size) {
+  const variants = {
+    "Lindsay Lohan White Tee": {
+      S: "46381412647165",
+      M: "46381412679933",
+      L: "46381412712701",
+      XL: "46381412745469"
+    },
+    "Lindsay Lohan Black Tee": {
+      S: "46381471990013",
+      M: "46381472022781",
+      L: "46381472055549",
+      XL: "46381472088317"
+    }
+  };
+
+  return variants[title]?.[size] || null;
 }
 
 
