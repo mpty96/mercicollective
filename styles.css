@@ -1,0 +1,1519 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: url('imagenes/background.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Lucida Grande', sans-serif;
+  color: white;
+  cursor: auto;
+}
+
+.mac-window.dragging {
+  box-shadow: 0 0 120px rgba(0,0,0,0.2);
+  cursor: grabbing;
+}
+
+.desktop {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 50px 20px;
+  height: 100vh;
+}
+
+.disk {
+  text-align: center;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.disk img {
+  width: 60px;
+}
+
+
+
+/*------------------------------ Contenedor general del Dock ------------------------------*/
+/* Contenedor general */
+.dock-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  z-index: 100;
+  pointer-events: none;
+}
+
+/* Fondo tipo plataforma */
+.dock-background {
+  width: 100%;
+  height: 70px;
+  background: url('imagenes/mesadock.png') no-repeat center;
+  background-size: 100% 100%;
+  position: absolute;
+  bottom: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Dock en sí mismo */
+.dock {
+  display: flex;
+  gap: 20px;
+  padding: 10px 20px;
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+/* Cada ícono */
+.dock-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Imagen de ícono */
+.dock-icon img {
+  width: 60px;
+  transition: transform 0.3s ease;
+}
+
+/* Efecto lupa */
+.dock-icon:hover img {
+  transform: scale(1.5);
+}
+
+/* Reflejo simulado */
+.dock-icon::after {
+  content: "";
+  position: absolute;
+  bottom: -25px;
+  width: 100%;
+  height: 20px;
+  background: inherit;
+  transform: scaleY(-1);
+  opacity: 0.2;
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+/*------------------------VENTANA GENERAL--------------------*/
+
+.mac-window {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 900px;
+  height: 80%;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  overflow: hidden;
+  display: none;
+  flex-direction: column;
+  z-index: 1000;
+  border: 1px solid #aaa;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.mac-window.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.mac-window-header {
+  height: 28px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  border-bottom: 1px solid #999;
+  position: relative;
+  background: url('imagenes/brushedmetal.jpg') repeat-x;
+  border-bottom: 1px solid #888;
+    box-shadow:
+    0 3px 8px rgba(0,0,0,0.4),
+    inset 0 0 10px #fff;
+}
+
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 24px;
+  width: 100%;
+  background-color: #2e2e2e;
+  color: white;
+  display: flex;
+  align-items: center;
+  z-index: 999;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 13px;
+}
+
+.top-bar-right {
+  margin-left: auto;
+  padding-right: 10px;
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 13px;
+  color: white;
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 50vw; /* o 60vw según espacio */
+}
+
+.top-bar-left {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.genie-window {
+  position: fixed;
+  width: 500px;
+  background: #bcbcbc;
+  border: 4px solid #444;
+  font-family: monospace;
+  z-index: 9999;
+  display: none;
+  flex-direction: column;
+  opacity: 0;
+  transform: scale(0.1);
+  transform-origin: top left;
+  transition: transform 0.6s ease-in-out, top 0.6s ease-in-out, left 0.6s ease-in-out, opacity 0.4s ease-in-out;
+}
+
+.genie-window.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  top: 50% !important;
+  left: 50% !important;
+}
+
+/*--------------------- VENTANA INICIO DE SESIÖN -----------------*/
+.apple-icon {
+  height: 16px;
+  width: 16px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.menu-item {
+  margin-right: 15px;
+  cursor: default;
+  user-select: none;
+}
+
+.apple-menu {
+  display: none;
+  position: absolute;
+  top: 30px;
+  left: 10px;
+  background: #f3f3f3;
+  color: #000;
+  padding: 20px;
+  border-radius: 10px;
+  width: 260px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  text-align: center;
+  font-family: sans-serif;
+  z-index: 100;
+}
+
+.apple-menu input {
+  width: 90%;
+  padding: 6px;
+  margin: 8px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.apple-menu button {
+  width: 45%;
+  margin: 5px;
+  padding: 6px;
+  border: none;
+  background-color: #3b3b3b;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.apple-menu button:hover {
+  background-color: #666;
+}
+
+.apple-logo {
+  width: 40px;
+  margin-bottom: 10px;
+}
+
+.apple-menu.show {
+  display: block;
+}
+
+.apple-menu input {
+  margin-top: 10px;
+  padding: 5px;
+  width: 100%;
+}
+
+.apple-menu button {
+  margin-top: 5px;
+  padding: 5px;
+  width: 100%;
+  background: #000000;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+
+/*------------------------------- VENTANA ABOUT US --------------------*/
+
+#about.mac-window {
+  width: 400px;
+  height: 300px;
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.about-layout {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 30px;
+  height: 100%;
+}
+
+.ceo-image {
+  width: 100px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.about-right h3 {
+  font-size: 24px;
+  font-weight: 500;
+  color: black;
+  align-items: center;
+}
+
+
+/*----------------------------------- Botones de ventana --------------------------------*/
+.window-buttons {
+  display: flex;
+  gap: 6px;
+  margin-right: 12px;
+}
+
+.btn {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold;
+  color: rgb(73, 73, 73);
+  cursor: pointer;
+}
+
+.btn.red {
+  background: #ff5f57;
+  border: 1px solid #b0413e;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.8),
+    0 1px 1px rgba(0,0,0,0.2);
+}
+
+.btn.yellow {
+  background: #febc2e;
+  border: 1px solid #b28f1e;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.8),
+    0 1px 1px rgba(0,0,0,0.2);
+}
+
+.btn.green {
+  background: #28ca42;
+  border: 1px solid #1f8f2e;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.8),
+    0 1px 1px rgba(0,0,0,0.2);
+}
+
+.mac-window-content {
+  padding: 15px;
+  height: calc(100% - 28px);
+  overflow-y: auto;
+  color: #000000;
+}
+
+/*----------------------- VENTANA GALERIA DE VIDEOS ------------------*/
+
+#gallery.mac-window {
+  width: 500px;
+  height: 700px;
+  max-width: 95%;
+  max-height: 90%;
+  display: flex;
+}
+
+.video-container {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.video-container iframe {
+  width: 470px;
+  height: 300px;
+}
+
+.mac-window.dark,
+.mac-window-content.dark-detail {
+  background-color: #000;
+  color: white;
+}
+
+/*========================================= VENTANA CONTACTO ======================================*/
+.retro-contact {
+  position: fixed;
+  left: 50%;
+  width: 500px;
+  height: auto;
+  background: #bcbcbc;
+  font-family: 'Courier New', monospace;
+  color: #333;
+  padding: 0;
+  border: 4px solid #444;
+  z-index: 10000; /* Asegura que esté al frente */
+  display: none;
+  flex-direction: column;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.contact-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #999;
+  padding: 6px 12px;
+  height: 36px;
+  border-bottom: 3px solid #333;
+}
+
+#icon-close-contact {
+  position: fixed;
+  top: 50px; /* ajusta según la altura deseada */
+  left: 20px;
+  width: 60px;
+  display: none;
+  z-index: 9999;
+}
+
+.contact-title {
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  color: #444;
+  flex: 1;
+}
+
+.contact-exit img:hover {
+  transform: scale(1.1);
+}
+
+.retro-form {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.retro-form label {
+  font-weight: bold;
+  font-size: 14px;
+  background: #888;
+  padding: 6px;
+  color: #eee;
+  width: fit-content;
+}
+
+.retro-form input,
+.retro-form textarea {
+  background: #ccc;
+  border: 2px solid #888;
+  font-family: monospace;
+  font-size: 14px;
+  padding: 6px;
+  width: 100%;
+  resize: none;
+  color: #222;
+}
+
+.retro-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.retro-buttons button {
+  flex: 1;
+  background: #444;
+  color: #ccc;
+  border: 2px solid #999;
+  padding: 10px;
+  font-family: monospace;
+  font-size: 14px;
+  cursor: pointer;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/*=========================================== SOCIAL MEDIA =========================================*/
+.fullscreen-window {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 9998;
+}
+
+.fullscreen-window.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+
+#icon-close-safari{
+  position: fixed;
+  top: 50px; /* ajusta según la altura deseada */
+  left: 20px;
+  width: 60px;
+  display: none;
+  z-index: 9999;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  margin-bottom: 30px;
+}
+
+.social-icons img {
+  width: 64px;
+  height: 64px;
+  image-rendering: pixelated;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.social-icons img:hover {
+  transform: scale(1.2);
+}
+
+
+
+
+/* ========================================== ESTILOS ITUNES ============================================ */
+
+.itunes-window {
+  width: 700px;
+  max-height: 480px;
+  background: #e8e8e8;
+  border: 1px solid #777;
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.4),
+    inset 0 0 10px #fff;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Lucida Grande', Verdana, Arial, sans-serif;
+  color: #333;
+  user-select: none;
+}
+
+/* Header metálico */
+.itunes-header {
+  height: 32px;
+  background: url('imagenes/brushedmetal.jpg');
+  border-bottom: 1px solid #666;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  position: relative;
+}
+
+
+/* Título centrado */
+.window-title {
+  font-size: 13px;
+  font-weight: bold;
+  color: #222;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  user-select: text;
+}
+
+/* Contenido principal */
+.itunes-content {
+  display: flex;
+  flex: 1;
+  background: #e8e8e8;
+  border-top: 1px solid #bbb;
+  flex-direction: column;
+}
+
+/* Sidebar */
+.itunes-sidebar {
+  width: 140px;
+  background: linear-gradient(to bottom, #d3d3d3, #bababa);
+  border-right: 1px solid #999;
+  padding: 12px;
+  font-size: 12px;
+  padding: 8px;
+  color: #444;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.itunes-source-section h4 {
+  margin: 0 0 10px 4px;
+  font-weight: bold;
+  color: #2f2f2f;
+  font-size: 12px;
+  text-shadow: 0 1px 0 #fff;
+}
+
+.itunes-source-item {
+  padding: 5px 8px;
+  margin-bottom: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-weight: normal;
+  transition: background 0.3s;
+  user-select: none;
+  color: #333;
+  box-shadow: inset 0 1px 0 #fff;
+  background: linear-gradient(to bottom, #f9f9f9, #dcdcdc);
+  border: 1px solid #bbb;
+}
+
+.itunes-source-item:hover:not(.active) {
+  background: linear-gradient(to bottom, #cce0ff, #a3c0ff);
+  border-color: #6791f7;
+  color: #15428b;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.itunes-source-item.active {
+  background: linear-gradient(to bottom, #5a9dff, #3a7bd9);
+  border: 1px solid #2256a0;
+  color: white;
+  font-weight: bold;
+  box-shadow: inset 0 1px 4px rgba(0,0,0,0.4);
+}
+
+.source-icon {
+  margin-right: 8px;
+  font-size: 13px;
+  user-select: none;
+}
+
+/* Área principal */
+.itunes-main-content {
+  display: flex;
+  flex: 1;
+  height: calc(100% - 100px); /* Resto del espacio después de top-controls */
+}
+
+/* Controles de reproducción (parte superior) */
+.itunes-top-controls {
+  display: flex;
+  align-items: center;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  border-bottom: 1px solid #ccc;
+  gap: 10px;
+}
+
+/* Botones reproducción redondos, estilo clásico */
+.itunes-player-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.itunes-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, #f0f0f0, #d0d0d0);
+  border: 1px solid #999;
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 1px 2px rgba(0,0,0,0.15);
+  font-size: 16px;
+  line-height: 28px;
+  text-align: center;
+  color: #333;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s ease;
+}
+
+.itunes-btn:hover {
+  background: linear-gradient(to bottom, #dce4f2, #b1bcd7);
+  border-color: #666;
+  color: #000;
+}
+
+/* Volumen y visualizador */
+.itunes-time-volume {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 20px;
+  flex-grow: 1;
+}
+
+/* Icono volumen */
+.itunes-time-volume::before {
+  content: "🔊";
+  font-size: 18px;
+  user-select: none;
+}
+
+.itunes-visualizer {
+  flex-grow: 1;
+  height: 36px;
+  background: linear-gradient(to bottom, #d6d6d6, #a6a6a6);
+  border-radius: 5px;
+  box-shadow:
+    inset 0 2px 3px #f5f5f5,
+    inset 0 -1px 3px #7f7f7f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#visualizerCanvas {
+  width: 150px;
+  height: 40px;
+  background: #ddd;
+  border-radius: 4px;
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Sidebar (ya existente, se mantiene) */
+.itunes-sidebar {
+  width: 140px;
+  background: #d8d8d8;
+  border-right: 1px solid #999;
+  padding: 8px;
+}
+
+/* Área de contenido principal (donde van los iframes) */
+.itunes-content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+/* Lista de iframes de soundcloud */
+.soundcloud-list iframe {
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+}
+
+/* Slider de volumen relleno blanco (visual) */
+#volumeControl {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 120px;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(to right, #4a72c8 100%, #ffffff 100%);
+  cursor: pointer;
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.4);
+  transition: background 0.2s;
+}
+
+#volumeControl::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  align-items: center;
+  border-radius: 50%;
+  background: #4a72c8;
+  border: 1px solid #2e3e87;
+  cursor: pointer;
+  margin-top: -1px;
+}
+
+
+
+
+/*============================================ CARRITO DE COMPRAS ==========================================*/
+#merch{
+width: 700px;
+  height: 600px;
+
+}
+
+.merch-content-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  padding: 20px;
+  color: white;
+}
+
+.merch-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  padding: 40px;
+  flex-wrap: wrap;
+  text-align: center;
+  min-height: 500px;
+  height: 100%;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.merch-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 240px;
+  gap: 10px;
+  color: white;
+}
+
+/* Imagen GIF */
+.merch-gif {
+  max-width: 260px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(255,255,255,0.2);
+}
+
+/* Contenedor de detalles centrado */
+.merch-detail-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  padding: 40px;
+  min-height: 500px;
+  height: 100%;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.merch-main-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: white;
+}
+
+.merch-main-view img {
+  max-width: 280px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.merch-main-view h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.merch-main-view h4 {
+  margin: 5px 0;
+}
+
+.merch-thumbs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.merch-thumbs img {
+  width: 80px;
+  height: auto;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border 0.3s;
+}
+
+.merch-thumbs img:hover {
+  border: 2px solid white;
+}
+
+.size-selector {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: white;
+  font-size: 14px;
+}
+
+.size-selector select {
+  margin-left: 8px;
+  padding: 5px;
+  border-radius: 4px;
+  border: none;
+  background-color: #222;
+  color: white;
+}
+
+#shoppingCart.mac-window {
+  width: 700px;
+  height: 600px;
+}
+
+.cart-dark-content {
+  background-color: #1f1e1e;
+  color: white;
+  font-family: monospace;
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.mac-window-content.cart-dark-content {
+  overflow-y: auto;
+}
+
+.cart-icon {
+  position: absolute;
+  top: 45px;
+  right: 20px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  filter: brightness(0) invert(1); /* lo deja blanco si es PNG negro */
+  opacity: 0.8;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  z-index: 10;
+}
+
+.cart-icon:hover {
+  transform: scale(1.2);
+  opacity: 1;
+}
+
+.cart-title {
+  font-size: 24px;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+}
+
+.cart-items-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 30px;
+  max-height: 420px; /* 4 ítems de ~100px + padding extra */
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 5px 10px;
+  border-bottom: 1px solid #444;
+  text-align: left;
+}
+
+.cart-item img {
+  width: 80px;
+  height: auto;
+  border-radius: 4px;
+}
+
+.cart-item-text {
+  flex-grow: 1;
+  text-align: left;
+  font-size: 14px;
+}
+
+.cart-item-text p {
+  margin: 2px 0;
+}
+
+.remove-btn {
+  background: none;
+  color: white;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+  padding: 0 10px;
+}
+
+.cart-checkout-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.cart-total {
+  font-size: 18px;
+}
+
+.checkout-btn {
+  background: none;
+  border: 2px solid white;
+  color: white;
+  font-family: monospace;
+  font-size: 16px;
+  padding: 10px 20px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.checkout-btn:hover {
+  background: white;
+  color: black;
+}
+
+/*==========================================================================================================*/
+/*============================================== DISEÑO RESPONSIVE =========================================*/
+/*==========================================================================================================*/
+
+@media screen and (max-width: 480px) {  
+  body {
+    cursor: default; 
+    font-size: 10px;
+  }
+
+  .top-bar {
+    height: 25px;
+    font-size: 11px;
+  }
+
+  .top-bar-left {
+    padding-left: 1px;
+  }
+
+  .apple-icon {
+    height: 20px;
+    width: 20px;
+  }
+
+  .menu-item {
+    display: none; /* Ocultar menús en móviles muy pequeños */
+  }
+
+  .menu-item:first-child {
+    display: inline; /* Solo mostrar "Finder" */
+  }
+
+  .top-bar-right {
+    font-size: 10px;
+    max-width: 60vw;
+    padding-right: 5px;
+  }
+
+  /* Desktop más compacto */
+  .desktop {
+    padding: 35px 10px;
+    gap: 1px;
+  }
+
+  .disk {
+    margin-bottom: 15px;
+  }
+
+  .disk img {
+    width: 55px;
+  }
+
+  .disk p {
+    font-size: 11px;
+    margin-top: 3px;
+  }
+
+  /* Dock más pequeño */
+  .dock {
+    bottom: 3px;
+    padding: 4px 10px;
+    border-radius: 15px;
+    gap: 8px;
+  }
+
+  .dock-icon img {
+    width: 45px;
+    height: 45px;
+  }
+
+  /* Ventanas más adaptadas */
+
+
+  .mac-window.show {
+    opacity: 1 !important;
+    transform: translate(-50%, -50%) scale(1) !important;
+  }
+
+  .mac-window-header {
+    height: 24px;
+    padding: 0 8px;
+  }
+
+  .window-buttons .btn {
+    width: 10px;
+    height: 10px;
+  }
+
+  .btn.red::after {
+    font-size: 8px;
+  }
+
+  .window-title {
+    font-size: 11px;
+  }
+
+  /* Apple menu responsive */
+  .apple-menu {
+    width: 90vw;
+    max-width: 280px;
+    left: 1px;
+    top: 23px;
+    padding: 15px;
+  }
+
+  .apple-menu h2 {
+    font-size: 18px;
+  }
+
+  .apple-menu input {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .apple-menu button {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  /*========================================= Ventana de contacto más pequeña ====================================*/
+  .genie-window {
+  width: 100vw;
+  max-width: 700px;
+  height: 55vh;
+  max-height: 400px;
+  top: 50% ;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+  .contact-header-bar {
+    height: 30px;
+    padding: 4px 8px;
+  }
+
+  .contact-title {
+    font-size: 17px;
+  }
+
+  .retro-form {
+    padding: 12px;
+    gap: 3px;
+  }
+
+  .retro-form label {
+    font-size: 10px;
+    padding: 1px;
+  }
+
+  .retro-form input,
+  .retro-form textarea {
+    font-size: 12px;
+    padding: 1px;
+  }
+
+  .retro-buttons button {
+    padding: 1px;
+    font-size: 10px;
+  }
+
+  /* Íconos de cerrar más grandes para touch */
+  #icon-close-contact,
+  #icon-close-safari {
+    width: 50px;
+    top: 30px;
+    left: 10px;
+  }
+
+  /*=============================================== Merch responsive =============================================*/
+  #merch.mac-window {
+  width: 95vw; 
+  height: 85vh; 
+}
+
+  .merch-list {
+    flex-direction: row;
+    padding: 15px;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .merch-item {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .merch-gif {
+    max-width: 100%;
+    width: 220px;
+  }
+
+  .merch-item h3 {
+    font-size: 16px;
+  }
+
+  .merch-item h4 {
+    font-size: 14px;
+  }
+
+  .merch-item button {
+    padding: 8px 16px;
+    font-size: 13px;
+    border: 1px solid white;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+  }
+
+  .merch-detail-container {
+    flex-direction: column;
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .merch-main-view img {
+    max-width: 100%;
+    width: 240px;
+  }
+
+  .merch-thumbs {
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .merch-thumbs img {
+    width: 60px;
+  }
+
+  /* Cart responsive */
+  #shoppingCart.mac-window {
+    width: 95vw !important;
+    height: 85vh !important;
+  }
+
+  .cart-items-grid {
+    max-height: 250px;
+    gap: 15px;
+  }
+
+  .cart-item {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 8px 5px;
+  }
+
+  .cart-item img {
+    width: 50px;
+  }
+
+  .cart-item-text {
+    font-size: 12px;
+    min-width: 120px;
+  }
+
+  .remove-btn {
+    font-size: 16px;
+    padding: 0 5px;
+  }
+
+  .cart-total {
+    font-size: 16px;
+  }
+
+  .checkout-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    width: 100%;
+    max-width: 200px;
+  }
+
+ /*============================================== iTUNES RESPONSIVE =========================================*/ 
+.mac-window-itunes-window {
+  top: 60px !important;
+  transform: translateX(-50%) !important;
+}
+
+.itunes-top-controls {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.itunes-search-browse {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+body {
+  font-size: 12px;
+}
+  
+
+  /*============================================== Social media responsive =================================*/
+  .social-icons {
+    gap: 30px;
+    flex-wrap: wrap;
+    padding: 0 20px;
+  }
+
+  .social-icons img {
+    width: 56px;
+    height: 56px;
+  }
+
+  /*=========================================== About section responsive ======================================*/
+  .about-layout {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+
+  .ceo-image {
+    width: 120px;
+    align-self: center;
+  }
+
+  .about-right {
+    text-align: center;
+    justify-content: center;
+  }
+
+  .about-right h3 {
+    font-size: 20px;
+  }
+
+  /*============================================= Video gallery responsive =================================*/
+  .video-container {
+    margin-top: 10px;
+  }
+
+  .video-container iframe {
+    width: 100%;
+    height: 200px;
+    max-width: none;
+  }
+}
+
+/*============================================== Tablets en orientación portrait ==============================*/
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  
+  .mac-window {
+    width: 85vw;
+    height: 75vh;
+    max-height: 600px;
+  }
+
+  .merch-list {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+
+  .merch-item {
+    width: 200px;
+  }
+
+  .social-icons {
+    gap: 40px;
+  }
+
+  .social-icons img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .dock-icon img {
+    width: 45px;
+  }
+
+  .itunes-main-content {
+    flex-direction: row;
+  }
+
+  .itunes-sidebar {
+    width: 120px;
+    border-right: 1px solid #999;
+    border-bottom: none;
+  }
+}
+
+/*====================================================== Landscape móviles =========================================*/
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  
+  .mac-window {
+    height: 95vh !important;
+    width: 90vw;
+  }
+
+  .desktop {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 30px 15px;
+  }
+
+  .disk {
+    margin-right: 20px;
+    margin-bottom: 10px;
+  }
+
+  .dock {
+    bottom: 2px;
+    padding: 4px 10px;
+  }
+
+  .dock-icon img {
+    width: 30px;
+  }
+
+  .top-bar {
+    height: 18px;
+    font-size: 10px;
+  }
+
+  .apple-icon {
+    height: 12px;
+    width: 12px;
+  }
+}
+
+/*]================================================= Mejoras de usabilidad táctil ==========================================*/
+@media (hover: none) and (pointer: coarse) {
+  
+  /* Elementos táctiles más grandes */
+  .dock-icon {
+    padding: 8px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+  }
+
+  .dock-icon:active {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .disk {
+    padding: 8px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+  }
+
+  .disk:active {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .window-buttons .btn {
+    width: 18px;
+    height: 18px;
+    margin: 2px;
+  }
+
+  .btn.red::after {
+    font-size: 15px;
+  }
+
+  /* Botones más grandes */
+  button {
+    min-height: 44px; /* Estándar iOS */
+    padding: 10px 15px;
+  }
+
+  .merch-item button,
+  .checkout-btn,
+  .retro-buttons button {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  /* Inputs más grandes */
+  input, textarea, select {
+    min-height: 44px;
+    font-size: 16px; /* Previene zoom en iOS */
+  }
+
+  /* Scroll suave */
+  .mac-window-content,
+  .cart-items-grid {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Prevenir zoom en inputs (iOS) */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  select,
+  textarea,
+  input[type="text"],
+  input[type="password"],
+  input[type="email"] {
+    font-size: 16px;
+  }
+}

@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MERCI</title>
+  <script src="https://w.soundcloud.com/player/api.js"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-------------------------------------------- Barra superior ------------------------------------------->
+<div class="top-bar">
+  <div class="top-bar-left">
+    <img src="imagenes/MERCI.png" alt="Apple Logo" class="apple-icon" onclick="toggleAppleMenu()" />
+    <span class="menu-item">File</span>
+    <span class="menu-item">Edit</span>
+    <span class="menu-item">View</span>
+    <span class="menu-item">Go</span>
+  </div>
+  <div class="top-bar-right">
+    <span id="topbar-right-info"></span>
+  </div>
+</div>
+    <div class="apple-menu" id="appleMenu">
+  <img src="imagenes/MERCI.png" alt="Apple Logo" class="apple-logo" />
+  <h2>Merci OS</h2>
+  <p>Versión Web Experimental</p>
+
+  <input type="text" id="username" placeholder="Nombre de usuario" />
+  <input type="password" id="password" placeholder="Contraseña" />
+
+  <button onclick="createAccount()">Crear Cuenta</button>
+  <button onclick="login()">Iniciar Sesión</button>
+
+  <p id="message"></p>
+</div>
+  </header>
+
+  <!----------------------------------------- Escritorio ------------------------------------------>
+  <main class="desktop" id="desktop">
+    <div class="disk" onclick="openWindow('about')">
+      <img src="imagenes/hdd.png" alt="About Us" />
+      <p>About Us</p>
+    </div>
+
+    <div class="disk" id="icon-contact" onclick="openWindow('contact')">
+      <img src="imagenes/hdd.png" alt="Contacto" />
+      <p>Contacto</p>
+    </div>
+  </main>
+
+  <div class="disk" id="icon-close-contact" onclick="closeWindow('contact')">
+  <img src="imagenes/hddmerci.png" alt="Cerrar Contacto" />
+</div>
+
+<!----------------------------------------- Dock inferior ---------------------------------------->
+<div class="dock-wrapper">
+  <div class="dock-background"></div>
+
+  <nav class="dock">
+    <div class="dock-icon" onclick="openSocialWindow()">
+      <img src="imagenes/safari1.png" alt="Safari" />
+    </div>
+    <div class="dock-icon" onclick="openWindow('sets')">
+      <img src="imagenes/itunes.png" alt="iTunes" />
+    </div>
+    <div class="dock-icon" onclick="openWindow('gallery')">
+      <img src="imagenes/galeria.png" alt="Fotos" />
+    </div>
+    <div class="dock-icon" onclick="openWindow('merch')">
+      <img src="imagenes/merch.png" alt="Merch" />
+    </div>
+  </nav>
+</div>
+
+<!---------------------------------------------------------------------------------------------------->
+<!--------------------------------------- Ventanas emergentes ---------------------------------------->
+<!---------------------------------------------------------------------------------------------------->
+
+<!----------------------------------------- Ventana Merch -------------------------------------------->
+<div class="mac-window dark" id="merch">
+  <div class="mac-window-header">
+    <div class="window-buttons">
+      <span class="btn red" onclick="handleRedButton()">X</span>
+      <span class="btn yellow"></span>
+      <span class="btn green"></span>
+    </div>
+    <span class="window-title">Merch</span>
+  </div>
+  <div class="mac-window-content">
+     <img src="imagenes/cart.png" alt="Cart Icon" class="cart-icon" onclick="openWindow('shoppingCart')" />
+    
+    <!-- Vista Lista de Productos -->
+    <div class="merch-list" id="merchList">
+      <!-- Polera 1 -->
+      <div class="merch-item">
+        <h3>Lindsay Lohan White Tee</h3>
+        <img src="imagenes/polera.gif" alt="Polera 3D"
+             class="merch-gif"
+             onclick="openMerchDetail({
+               title: 'Lindsay Lohan White Tee',
+               price: '$29.990 CLP',
+               main: 'polera.gif',
+               thumbnails: ['polera.gif', 'polera2.jpg', 'polera3.jpg']
+             })">
+        <h4>$29.990 CLP</h4>
+        <button onclick="openMerchDetail({
+               title: 'Lindsay Lohan White Tee',
+               price: '$29.990 CLP',
+               main: 'polera.gif',
+               thumbnails: ['polera.gif', 'polera2.jpg', 'polera3.jpg']
+             })">BUY</button>
+      </div>
+
+      <!-- Polera 2 -->
+      <div class="merch-item">
+        <h3>Lindsay Lohan Black Tee</h3>
+        <img src="imagenes/polera2.gif" alt="Essentials GIF"
+             class="merch-gif"
+             onclick="openMerchDetail({
+               title: 'Lindsay Lohan Black Tee',
+               price: '$24.990 CLP',
+               main: 'polera2.gif',
+               thumbnails: ['polera2.gif', 'polera4.jpg', 'weon.jpeg']
+             })">
+        <h4>$24.990 CLP</h4>
+        <button onclick="openMerchDetail({
+               title: 'Lindsay Lohan Black Tee',
+               price: '$24.990 CLP',
+               main: 'polera2.gif',
+               thumbnails: ['polera2.gif', 'polera4.jpg', 'weon.jpeg']
+             })">BUY</button>
+      </div>
+    </div>
+
+    <!-- Vista Detalles del Producto -->
+    <div class="merch-detail-container" id="merchDetail" style="display:none;">
+      <div class="merch-main-view">
+        <img id="mainMerchImage" src="" alt="Vista Principal">
+        <h3 id="merchTitle">Titulo</h3>
+        <h4 id="merchPrice">Precio</h4>
+        <div class="size-selector">
+          <label for="size">Talla:</label>
+          <select id="size">
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+          </select>
+        </div>
+        <button>BUY</button>
+      </div>
+
+      <div class="merch-thumbs" id="merchThumbs">
+        <!-- Se insertan dinámicamente -->
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!------------------------------------------- Ventana Social Media --------------------------------------------->
+<div class="fullscreen-window" id="socialWindow">
+  <div class="social-icons">
+    <a href="https://www.youtube.com/@MERCICOLLECTIVE" target="_blank">
+      <img src="imagenes/youtube.png" alt="YouTube">
+    </a>
+    <a href="https://www.instagram.com/merci_______________________/" target="_blank">
+      <img src="imagenes/instagram.png" alt="Instagram">
+    </a>
+    <a href="https://soundcloud.com/merci-collective" target="_blank">
+      <img src="imagenes/soundcloud.png" alt="Soundcloud">
+    </a>
+  </div>
+</div>
+
+<div class="disk" id="icon-close-safari" onclick="closeSocialWindow()">
+  <img src="imagenes/hddmerci.png" alt="Cerrar Safari" />
+</div>
+
+
+<!------------------------------------------ Ventana del carrito de compras ------------------------------------->
+<div class="mac-window dark" id="shoppingCart" style="display:none;">
+  <div class="mac-window-header">
+    <div class="window-buttons">
+      <span class="btn red" onclick="closeWindow('shoppingCart')">X</span>
+      <span class="btn yellow"></span>
+      <span class="btn green"></span>
+    </div>
+    <span class="window-title">Cart</span>
+  </div>
+  <div class="mac-window-content cart-dark-content">
+    <h2 class="cart-title">CART</h2>
+    <div id="cartItems" class="cart-items-grid"></div>
+    <div class="cart-checkout-section">
+      <div class="cart-total">
+        Total: $<span id="totalPrice"></span>
+      </div>
+      <a href="https://checkout.shopify.com/tu-checkout-link" target="_blank">
+        <button class="checkout-btn">CHECKOUT</button>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!--------------------------------------------- Ventana: iTunes ---------------------------------------------------->
+<div class="mac-window itunes-window" id="sets">
+
+  <!-- Header -->
+  <div class="mac-window-header itunes-header">
+    <div class="window-buttons">
+      <span class="btn red" onclick="closeWindow('sets')">X</span>
+      <span class="btn yellow"></span>
+      <span class="btn green"></span>
+    </div>
+    <span class="window-title">Merci Dj Sets</span>
+  </div>
+
+  <!-- Contenido de la ventana -->
+  <div class="mac-window-content itunes-content">
+
+    <!-- Controles superiores -->
+    <div class="itunes-top-controls">
+      <div class="itunes-player-controls">
+        <button class="itunes-btn prev">⏮</button>
+        <button class="itunes-btn play">▶️</button>
+        <button class="itunes-btn next">⏭</button>
+
+        <div class="itunes-time-volume">
+            <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
+          <div class="itunes-visualizer">
+            <canvas id="visualizerCanvas" width="150" height="40"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenido principal: sidebar + reproductores -->
+    <div class="itunes-main-content">
+
+      <!-- Sidebar izquierdo -->
+      <div class="itunes-sidebar">
+        <div class="itunes-source-section">
+          <h4>Biblioteca</h4>
+          <div class="itunes-source-item active">
+            <span class="source-icon">🎵</span> DJ Sets
+          </div>
+          <div class="itunes-source-item">
+            <span class="source-icon">📻</span> Música
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenido derecho: reproductores -->
+      <div class="itunes-content-area">
+        <div class="soundcloud-list">
+          <iframe id="sc-player-1" width="100%" height="120" scrolling="no" frameborder="no" allow="autoplay"
+            src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1965556587&color=%23a75ed4&auto_play=false">
+          </iframe>
+
+          <iframe id="sc-player-2" width="100%" height="120" scrolling="no" frameborder="no" allow="autoplay"
+            src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1844548299&color=%23a75ed4&auto_play=false">
+          </iframe>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Audio oculto -->
+    <audio id="audioPlayer" preload="metadata"></audio>
+
+  </div>
+</div>
+
+
+ 
+
+<!----------------------------------------------- Ventana: Galería de Videos ----------------------------------------------->
+<div class="mac-window" id="gallery">
+  <div class="mac-window-header">
+    <div class="window-buttons">
+      <span class="btn red" onclick="closeWindow('gallery')">X</span>
+      <span class="btn yellow"></span>
+      <span class="btn green"></span>
+    </div>
+    <span class="window-title">Galería de Videos</span>
+  </div>
+  <div class="mac-window-content">
+    <div class="video-container">
+
+      <iframe width="560" 
+      height="315" 
+      src="https://www.youtube.com/embed/1YbWTZzX8Ms?si=oH45yTJAsFhKYdfM" 
+      title="YouTube video player" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+      </iframe>
+
+      <iframe width="560"  
+      height="315" 
+      src="https://www.youtube.com/embed/-xm6aOGkTjA?si=hSqnM_xzJrUArI1Y" 
+      title="YouTube video player" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+    </div>
+  </div>
+</div>
+
+<!------------------------------------------------ Ventana: Sobre Nosotros ----------------------------------------------->
+<div class="mac-window" id="about">
+  <div class="mac-window-header">
+    <div class="window-buttons">
+      <span class="btn red" onclick="closeWindow('about')">X</span>
+      <span class="btn yellow"></span>
+      <span class="btn green"></span>
+    </div>
+    <span class="window-title">Sobre Nosotros</span>
+  </div>
+  <div class="mac-window-content about-layout">
+    <div class="about-left">
+      <img src="imagenes/CEO.jpg" alt="CEO" class="ceo-image" />
+    </div>
+    <div class="about-right">
+      <h3>CEO: "wavy"</h3>
+    </div>
+  </div>
+</div>
+
+<!------------------------------------------------- Ventana: Contacto ----------------------------------------------------->
+<div class="genie-window" id="contact">
+<div class="contact-header-bar">
+  <div class="contact-title">CONTACT</div>
+</div>
+
+<!-- Formulario -->
+<form class="retro-form" onsubmit="event.preventDefault();">
+    <label for="correo">EMAIL</label>
+    <input type="email" id="correo" required>
+
+    <label for="asunto">SUBJECT</label>
+    <input type="text" id="asunto" required>
+
+    <label for="mensaje">MESSAGE</label>
+    <textarea id="mensaje" rows="5" required></textarea>
+
+    <div class="retro-buttons">
+      <button onclick="enviarCorreo('awge')">SEND TO<br>MERCI</button>
+      <button onclick="enviarCorreo('support')">SEND TO<br>ORDER SUPPORT</button>
+    </div>
+  </form>
+</div>
+
+
+<!--------------------------------------------------------- JAVASCRIPT ---------------------------------------------------->
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    audioPlayer(); // <- llamada a tu función
+  });
+
+function audioPlayer(){
+const audio = document.getElementById('audioPlayer');
+const canvas = document.getElementById('visualizerCanvas');
+  const ctx = canvas.getContext('2d');
+
+  const barCount = 32;
+  let isPlaying = false;
+
+  function drawSimulator() {
+    requestAnimationFrame(drawSimulator);
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const barWidth = canvas.width / barCount;
+
+    for (let i = 0; i < barCount; i++) {
+      let barHeight = isPlaying
+        ? Math.random() * canvas.height
+        : 4; // altura mínima cuando está quieto
+
+      ctx.fillStyle = '#a75ed4';
+      ctx.fillRect(i * barWidth, canvas.height - barHeight, barWidth - 2, barHeight);
+    }
+  }
+
+  drawSimulator();
+
+  // Conexión con SoundCloud Widget API
+  const scWidget1 = SC.Widget(document.getElementById('sc-player-1'));
+  const scWidget2 = SC.Widget(document.getElementById('sc-player-2'));
+
+  function setupWidget(widget) {
+    widget.bind(SC.Widget.Events.PLAY, () => {
+      isPlaying = true;
+    });
+
+    widget.bind(SC.Widget.Events.PAUSE, () => {
+      isPlaying = false;
+    });
+
+    widget.bind(SC.Widget.Events.FINISH, () => {
+      isPlaying = false;
+    });
+  }
+
+  setupWidget(scWidget1);
+  setupWidget(scWidget2);
+}
+
+//-------------------------------------- FECHA Y TEMPERATURA --------------------------------------//
+
+function updateTopBarDateTimeWeather() {
+  const now = new Date();
+  const options = { year: 'numeric', month: 'short', day: 'numeric' };
+  const dateStr = now.toLocaleDateString('es-CL', options);
+
+  // Extraer temperatura actual del widget (en °C)
+  const tempF = 45; // según widget: temperatura actual 45°F
+  const tempC = Math.round((tempF - 32) * 5/9);
+
+  const rightInfo = document.getElementById('topbar-right-info');
+    rightInfo.textContent = `${dateStr}  -  ${tempC}°C`;
+}
+
+// Ejecuta al inicio y cada minuto para mantener la hora actualizada
+setInterval(updateTopBarDateTimeWeather, 60000);
+updateTopBarDateTimeWeather();
+
+function toggleAppleMenu() {
+  const menu = document.getElementById('appleMenu');
+  menu.classList.toggle('show');
+}
+
+function createAccount() {
+  const username = document.getElementById('username').value;
+    if (username) {
+      document.getElementById('message').textContent = "Cuenta creada exitosamente para: " + username;
+    }
+}
+
+//------------------------------------------ FUNCION ABRIR Y CERRAR VENTANAS -----------------------------------------//
+
+function openWindow(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  // Si estamos en móviles y la ventana ya está abierta, no volver a abrirla
+  if (window.innerWidth <= 480 && el.classList.contains('show')) {
+    return; // No hacer nada
+  }
+
+  // Si estamos en móviles, abrir centrado sin posición aleatoria
+  if (window.innerWidth <= 480) {
+    el.style.left = '50%';
+    el.style.top = '50%';
+    el.style.transform = 'translate(-50%, -50%)';
+    el.style.display = 'flex';
+
+    setTimeout(() => el.classList.add('show'), 10);
+    bringToFront(el);
+    return;
+  }
+
+  if (id === 'contact') {
+    const icon = document.getElementById('icon-contact');
+    const iconRect = icon.getBoundingClientRect();
+
+    document.querySelectorAll(".mac-window.show, .genie-window.show").forEach(win => {
+      win.classList.remove('show');
+      win.style.display = 'none';
+    });
+
+    document.getElementById('icon-close-contact').style.display = 'flex';
+    document.getElementById('icon-close-safari').style.display = 'none';
+    document.querySelector('.dock').style.display = 'none';
+    document.getElementById('desktop').style.display = 'none';
+
+    el.style.top = `${iconRect.top}px`;
+    el.style.left = `${iconRect.left}px`;
+    el.style.transform = 'scale(0.1)';
+    el.style.opacity = '0';
+    el.style.display = 'flex';
+
+    setTimeout(() => {
+      el.style.top = '50%';
+      el.style.left = '50%';
+      el.style.transform = 'translate(-50%, -50%) scale(1)';
+      el.style.opacity = '1';
+    }, 10);
+  } else {
+
+    // Obtener medidas
+    const screenW = window.innerWidth;
+    const screenH = window.innerHeight;
+    const dockHeight = 90;
+
+    // Forzar display para medir altura real
+    el.style.display = 'block';
+    el.style.visibility = 'hidden';
+    el.style.transform = 'none';
+    const winHeight = el.offsetHeight || 400;
+    const winWidth = el.offsetWidth || 500;
+    el.style.display = 'none';
+    el.style.visibility = 'visible';
+
+    // Calcular límites seguros
+    const maxTop = screenH - winHeight - dockHeight;
+    const maxLeft = screenW - winWidth;
+    const minTop = 40;
+    const minLeft = 40;
+
+    const top = Math.floor(Math.random() * (maxTop - minTop + 1)) + minTop;
+    const left = Math.floor(Math.random() * (maxLeft - minLeft + 1)) + minLeft;
+
+    el.style.left = `${left}px`;
+    el.style.top = `${top}px`;
+    el.style.transform = 'none';
+    el.style.display = 'flex';
+
+    setTimeout(() => el.classList.add('show'), 10);
+    bringToFront(el);
+  }
+}
+
+function bringToFront(el) {
+  // Aumentar z-index progresivamente
+  const allWindows = document.querySelectorAll(".mac-window, .genie-window");
+  let maxZ = 1000;
+
+  allWindows.forEach(w => {
+    const z = parseInt(window.getComputedStyle(w).zIndex) || 1000;
+    if (z > maxZ) maxZ = z;
+  });
+
+  el.style.zIndex = maxZ + 1;
+}
+
+function closeWindow(id) {
+  const el = document.getElementById(id);
+
+  if (id === 'contact') {
+    const icon = document.getElementById('icon-contact');
+    const iconRect = icon.getBoundingClientRect();
+
+    // Animar de regreso al ícono
+    el.style.transform = 'scale(0.1)';
+    el.style.opacity = '0';
+    el.style.top = `${iconRect.top}px`;
+    el.style.left = `${iconRect.left}px`;
+
+    // Esperar la animación antes de ocultar
+    setTimeout(() => {
+      el.style.display = 'none';
+      el.style.transform = 'translate(-50%, -50%) scale(1)'; // Reset
+      el.style.top = '50%';
+      el.style.left = '50%';
+      document.querySelector('.dock').style.display = 'flex';
+      document.getElementById('desktop').style.display = 'flex';
+      document.getElementById('icon-close-contact').style.display = 'none';
+      document.getElementById('icon-close-safari').style.display = 'none';
+    }, 600);
+  } 
+  else {
+    el.classList.remove('show');
+    setTimeout(() => {
+      el.style.display = 'none';
+    }, 300);
+  }
+}
+
+document.querySelectorAll('.mac-window').forEach(win => {
+  const header = win.querySelector('.mac-window-header');
+  let isDragging = false;
+  let offsetX = 0;
+  let offsetY = 0;
+
+  header.style.cursor = 'grab';
+
+  header.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    bringToFront(win);
+    win.classList.add('dragging');
+
+    const rect = win.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+
+    win.style.transform = 'none';
+    win.style.left = `${rect.left}px`;
+    win.style.top = `${rect.top}px`;
+
+    document.body.style.userSelect = 'none';
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+
+    const screenW = window.innerWidth;
+    const screenH = window.innerHeight;
+    const dockHeight = 90;
+
+    const winWidth = win.offsetWidth;
+    const winHeight = win.offsetHeight;
+
+    let newLeft = e.clientX - offsetX;
+    let newTop = e.clientY - offsetY;
+
+    // Limitar bordes
+    if (newLeft < 0) newLeft = 0;
+    if (newTop < 0) newTop = 0;
+    if (newLeft + winWidth > screenW) newLeft = screenW - winWidth;
+    if (newTop + winHeight > screenH - dockHeight) newTop = screenH - dockHeight - winHeight;
+
+    win.style.left = `${newLeft}px`;
+    win.style.top = `${newTop}px`;
+  });
+
+  document.addEventListener('mouseup', () => {
+    isDragging = false;
+    win.classList.remove('dragging');
+    document.body.style.userSelect = '';
+  });
+});
+
+
+function openLink(url) {
+  window.open(url, '_blank');
+}
+
+
+//---------------------------------------- DETALLES DEL MERCH ----------------------------------------//
+function changeMainImage(src) {
+  const mainImage = document.getElementById("mainMerchImage");
+  mainImage.src = "imagenes/" + src;
+}
+
+function handleRedButton() {
+  // Si estamos en la vista de detalles, volver a la lista
+  const detailView = document.getElementById("merchDetail");
+  if (detailView.style.display === "flex") {
+    showMerchList();
+  } else {
+    // Si estamos en la lista principal, cerrar la ventana
+    closeWindow('merch');
+  }
+}
+
+function showMerchList() {
+  // Mostrar lista de productos y ocultar detalles
+  document.getElementById("merchDetail").style.display = "none";
+  document.getElementById("merchList").style.display = "flex";
+}
+
+//----------------------------------------- SOCIAL MEDIA -----------------------------------------//
+
+function openSocialWindow() {
+  const social = document.getElementById("socialWindow");
+
+  // Ocultar todo
+  document.querySelector('.dock').style.display = 'none';
+  document.getElementById('desktop').style.display = 'none';
+
+  // Ocultar todas las ventanas abiertas
+  document.querySelectorAll(".mac-window.show, .genie-window.show, .fullscreen-window.show").forEach(win => {
+    win.classList.remove('show');
+    win.style.display = 'none';
+  });
+
+  // Cambiar fondo
+  document.body.dataset.originalBg = document.body.style.backgroundImage;
+  document.body.style.backgroundImage = "url('imagenes/socialmedia.jpg')";
+
+  // Mostrar ventana y botón
+  social.style.display = 'flex';
+  setTimeout(() => social.classList.add('show'), 10);
+  document.getElementById('icon-close-safari').style.display = 'flex';
+}
+
+function closeSocialWindow() {
+  const social = document.getElementById("socialWindow");
+
+  social.classList.remove('show');
+  setTimeout(() => {
+    social.style.display = 'none';
+  }, 300);
+
+  // Restaurar fondo original
+  document.body.style.backgroundImage = document.body.dataset.originalBg || "";
+
+  // Restaurar escritorio y dock
+  document.querySelector('.dock').style.display = 'flex';
+  document.getElementById('desktop').style.display = 'flex';
+
+  // Ocultar el botón de cerrar Safari
+  document.getElementById('icon-close-safari').style.display = 'none';
+}
+
+const precargarFondos = () => {
+    const fondoSocial = new Image();
+    fondoSocial.src = "imagenes/socialmedia.jpg";
+  };
+
+  window.addEventListener("load", precargarFondos);
+
+
+//----------------------------------------- CARRITO DE COMPRAS -----------------------------------------//
+let cart = [];
+
+function openMerchDetail(product) {
+  const mainImage = document.getElementById("mainMerchImage");
+  const title = document.getElementById("merchTitle");
+  const price = document.getElementById("merchPrice");
+  const thumbs = document.getElementById("merchThumbs");
+
+  mainImage.src = "imagenes/" + product.main;
+  title.textContent = product.title;
+  price.textContent = product.price;
+
+  thumbs.innerHTML = "";
+  product.thumbnails.forEach(img => {
+    const thumb = document.createElement("img");
+    thumb.src = "imagenes/" + img;
+    thumb.alt = "Thumb";
+    thumb.onclick = () => changeMainImage(img);
+    thumbs.appendChild(thumb);
+  });
+
+  document.getElementById("merchList").style.display = "none";
+  document.getElementById("merchDetail").style.display = "flex";
+
+  // Guardar el producto en una variable global para el carrito
+  window.selectedProduct = product;
+}
+
+function addToCart() {
+  const size = document.getElementById("size").value;
+
+  if (!size) {
+    alert("Por favor selecciona una talla.");
+    return;
+  }
+
+  const newItem = {
+    ...window.selectedProduct,
+    size: size,
+    quantity: 1,
+  };
+
+  // Verificar si ya existe el mismo producto con la misma talla
+  const existingIndex = cart.findIndex(item =>
+    item.title === newItem.title && item.size === newItem.size
+  );
+
+  if (existingIndex !== -1) {
+    // Si existe, aumenta cantidad
+    cart[existingIndex].quantity += 1;
+  } else {
+    // Si no existe, lo agrega como nuevo
+    cart.push(newItem);
+  }
+
+  updateCart();
+  showShoppingCart();
+}
+
+function updateCart() {
+  const cartContainer = document.getElementById("cartItems");
+  const totalContainer = document.getElementById("totalPrice");
+
+  cartContainer.innerHTML = "";
+  let totalPrice = 0;
+
+  cart.forEach((item, index) => {
+    const numericPrice = parseInt(item.price.replace("$", "").replace("CLP", "").replace(/\./g, "").trim());
+    const itemTotal = numericPrice * item.quantity;
+    totalPrice += itemTotal;
+
+    const cartItem = document.createElement("div");
+    cartItem.classList.add("cart-item");
+
+    cartItem.innerHTML = `
+      <button class="remove-btn" onclick="removeFromCart(${index})">x</button>
+      <img src="imagenes/${item.main}" alt="${item.title}" />
+      <div class="cart-item-text">
+        <p>${item.title} - SIZE ${item.size}</p>
+      </div>
+      <div>${item.quantity}</div>
+      <div>${formatCLP(itemTotal)}</div>
+    `;
+
+    cartContainer.appendChild(cartItem);
+  });
+
+  totalContainer.textContent = formatCLP(totalPrice);
+}
+
+
+function showShoppingCart() {
+  const cartWindow = document.getElementById("shoppingCart");
+  cartWindow.style.display = "flex";
+  setTimeout(() => cartWindow.classList.add("show"), 10);
+  bringToFront(cartWindow);
+}
+
+function formatCLP(value) {
+  return `${value.toLocaleString('es-CL')}`;
+}
+
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  updateCart();
+}
+
+// Añadir al carrito desde la ventana de detalles del producto
+document.querySelector("#merchDetail button").onclick = addToCart;
+
+
+function precargarImagenesMerch() {
+  const imagenes = [
+    'polera.gif', 'polera2.jpg', 'polera3.jpg',
+    'polera2.gif', 'polera4.jpg', 'weon.jpeg'
+  ];
+
+  imagenes.forEach(src => {
+    const img = new Image();
+    i.src = 'imagenes/' + src;
+    img.onload = () => console.log(`Imagen precargada: ${src}`);
+  });
+}
+window.addEventListener('load', precargarImagenesMerch);
+
+
+//----------------------------------------------- CORREOS ----------------------------------------------//
+
+  function enviarCorreo(destino) {
+  const correo = document.getElementById('correo').value;
+  const asunto = document.getElementById('asunto').value;
+  const mensaje = document.getElementById('mensaje').value;
+
+  if (!correo || !asunto || !mensaje) {
+    alert("Please fill all fields.");
+    return;
+  }
+
+  let destinatario = "";
+  if (destino === 'merci') destinatario = "awge@example.com";
+  if (destino === 'support') destinatario = "support@example.com";
+
+  const mailto = `mailto:${destinatario}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent('From: ' + correo + '\n\n' + mensaje)}`;
+  window.location.href = mailto;
+}
+
+//----------------------------------------- VOLUMEN SOUNDCLOUD ---------------------------------------//
+const iframes = [
+    SC.Widget(document.getElementById('sc-player-1')),
+    SC.Widget(document.getElementById('sc-player-2'))
+  ];
+
+  const volumeSlider = document.getElementById("volumeControl");
+  
+  iframes.forEach(widget => {
+    widget.bind(SC.Widget.Events.READY, function () {
+      volumeSlider.addEventListener("input", () => {
+        const volume = parseFloat(volumeSlider.value);
+        widget.setVolume(volume * 100);
+      });
+    });
+  });
+
+function updateVolumeBackground() {
+  const val = volumeSlider.value;
+  const percent = val * 100;
+  volumeSlider.style.background = `linear-gradient(to right, #4a72c8 0%, #4a72c8 ${percent}%, #ffffff ${percent}%, #ffffff 100%)`;
+}
+
+volumeSlider.addEventListener("input", updateVolumeBackground);
+updateVolumeBackground();
+
+
+  
+// ----------------------------------- CONTRASEÑA DE INICIO DE SESION -------------------------------- //
+
+    const correctPassword = "merci2025"; // Contraseña secreta
+
+    function toggleAppleMenu() {
+        document.getElementById('appleMenu').classList.toggle('show');
+    }
+
+    function createAccount() {
+        const username = document.getElementById('username').value;
+        if (username) {
+        document.getElementById('message').textContent =
+            "Cuenta creada exitosamente para: " + username;
+        document.getElementById('message').style.color = "green";
+        } else {
+        document.getElementById('message').textContent =
+            "Debes ingresar un nombre de usuario.";
+        document.getElementById('message').style.color = "red";
+        }
+    }
+
+    function login() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        if (!username || !password) {
+        document.getElementById('message').textContent =
+            "Completa ambos campos para iniciar sesión.";
+        document.getElementById('message').style.color = "red";
+        return;
+        }
+
+        if (password === correctPassword) {
+        document.getElementById('message').textContent =
+            "Inicio de sesión exitoso. Bienvenido " + username + "!";
+        document.getElementById('message').style.color = "green";
+        } else {
+        document.getElementById('message').textContent =
+            "Contraseña incorrecta.";
+        document.getElementById('message').style.color = "red";
+        }
+    }
+
+  </script>
+</body>
+</html>
