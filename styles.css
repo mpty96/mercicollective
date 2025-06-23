@@ -67,7 +67,7 @@ body {
 /* Dock en sí mismo */
 .dock {
   display: flex;
-  gap: 20px;
+  gap: 15px;
   padding: 10px 20px;
   position: relative;
   z-index: 1;
@@ -84,7 +84,7 @@ body {
 
 /* Imagen de ícono */
 .dock-icon img {
-  width: 60px;
+  width: 80px;
   transition: transform 0.3s ease;
 }
 
@@ -932,6 +932,19 @@ width: 700px;
   top: 45px;
   right: 20px;
   width: 30px;
+  height: 30px;
+  cursor: pointer;
+  filter: brightness(0) invert(1); /* lo deja blanco si es PNG negro */
+  opacity: 0.8;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  z-index: 10;
+}
+
+.back-icon {
+  position: absolute;
+  top: 45px;
+  width: 30px;
+  left: 20px;
   height: 30px;
   cursor: pointer;
   filter: brightness(0) invert(1); /* lo deja blanco si es PNG negro */
