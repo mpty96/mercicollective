@@ -287,29 +287,98 @@
     </div>
     <span class="window-title">Galería de Videos</span>
   </div>
-  <div class="mac-window-content">
-    <div class="video-container">
 
-      <iframe width="560" 
-      height="315" 
-      src="https://www.youtube.com/embed/1YbWTZzX8Ms?si=oH45yTJAsFhKYdfM" 
-      title="YouTube video player" 
-      frameborder="0" 
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-      </iframe>
+  <!-- Barra de controles de iTunes -->
+  <div class="itunes-controls">
+    <div class="playback-controls">
+      <div class="control-btn">⏮</div>
+      <div class="control-btn">▶</div>
+      <div class="control-btn">⏭</div>
+    </div>
+    <div class="volume-control">
+      <span>🔊</span>
+      <div class="volume-slider"></div>
+    </div>
+    <div class="track-info">
+<img src="imagenes/MERCI.png">
+    </div>
+    <input type="text" class="search-box" placeholder="Search">
+  </div>
 
-      <iframe width="560"  
-      height="315" 
-      src="https://www.youtube.com/embed/-xm6aOGkTjA?si=hSqnM_xzJrUArI1Y" 
-      title="YouTube video player" 
-      frameborder="0" 
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <!-- Layout principal -->
+  <div class="itunes-main">
+    <!-- Sidebar -->
 
+    <!-- Contenido principal -->
+    <div class="itunes-content">
+      <!-- Cover Flow -->
+      <div class="gallery-coverflow">
+        <!-- Botones de navegación -->
+        <button class="coverflow-nav prev" onclick="moveCoverflow(-1)">‹</button>
+        <button class="coverflow-nav next" onclick="moveCoverflow(1)">›</button>
+        
+        <div class="coverflow-container">
+          <div class="coverflow-track" id="coverflowTrack">
+            <div class="coverflow-item left" onclick="selectVideo(0)">
+              <!--IZQUIERDA-->
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/-xm6aOGkTjA?si=LO0PEGLEbla50ool" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <div class="reflection"></div>
+            </div>
+            <div class="coverflow-item center" onclick="selectVideo(1)">
+              <!--CENTRO-->
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/1YbWTZzX8Ms?si=fmuD9dv7uOriHgJN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <div class="reflection"></div>
+            </div>
+            <div class="coverflow-item right" onclick="selectVideo(2)">
+              <!--DERECHA-->
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/6XXHWUFK4DQ?si=5En6ef9pwnVPnq-2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <div class="reflection"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lista de videos -->
+      <div class="video-title-list">
+        <!-- Header de la lista -->
+        <div class="video-list-header">
+          <div class="header-cell name">Name</div>
+          <div class="header-cell time">Time</div>
+          <div class="header-cell artist">Artist</div>
+          <div class="header-cell album">Album</div>
+        </div>
+        
+        <!-- Contenido de la lista -->
+        <div class="video-list-content">
+          <div class="video-row" onclick="selectVideoFromList(0)"> <!--IZQUIERDA-->
+            <div class="row-cell name">🎵 KIMYE / UN RATITO +</div>
+            <div class="row-cell time">5:33</div>
+            <div class="row-cell artist">FaceBrooklyn</div>
+            <div class="row-cell album">Hablando De Ti</div>
+          </div>
+          <div class="video-row selected" onclick="selectVideoFromList(1)"> <!--CENTRO-->
+            <div class="row-cell name">🎵 sssubelo</div>
+            <div class="row-cell time">2:41</div>
+            <div class="row-cell artist">FaceBrooklyn</div>
+            <div class="row-cell album">No Somos Iguales</div>
+          </div>
+          <div class="video-row" onclick="selectVideoFromList(2)"> <!--DERECHA-->
+            <div class="row-cell name">🎵 NADIE TEKITA</div>
+            <div class="row-cell time">3:36</div>
+            <div class="row-cell artist">FaceBrooklyn ft. Easykid</div>
+            <div class="row-cell album">Single</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- Footer -->
+  <div class="itunes-footer">
+    3 items, 10.43 minutes, 125 MB
+  </div>
 </div>
+
 
 <!------------------------------------------------ Ventana: Sobre Nosotros ----------------------------------------------->
 <div class="mac-window" id="about">
@@ -775,7 +844,7 @@ function updateCart() {
   let totalPrice = 0;
 
   // 🟣 Construir link de Shopify Cart
-  const shopifyBase = "https://1u4xh0-g9.myshopify.com/cart/";
+  const shopifyBase = "https://mercicollectiveshop.myshopify.com/cart/";
   const cartShopifyItems = [];
 
   cart.forEach((item, index) => {
@@ -867,6 +936,131 @@ function precargarImagenesMerch() {
   });
 }
 window.addEventListener('load', precargarImagenesMerch);
+
+//--------------------------------------------- GALERIA DE VIDEOS ------------------------------------------//
+
+let currentVideoIndex = 1; // Video central por defecto
+
+// Función para leer automáticamente los datos desde el HTML
+function getVideosFromHTML() {
+  const videoRows = document.querySelectorAll('.video-row');
+  const videos = [];
+  
+  videoRows.forEach(row => {
+    const nameCell = row.querySelector('.row-cell.name').textContent.trim();
+    const timeCell = row.querySelector('.row-cell.time').textContent.trim();
+    const artistCell = row.querySelector('.row-cell.artist').textContent.trim();
+    const albumCell = row.querySelector('.row-cell.album').textContent.trim();
+    
+    // Limpiar el emoji del nombre si existe
+    const cleanTitle = nameCell.replace(/🎵\s*/, '');
+    
+    videos.push({
+      title: cleanTitle,
+      time: timeCell,
+      artist: artistCell,
+      album: albumCell,
+      genre: "Music Video" // Valor por defecto, o puedes añadir otro campo en el HTML
+    });
+  });
+  
+  return videos;
+}
+
+// Cargar videos automáticamente del HTML
+const videos = getVideosFromHTML();
+
+function updateCoverFlow() {
+  const items = document.querySelectorAll('.coverflow-item');
+  const rows = document.querySelectorAll('.video-row');
+  
+  // Actualizar classes del coverflow
+  items.forEach((item, index) => {
+    item.className = 'coverflow-item';
+    
+    if (index === currentVideoIndex) {
+      item.classList.add('center');
+    } else if (index === currentVideoIndex - 1) {
+      item.classList.add('left');
+    } else if (index === currentVideoIndex + 1) {
+      item.classList.add('right');
+    } else if (index < currentVideoIndex - 1) {
+      item.classList.add('far-left');
+    } else if (index > currentVideoIndex + 1) {
+      item.classList.add('far-right');
+    }
+  });
+  
+  // Actualizar selección en la lista
+  rows.forEach((row, index) => {
+    row.classList.toggle('selected', index === currentVideoIndex);
+  });
+  
+  // Actualizar info del track
+  updateTrackInfo();
+}
+
+function updateTrackInfo() {
+  const trackInfo = document.querySelector('.track-info');
+  const video = videos[currentVideoIndex];
+  
+  // Solo actualizar si hay un video seleccionado
+  if (video) {
+    trackInfo.innerHTML = `
+      <img src="imagenes/MERCI.png">
+      <div>${video.title}</div>
+      <div>${video.artist}</div>
+      <div>0:00 -${video.time}</div>
+    `;
+  }
+}
+
+function moveCoverflow(direction) {
+  const newIndex = currentVideoIndex + direction;
+  if (newIndex >= 0 && newIndex < videos.length) {
+    currentVideoIndex = newIndex;
+    updateCoverFlow();
+  }
+}
+
+function selectVideo(index) {
+  if (index >= 0 && index < videos.length) {
+    currentVideoIndex = index;
+    updateCoverFlow();
+  }
+}
+
+function selectVideoFromList(index) {
+  selectVideo(index);
+}
+
+// Navegación con teclado
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowLeft') {
+    moveCoverflow(-1);
+  } else if (e.key === 'ArrowRight') {
+    moveCoverflow(1);
+  }
+});
+
+// Función para actualizar datos si el HTML cambia dinámicamente
+function refreshVideoData() {
+  const updatedVideos = getVideosFromHTML();
+  videos.splice(0, videos.length, ...updatedVideos);
+  updateCoverFlow();
+}
+
+// Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+  updateCoverFlow();
+});
+
+// Si ya está cargado, inicializar inmediatamente
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', updateCoverFlow);
+} else {
+  updateCoverFlow();
+}
 
 
 //----------------------------------------------- CORREOS ----------------------------------------------//
