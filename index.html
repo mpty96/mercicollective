@@ -89,14 +89,14 @@
     <span class="window-title">Merch</span>
   </div>
   <div class="mac-window-content">
-     <img src="imagenes/cart.png" alt="Cart Icon" class="cart-icon" onclick="openWindow('shoppingCart')" />
+     <img src="imagenes/cart.png" alt="Cart Icon" loading="eager" class="cart-icon" onclick="openWindow('shoppingCart')" />
     
     <!-- Vista Lista de Productos -->
     <div class="merch-list" id="merchList">
       <!-- Polera 1 -->
       <div class="merch-item">
         <h3>Lindsay Lohan White Tee</h3>
-        <img src="imagenes/polera.gif" alt="Polera 3D"
+        <img src="imagenes/polera.gif" loading="eager" alt="Polera 3D"
              class="merch-gif"
              onclick="openMerchDetail({
                title: 'Lindsay Lohan White Tee',
@@ -116,7 +116,7 @@
       <!-- Polera 2 -->
       <div class="merch-item">
         <h3>Lindsay Lohan Black Tee</h3>
-        <img src="imagenes/polera2.gif" alt="Essentials GIF"
+        <img src="imagenes/polera2.gif" loading="eager" alt="Essentials GIF"
              class="merch-gif"
              onclick="openMerchDetail({
                title: 'Lindsay Lohan Black Tee',
@@ -136,7 +136,7 @@
 
     <!-- Vista Detalles del Producto -->
     <div class="merch-detail-container" id="merchDetail" style="display:none;">
-      <img src="imagenes/back.png" alt="Back Icon" class="back-icon" onclick="handleRedButton('merchDetail')" />
+      <img src="imagenes/back.png" loading="eager" alt="Back Icon" class="back-icon" onclick="handleRedButton('merchDetail')" />
       <div class="merch-main-view">
         <img id="mainMerchImage" src="" alt="Vista Principal">
         <h3 id="merchTitle">Titulo</h3>
@@ -153,11 +153,10 @@
         <button>BUY</button>
       </div>
 
-      <div class="merch-thumbs" id="merchThumbs">
+      <div class="merch-thumbs" id="merchThumbs" loading="eager">
         <!-- Se insertan dinámicamente -->
       </div>
     </div>
-
   </div>
 </div>
 
@@ -165,19 +164,19 @@
 <div class="fullscreen-window" id="socialWindow">
   <div class="social-icons">
     <a href="https://www.youtube.com/@MERCICOLLECTIVE" target="_blank">
-      <img src="imagenes/youtube.png" alt="YouTube">
+      <img src="imagenes/youtube.png" loading="eager" alt="YouTube">
     </a>
     <a href="https://www.instagram.com/merci_______________________/" target="_blank">
-      <img src="imagenes/instagram.png" alt="Instagram">
+      <img src="imagenes/instagram.png" loading="eager" alt="Instagram">
     </a>
     <a href="https://soundcloud.com/merci-collective" target="_blank">
-      <img src="imagenes/soundcloud.png" alt="Soundcloud">
+      <img src="imagenes/soundcloud.png" loading="eager" alt="Soundcloud">
     </a>
   </div>
 </div>
 
 <div class="disk" id="icon-close-safari" onclick="closeSocialWindow()">
-  <img src="imagenes/hddmerci.png" alt="Cerrar Safari" />
+  <img src="imagenes/hddmerci.png" loading="eager" alt="Cerrar Safari" />
 </div>
 
 
@@ -223,6 +222,8 @@
 
     <!-- Controles superiores -->
     <div class="itunes-top-controls">
+        <div class="itunes-visualizer">
+        <canvas id="visualizerCanvas" width="150" height="40"></canvas>
       <div class="itunes-player-controls">
         <button class="itunes-btn prev">⏮</button>
         <button class="itunes-btn play">▶️</button>
@@ -230,8 +231,6 @@
 
         <div class="itunes-time-volume">
             <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
-          <div class="itunes-visualizer">
-            <canvas id="visualizerCanvas" width="150" height="40"></canvas>
           </div>
         </div>
       </div>
@@ -299,8 +298,8 @@
       <span>🔊</span>
       <div class="volume-slider"></div>
     </div>
-    <div class="track-info">
-<img src="imagenes/MERCI.png">
+    <div class="track-info" loading="eager">
+<img src="imagenes/MERCI.png ">
     </div>
     <input type="text" class="search-box" placeholder="Search">
   </div>
@@ -512,26 +511,49 @@ function createAccount() {
 
 //------------------------------------------ FUNCION ABRIR Y CERRAR VENTANAS -----------------------------------------//
 
+// Función para detectar si es dispositivo móvil
+function isMobileDevice() {
+  return window.innerWidth <= 768;
+}
+
+// Variable para rastrear ventanas abiertas en móviles
+let openWindowsOnMobile = new Set();
+
+
+// FUNCION ABRIR VENTANAS
 function openWindow(id) {
   const el = document.getElementById(id);
   if (!el) return;
-  // Si estamos en móviles y la ventana ya está abierta, no volver a abrirla
-  if (window.innerWidth <= 480 && el.classList.contains('show')) {
-    return; // No hacer nada
+
+  // FUNCIONES PARA CELULARES - Forzar display para móviles
+  if (isMobileDevice() && getComputedStyle(el).display === 'none') {
+    el.style.display = 'flex';
   }
 
-  // Si estamos en móviles, abrir centrado sin posición aleatoria
-  if (window.innerWidth <= 480) {
+  if (isMobileDevice()) {
+    // 3. Prevenir que se abra si ya está abierta
+    if (openWindowsOnMobile.has(id)) {
+      return; // No hacer nada si ya está abierta
+    }
+
+   // 1. Quitar posición aleatoria - 2. Centrar siempre
     el.style.left = '50%';
     el.style.top = '50%';
     el.style.transform = 'translate(-50%, -50%)';
     el.style.display = 'flex';
-
+    if (id === 'contact') {
+      document.getElementById('icon-close-contact').style.display = 'flex';
+    }
+    
+    // Agregar a ventanas abiertas
+    openWindowsOnMobile.add(id);
+    
     setTimeout(() => el.classList.add('show'), 10);
     bringToFront(el);
     return;
   }
 
+  // LOGICA PARA COMPUTADORES
   if (id === 'contact') {
     const icon = document.getElementById('icon-contact');
     const iconRect = icon.getBoundingClientRect();
@@ -593,6 +615,7 @@ function openWindow(id) {
   }
 }
 
+// FUNCION TRAER AL FRENTE VENTANAS
 function bringToFront(el) {
   // Aumentar z-index progresivamente
   const allWindows = document.querySelectorAll(".mac-window, .genie-window");
@@ -606,8 +629,24 @@ function bringToFront(el) {
   el.style.zIndex = maxZ + 1;
 }
 
+
+// FUNCION CERRAR VENTANAS 
 function closeWindow(id) {
   const el = document.getElementById(id);
+
+  // CAMBIOS PARA MÓVILES
+  if (isMobileDevice()) {
+    // Remover de ventanas abiertas
+    openWindowsOnMobile.delete(id);
+    if (id === 'contact') {
+      document.getElementById('icon-close-contact').style.display = 'none';
+    }
+    el.classList.remove('show');
+    setTimeout(() => {
+      el.style.display = 'none';
+    }, 300);
+    return;
+  }
 
   if (id === 'contact') {
     const icon = document.getElementById('icon-contact');
@@ -639,6 +678,22 @@ function closeWindow(id) {
   }
 }
 
+// Función para limpiar ventanas abiertas en móviles al cambiar orientación
+function handleOrientationChange() {
+  if (isMobileDevice()) {
+    // Recentrar todas las ventanas abiertas
+    openWindowsOnMobile.forEach(windowId => {
+      const el = document.getElementById(windowId);
+      if (el && el.style.display === 'flex') {
+        el.style.left = '50%';
+        el.style.top = '50%';
+        el.style.transform = 'translate(-50%, -50%)';
+      }
+    });
+  }
+}
+
+// ARRASTRAR VENTANAS
 document.querySelectorAll('.mac-window').forEach(win => {
   const header = win.querySelector('.mac-window-header');
   let isDragging = false;
@@ -698,25 +753,48 @@ function openLink(url) {
   window.open(url, '_blank');
 }
 
+// Función para manejar el redimensionamiento de ventana
+function handleResize() {
+  // Si cambió de móvil a desktop o viceversa, limpiar estado
+  const wasMobile = openWindowsOnMobile.size > 0;
+  const isMobileNow = isMobileDevice();
+  
+  if (wasMobile && !isMobileNow) {
+    // Cambió de móvil a desktop, limpiar estado móvil
+    openWindowsOnMobile.clear();
+  }
+  
+  // Recentrar ventanas en móviles
+  handleOrientationChange();
+}
+
+// Event listeners para manejar cambios de orientación y redimensionamiento
+window.addEventListener('orientationchange', handleOrientationChange);
+window.addEventListener('resize', handleResize);
+
 
 //---------------------------------------- DETALLES DEL MERCH ----------------------------------------//
+
 function changeMainImage(src) {
   const mainImage = document.getElementById("mainMerchImage");
   mainImage.src = "imagenes/" + src;
 }
 
 function handleRedButton() {
-  // Si estamos en la vista de detalles, volver a la lista
   const detailView = document.getElementById("merchDetail");
-  if (detailView.style.display === "flex") {
+
+  // Verificamos si está visible, aunque sea inline
+  const isDetailVisible = window.getComputedStyle(detailView).display !== "none";
+
+  if (isDetailVisible) {
     showMerchList();
   } else {
-    // Si estamos en la lista principal, cerrar la ventana
     closeWindow('merch');
   }
 }
 
 function showMerchList() {
+
   // Mostrar lista de productos y ocultar detalles
   document.getElementById("merchDetail").style.display = "none";
   document.getElementById("merchList").style.display = "flex";
@@ -737,6 +815,11 @@ function openSocialWindow() {
     win.style.display = 'none';
   });
 
+  // CAMBIOS PARA MÓVILES
+  if (isMobileDevice()) {
+    openWindowsOnMobile.add('socialWindow');
+  }
+
   // Cambiar fondo
   document.body.dataset.originalBg = document.body.style.backgroundImage;
   document.body.style.backgroundImage = "url('imagenes/socialmedia.jpg')";
@@ -747,13 +830,24 @@ function openSocialWindow() {
   document.getElementById('icon-close-safari').style.display = 'flex';
 }
 
+
 function closeSocialWindow() {
   const social = document.getElementById("socialWindow");
+
+  // CAMBIOS PARA MÓVILES
+  if (isMobileDevice()) {
+    openWindowsOnMobile.delete('socialWindow');
+  }
+  social.classList.remove('show');
+  setTimeout(() => {
+    social.style.display = 'none';
+  }, 300);
 
   social.classList.remove('show');
   setTimeout(() => {
     social.style.display = 'none';
   }, 300);
+
 
   // Restaurar fondo original
   document.body.style.backgroundImage = document.body.dataset.originalBg || "";
@@ -905,6 +999,20 @@ function getShopifyProductID(title, size) {
 
 function showShoppingCart() {
   const cartWindow = document.getElementById("shoppingCart");
+
+  // CAMBIOS PARA MÓVILES
+  if (isMobileDevice()) {
+    if (openWindowsOnMobile.has('shoppingCart')) {
+      return; // No abrir si ya está abierta
+    }
+    openWindowsOnMobile.add('shoppingCart');
+    
+    // Centrar en móviles
+    cartWindow.style.left = '50%';
+    cartWindow.style.top = '50%';
+    cartWindow.style.transform = 'translate(-50%, -50%)';
+  }
+  
   cartWindow.style.display = "flex";
   setTimeout(() => cartWindow.classList.add("show"), 10);
   bringToFront(cartWindow);
@@ -1152,6 +1260,60 @@ updateVolumeBackground();
         document.getElementById('message').style.color = "red";
         }
     }
+
+
+//PRECARGAR VENTANAS GALERIA DE VIDEOS Y MERCH para que no demoren en abrir en celular.
+document.addEventListener("DOMContentLoaded", () => {
+  const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if (!isMobile) return;
+
+  const preloadWindows = ['gallery', 'merch'];
+
+   // 👇 NUEVO: Forzar display none para ciertas ventanas en móviles
+  if (isMobileDevice()) {
+    ['gallery', 'merch'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+  }
+
+
+  preloadWindows.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    // Mostrar de forma invisible para forzar el layout
+    el.style.position = 'absolute';
+    el.style.opacity = '0';
+    el.style.visibility = 'hidden';
+    el.style.display = 'block';
+
+    // Forzar reflow individual
+    el.offsetHeight;
+
+    // Restaurar estilos
+    el.style.display = 'none';
+    el.style.position = '';
+    el.style.opacity = '';
+    el.style.visibility = '';
+  });
+
+  // Precargar imágenes
+  const imgs = document.querySelectorAll('#gallery img, #merch img');
+  imgs.forEach(img => {
+    const preload = new Image();
+    preload.src = img.src;
+  });
+
+  // 🚨 Forzar reflow global con dummy element (mejora dispositivos lentos)
+  const dummy = document.createElement('div');
+  dummy.style.height = '1px';
+  document.body.appendChild(dummy);
+  dummy.offsetHeight; // Forzar reflow general
+  document.body.removeChild(dummy);
+
+  console.log("Precarga de ventanas + imágenes + reflow forzado completado.");
+});
 
   </script>
 </body>
