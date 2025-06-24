@@ -17,6 +17,12 @@ body {
   cursor: grabbing;
 }
 
+.mac-window.dark,
+.mac-window-content.dark-detail {
+  background-color: #000;
+  color: white;
+}
+
 .desktop {
   display: flex;
   flex-direction: column;
@@ -368,31 +374,291 @@ body {
 }
 
 /*----------------------- VENTANA GALERIA DE VIDEOS ------------------*/
-
-#gallery.mac-window {
-  width: 500px;
-  height: 700px;
-  max-width: 95%;
-  max-height: 90%;
-  display: flex;
-}
-
-.video-container {
-  margin-top: 10px;
+/* Ventana principal adaptada para iTunes */
+.mac-window#gallery {
+  width: 1200px;
+  height: 600px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+}
+/* Barra de controles de iTunes */
+.itunes-controls {
+  height: 60px;
+  background: linear-gradient(to bottom, #f0f0f0, #d8d8d8);
+  border-bottom: 1px solid #b8b8b8;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  gap: 15px;
 }
 
-.video-container iframe {
-  width: 470px;
+.playback-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.control-btn {
+  width: 20px;
+  height: 20px;
+  background: #c0c0c0;
+  border: 1px solid #999;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 10px;
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.volume-slider {
+  width: 100px;
+  height: 4px;
+  background: #ddd;
+  border-radius: 2px;
+}
+
+.track-info {
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+  color: #333;
+}
+
+.search-box {
+  width: 150px;
+  height: 22px;
+  border: 1px solid #999;
+  border-radius: 12px;
+  padding: 0 10px;
+  font-size: 11px;
+}
+
+/* Layout principal con sidebar */
+.itunes-main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Área de contenido principal */
+.itunes-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f8f8f8;
+}
+
+/* Cover Flow adaptado de tu código */
+.gallery-coverflow {
   height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom, #000, #333);
+  border-bottom: 1px solid #999;
+  position: relative;
 }
 
-.mac-window.dark,
-.mac-window-content.dark-detail {
-  background-color: #000;
+.coverflow-container {
+  perspective: 1000px;
+  overflow: hidden;
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.coverflow-track {
+  display: flex;
+  gap: 60px;
+  align-items: center;
+  transition: transform 0.5s ease;
+  transform-style: preserve-3d;
+}
+
+.coverflow-item {
+  flex: 0 0 240px;
+  transform: rotateY(0deg) scale(1);
+  transition: all 0.5s ease;
+  opacity: 0.6;
+  position: relative;
+  cursor: pointer;
+}
+
+.coverflow-item.center {
+  transform: rotateY(0deg) scale(1.2) translateZ(50px);
+  opacity: 1;
+  z-index: 3;
+}
+
+.coverflow-item.left {
+  transform: rotateY(45deg) scale(0.85) translateZ(0px);
+  opacity: 0.5;
+  z-index: 1;
+}
+
+.coverflow-item.right {
+  transform: rotateY(-45deg) scale(0.85) translateZ(0px);
+  opacity: 0.5;
+  z-index: 1;
+}
+
+.coverflow-item.far-left {
+  transform: rotateY(55deg) scale(0.7) translateZ(-50px);
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.coverflow-item.far-right {
+  transform: rotateY(-55deg) scale(0.7) translateZ(-50px);
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.coverflow-item iframe {
+  width: 100%;
+  height: 135px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+  pointer-events: none;
+}
+
+.coverflow-item.center iframe {
+  pointer-events: auto;
+}
+
+.reflection {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.1), transparent);
+  transform: scaleY(-1);
+  opacity: 0.3;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+/* Botones de navegación */
+.coverflow-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
   color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.3s ease;
+}
+
+.coverflow-nav:hover {
+  background: rgba(0,0,0,0.8);
+}
+
+.coverflow-nav.prev {
+  left: 20px;
+}
+
+.coverflow-nav.next {
+  right: 20px;
+}
+
+/* Lista de videos adaptada de tu código */
+.video-title-list {
+  flex: 1;
+  background: #fff;
+  overflow-y: auto;
+}
+
+.video-list-header {
+  height: 25px;
+  background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: bold;
+  color: #333;
+}
+
+.header-cell {
+  padding: 0 10px;
+  border-right: 1px solid #ddd;
+  flex: 1;
+}
+
+.header-cell.name { flex: 2; }
+.header-cell.time { flex: 0 0 60px; }
+.header-cell.artist { flex: 1.5; }
+.header-cell.album { flex: 1.5; }
+.header-cell.genre { flex: 1; }
+
+.video-list-content {
+  font-size: 12px;
+}
+
+.video-row {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+}
+
+.video-row:nth-child(even) {
+  background: #f8f8f8;
+}
+
+.video-row:hover {
+  background: #e8f0ff;
+}
+
+.video-row.selected {
+  background: #4080ff;
+  color: white;
+}
+
+.row-cell {
+  padding: 0 10px;
+  border-right: 1px solid #f0f0f0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.row-cell.name { flex: 2; }
+.row-cell.time { flex: 0 0 60px; text-align: right; }
+.row-cell.artist { flex: 1.5; }
+.row-cell.album { flex: 1.5; }
+.row-cell.genre { flex: 1; }
+
+/* Footer con estadísticas */
+.itunes-footer {
+  height: 20px;
+  background: linear-gradient(to bottom, #e8e8e8, #d0d0d0);
+  border-top: 1px solid #b8b8b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: #666;
 }
 
 /*========================================= VENTANA CONTACTO ======================================*/
@@ -797,7 +1063,6 @@ body {
 #merch{
 width: 700px;
   height: 600px;
-
 }
 
 .merch-content-column {
