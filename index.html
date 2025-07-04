@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MERCI</title>
   <script src="https://w.soundcloud.com/player/api.js"></script>
-  <link rel="stylesheet" href="styles.css?v=2.0.1">
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <link rel="stylesheet" href="styles.css?v=2.0.2">
 </head>
 <body>
 
@@ -317,15 +318,27 @@
         <div class="coverflow-container">
           <div class="coverflow-track" id="coverflowTrack">
             <div class="coverflow-item" onclick="selectVideo(0)">
-              <iframe src="https://www.youtube.com/embed/-xm6aOGkTjA?enablejsapi=1" ...></iframe>
+              <iframe src="https://www.youtube.com/embed/-xm6aOGkTjA?enablejsapi=1"... ></iframe>
               <div class="reflection"></div>
             </div>
             <div class="coverflow-item" onclick="selectVideo(1)">
-              <iframe src="https://www.youtube.com/embed/1YbWTZzX8Ms?enablejsapi=1" ...></iframe>
+              <iframe src="https://www.youtube.com/embed/1YbWTZzX8Ms?enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
               <div class="reflection"></div>
             </div>
             <div class="coverflow-item" onclick="selectVideo(2)">
-              <iframe src="https://www.youtube.com/embed/6XXHWUFK4DQ?enablejsapi=1" ...></iframe>
+              <iframe src="https://www.youtube.com/embed/6XXHWUFK4DQ?enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <div class="reflection"></div>
+            </div>
+            <div class="coverflow-item" onclick="selectVideo(3)">
+              <iframe src="https://www.youtube.com/embed/tQIP6Mkn8Jc?enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <div class="reflection"></div>
+            </div>
+            <div class="coverflow-item" onclick="selectVideo(4)">
+              <iframe src="https://www.youtube.com/embed/DJQ7g2m-id4?enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <div class="reflection"></div>
+            </div>
+            <div class="coverflow-item" onclick="selectVideo(5)">
+              <iframe src="https://www.youtube.com/embed/zV-gN9GJP3w?enablejsapi=1"></iframe>
               <div class="reflection"></div>
             </div>
           </div>
@@ -350,7 +363,7 @@
             <div class="row-cell artist">FaceBrooklyn</div>
             <div class="row-cell album">Hablando De Ti</div>
           </div>
-          <div class="video-row selected" onclick="selectVideoFromList(1)">
+          <div class="video-row" onclick="selectVideoFromList(1)">
             <div class="row-cell name">🎵 sssubelo</div>
             <div class="row-cell time">2:41</div>
             <div class="row-cell artist">FaceBrooklyn</div>
@@ -360,6 +373,24 @@
             <div class="row-cell name">🎵 NADIE TEKITA</div>
             <div class="row-cell time">3:36</div>
             <div class="row-cell artist">FaceBrooklyn ft. Easykid</div>
+            <div class="row-cell album">Hablando De Ti</div>
+          </div>
+          <div class="video-row" onclick="selectVideoFromList(3)">
+            <div class="row-cell name">🎵 FUGAZI</div>
+            <div class="row-cell time">3:34</div>
+            <div class="row-cell artist">FaceBrooklyn</div>
+            <div class="row-cell album">Hablando De Ti</div>
+          </div>
+          <div class="video-row" onclick="selectVideoFromList(4)">
+            <div class="row-cell name">🎵 DEYANDEL</div>
+            <div class="row-cell time">3:07</div>
+            <div class="row-cell artist">FaceBrooklyn</div>
+            <div class="row-cell album">Hablando De Ti</div>
+          </div>
+          <div class="video-row" onclick="selectVideoFromList(5)">
+            <div class="row-cell name">🎵 DIMON</div>
+            <div class="row-cell time">2:19</div>
+            <div class="row-cell artist">eialejo</div>
             <div class="row-cell album">Single</div>
           </div>
         </div>
@@ -420,6 +451,6 @@
 
 
 <!--------------------------------------------------------- JAVASCRIPT ---------------------------------------------------->
-<script src="script.js?v=2.0.1" defer></script>
+<script src="script.js?v=2.0.2" defer></script>
 </body>
 </html>
