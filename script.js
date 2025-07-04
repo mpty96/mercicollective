@@ -699,6 +699,12 @@ function updateCoverFlow() {
       item.classList.add('far-right');
     }
 
+    // 🔧 ACTUALIZA pointerEvents del iframe
+  const iframe = item.querySelector('iframe');
+  if (iframe) {
+    iframe.style.pointerEvents = index === currentVideoIndex ? 'auto' : 'none';
+  }
+
     // Ocultar los que están demasiado lejos
     if (Math.abs(index - currentVideoIndex) > 3) {
       item.style.opacity = "0";
@@ -710,9 +716,12 @@ function updateCoverFlow() {
   });
 
   // Centramos el video activo en pantalla desplazando el track
-  const itemWidth = 240 + 30; // 240px de ancho + 30px de gap
-  const offset = (items.length - 1) * itemWidth / 2 - currentVideoIndex * itemWidth;
-  track.style.transform = `translateX(${offset}px)`;
+const container = document.querySelector('.coverflow-container');
+const containerWidth = container.offsetWidth;
+const itemWidth = items[0].offsetWidth + 30; // usa tamaño real + gap
+
+const offset = containerWidth / 2 - itemWidth / 2 - currentVideoIndex * itemWidth;
+track.style.transform = `translateX(${offset}px)`;
 
   // Actualizar lista
   rows.forEach((row, index) => {
@@ -790,6 +799,102 @@ document.getElementById("galleryVolumeControl").addEventListener("input", functi
     }), "*");
   });
 });
+
+// Detectar dispositivo móvil
+function isMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+}
+
+// Variables para YouTube API
+let ytPlayers = [];
+let ytAPIReady = false;
+
+// Cargar YouTube API si estamos en móvil
+if (isMobile()) {
+  // Cargar YouTube API
+  if (!window.YT) {
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  }
+  
+  // Callback cuando la API está lista
+  window.onYouTubeIframeAPIReady = function() {
+    ytAPIReady = true;
+    initializeYouTubePlayers();
+  };
+}
+
+// Inicializar players de YouTube para móviles
+function initializeYouTubePlayers() {
+  if (!isMobile() || !ytAPIReady) return;
+  
+  const iframes = document.querySelectorAll('#gallery iframe');
+  ytPlayers = [];
+  
+  iframes.forEach((iframe, index) => {
+    // Extraer video ID del src
+    const src = iframe.src;
+    const videoId = src.match(/embed\/([^?]+)/)?.[1];
+    
+    if (videoId) {
+      const playerId = `youtube-player-${index}`;
+      iframe.id = playerId;
+      
+      // Crear player
+      const player = new YT.Player(playerId, {
+        videoId: videoId,
+        playerVars: {
+          enablejsapi: 1,
+          origin: window.location.origin
+        },
+        events: {
+          onReady: function(event) {
+            ytPlayers[index] = event.target;
+          }
+        }
+      });
+    }
+  });
+}
+
+// Control de volumen mejorado
+document.getElementById("galleryVolumeControl").addEventListener("input", function () {
+  const volume = parseInt(this.value);
+  
+  if (isMobile()) {
+    // Para móviles: usar YouTube API directamente
+    ytPlayers.forEach(player => {
+      if (player && player.setVolume) {
+        player.setVolume(volume);
+      }
+    });
+  } else {
+    // Para desktop: mantener el método original
+    const iframes = document.querySelectorAll("#gallery iframe");
+    iframes.forEach(iframe => {
+      iframe.contentWindow.postMessage(JSON.stringify({
+        event: "command",
+        func: "setVolume",
+        args: [volume]
+      }), "*");
+    });
+  }
+});
+
+// Reinicializar players cuando cambie el video activo en móvil
+const originalUpdateCoverFlow = updateCoverFlow;
+updateCoverFlow = function() {
+  originalUpdateCoverFlow();
+  
+  // Reinicializar players si es necesario
+  if (isMobile() && ytAPIReady) {
+    setTimeout(initializeYouTubePlayers, 100);
+  }
+};
+
+
 
 
 
@@ -989,3 +1094,5 @@ document.querySelectorAll('.login-input').forEach(input => {
     document.documentElement.scrollTop = 0;
   });
 });
+
+

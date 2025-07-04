@@ -526,7 +526,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
 }
 
 .coverflow-track {
@@ -539,7 +538,7 @@ body {
 }
 
 .coverflow-item {
-  flex: 20px 200px 240px;
+  flex: 0 0 auto;
   transform: rotateY(0deg) scale(1);
   transition: transform 0.5s ease, opacity 0.5s ease;
   opacity: 0.6;
@@ -625,13 +624,6 @@ body {
   right: 20px;
 }
 
-/* Lista de videos adaptada de tu código */
-.video-title-list {
-  flex: 1;
-  background: #fff;
-  overflow-y: auto;
-}
-
 .video-list-header {
   height: 25px;
   background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
@@ -641,6 +633,7 @@ body {
   font-size: 11px;
   font-weight: bold;
   color: #333;
+  flex: 1;
 }
 
 .header-cell {
@@ -653,7 +646,6 @@ body {
 .header-cell.time { flex: 0 0 60px; }
 .header-cell.artist { flex: 1.5; }
 .header-cell.album { flex: 1.5; }
-.header-cell.genre { flex: 1; }
 
 .video-list-content {
   font-size: 12px;
@@ -685,7 +677,6 @@ body {
   padding: 0 10px;
   border-right: 1px solid #f0f0f0;
   flex: 1;
-  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1939,125 +1930,312 @@ body {
     font-size: 20px;
   }
 
-  /*============================================= MOVIES =================================*/
+  /*============================================= MOVIES MOBILE OPTIMIZADO =================================*/
+
 #gallery.mac-window {
-    width: 100vw;
-    height: 87vh;
-    max-width: none;
-    max-height: none;
-  }
+  width: 98%;
+  height: 97%;
+  max-width: none;
+  max-height: none;
+  overflow: hidden;
+}
 
+/* Layout principal - mantener estructura vertical */
+.itunes-main {
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
 
-  .itunes-main {
-    flex-direction: column;
-    overflow: auto;
-  }
-
+/* Barra de controles optimizada */
 .itunes-controls {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    height: auto;
-    padding: 10px;
-    gap: 10px;
-    flex-wrap: nowrap;
-  }
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px; /* Altura fija para consistencia */
+  padding: 8px 15px;
+  gap: 15px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+}
 
-  .itunes-controls-left,
-  .itunes-controls-center,
-  .itunes-controls-right {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 0; /* permite que se adapten */
-  }
+.itunes-controls-left,
+.itunes-controls-center,
+.itunes-controls-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
 
-  .itunes-time-volume {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    margin-right: 30px;
-    gap: 5px;
-    flex: none;
-    width: auto;
-  }
+.itunes-controls-left {
+  justify-content: flex-start;
+}
 
-  .itunes-time-volume::before {
-    font-size: 18px;
-    margin-right: 1px;
-    margin-bottom: 0;
-    align-items: center;
-  }
+.itunes-controls-center {
+  justify-content: center;
+}
 
-  #galleryVolumeControl {
-    width: 80px;
-    height: 8px;
-  }
+.itunes-controls-right {
+  justify-content: flex-end;
+}
 
-  #mercimetalic {
-    height:60px
-  }
+.itunes-time-volume {
+display: flex;
+  align-items: center;
+  flex-direction: row;
+  margin-right: 30px;
+  gap: 5px;
+  flex: none;
+}
 
-  .search-box {
-    width: 100%;
-    max-width: 120px;
-    font-size: 12px;
-    height: 24px;
-    padding: 0 10px;
+#galleryVolumeControl {
+  width: 80px;
+  height: 6px;
+  flex-shrink: 0;
+}
+
+#mercimetalic {
+  height: 35px;
+  width: auto;
+}
+
+.search-box {
+  width: 100%;
+  max-width: 100px;
+  font-size: 12px;
+  height: 15px;
+  padding: 0 8px;
+  border-radius: 11px;
+}
+
+/* COVERFLOW OPTIMIZADO - La parte más importante */
+.gallery-coverflow {
+  height: 45vh; /* Altura fija para mejor control */
+  padding: 15px 0;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(to bottom, #000, #333);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.coverflow-container {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  perspective: 1200px; /* Aumentado para mejor efecto 3D */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* TRACK - Centrado perfecto */
+.coverflow-track {
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Suavizado mejorado */
+  gap: 34px;
+  transform-style: preserve-3d;
+  will-change: transform;
+  height: 100%;
+}
+
+/* ITEMS - Dimensiones y proporciones optimizadas */
+.coverflow-item {
+  flex: 0 0 75vw; /* Ligeramente más grande para mejor visualización */
+  max-width: 75vw;
+  height: auto;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+              opacity 0.6s ease,
+              filter 0.6s ease;
+  transform-origin: center center;
+  position: relative;
+  cursor: pointer;
+}
+
+/* IFRAMES - Proporciones exactas 16:9 */
+.coverflow-item iframe {
+  width: 100%;
+  height: calc(75vw * 9 / 16); /* Proporción 16:9 perfecta */
+  border-radius: 12px;
+  border: 2px solid rgba(255,255,255,0.1);
+  box-shadow: 
+    0 15px 35px rgba(0,0,0,0.5),
+    0 8px 15px rgba(0,0,0,0.3);
+  pointer-events: none;
+  transition: box-shadow 0.3s ease;
+}
+
+/* ESTADOS DEL COVERFLOW - Efectos 3D mejorados */
+.coverflow-item.center {
+  transform: scale(1.05) translateZ(50px);
+  opacity: 1;
+  z-index: 5;
+  filter: brightness(1.1);
+}
+
+.coverflow-item.center iframe {
+  pointer-events: auto;
+  border-color: rgba(255,255,255,0.3);
+  box-shadow: 
+    0 20px 40px rgba(0,0,0,0.6),
+    0 10px 20px rgba(0,0,0,0.4);
+}
+
+.coverflow-item.left {
+  transform: rotateY(25deg) scale(0.9) translateZ(-20px);
+  opacity: 0.8;
+  z-index: 3;
+  filter: brightness(0.8);
+}
+
+.coverflow-item.right {
+  transform: rotateY(-25deg) scale(0.9) translateZ(-20px);
+  opacity: 0.8;
+  z-index: 3;
+  filter: brightness(0.8);
+}
+
+.coverflow-item.far-left,
+.coverflow-item.far-right {
+  transform: scale(0.75) translateZ(-40px);
+  opacity: 0.5;
+  z-index: 1;
+  filter: brightness(0.6);
+}
+
+/* REFLECTIONS - Mejorados */
+.reflection {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background: linear-gradient(to bottom, 
+    rgba(255,255,255,0.1) 0%, 
+    rgba(255,255,255,0.05) 30%, 
+    transparent 100%);
+  transform: scaleY(-1);
+  opacity: 0.4;
+  border-radius: 0 0 12px 12px;
+  pointer-events: none;
+}
+
+.coverflow-item.center .reflection {
+  opacity: 0.6;
+}
+
+/* BOTONES DE NAVEGACIÓN - Optimizados para touch */
+.coverflow-nav {
+  width: 45px;
+  height: 45px;
+  font-size: 24px;
+  font-weight: bold;
+  touch-action: manipulation;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.2);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.coverflow-nav:hover,
+.coverflow-nav:active {
+  background: rgba(0,0,0,0.8);
+  border-color: rgba(255,255,255,0.4);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.coverflow-nav.prev {
+  left: 15px;
+}
+
+.coverflow-nav.next {
+  right: 15px;
+}
+
+/* Lista de videos debajo */
+.video-title-list {
+  background: #fff;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Corrección 4: alineación perfecta con corte de texto */
+.video-list-header, .video-row {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.header-cell, .row-cell {
+  flex: 1;
+  padding: 0 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Ajustar proporciones específicas */
+.header-cell.name, .row-cell.name {
+  flex: 2;
+}
+.header-cell.time, .row-cell.time {
+  flex: 0 0 50px;
+  text-align: right;
+}
+.header-cell.artist, .row-cell.artist {
+  flex: 1.5;
+}
+.header-cell.album, .row-cell.album {
+  flex: 1.5;
+}
+
+/* FOOTER */
+.itunes-footer {
+  font-size: 10px;
+  text-align: center;
+  padding: 8px 0;
+  background: linear-gradient(to bottom, #e8e8e8, #d0d0d0);
+  border-top: 1px solid #b8b8b8;
+  flex-shrink: 0;
+}
+
+/* MEJORAS DE RENDIMIENTO */
+.coverflow-item iframe {
+  transform: translateZ(0); /* Forzar aceleración de hardware */
+  }
+}
+
+/* OPTIMIZACIONES PARA DISPOSITIVOS TÁCTILES */
+@media (hover: none) and (pointer: coarse) {
+  .coverflow-nav:hover {
+    background: rgba(0,0,0,0.6);
+    border-color: rgba(255,255,255,0.2);
+    transform: translateY(-50%) scale(1);
   }
   
-  .gallery-coverflow {
-    height: auto;
-    padding: 10px;
+  .video-row:hover {
+    background: inherit;
   }
-
-  .coverflow-container {
-    overflow-x: hidden;
-    padding: 0 50px;
-  }
-
-  .coverflow-track {
-    flex-direction: row;
-    gap: 10px;
-    padding: 10px 0;
-  }
-
-  .coverflow-item {
-    width: 70vw;
-    max-width: 300px;
-  }
-
-  .coverflow-item.left {
-    transform: rotateY(20deg) scale(0.85);
-  }
-
-  .coverflow-item.right {
-    transform: rotateY(-20deg) scale(0.85);
-  }
-
-  .coverflow-item iframe {
-    width: 100%;
-    height: calc(60vw * 9 / 16);
-  }
-
-.coverflow-nav {
-    width: 40px;
-    height: 40px;
-    font-size: 30px;
-    line-height: 0;
-    touch-action: manipulation;
-    display: center;
-  }
-
-  .coverflow-nav::before {
-    content: "";
-    position: absolute;
-    inset: -10px;
-    background: transparent;
-  }
-
 }
+
+
 
 @media screen and (max-width: 340px) {
   .itunes-controls {
