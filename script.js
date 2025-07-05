@@ -1,15 +1,18 @@
-  window.addEventListener('DOMContentLoaded', () => {
-    audioPlayer(); // <- llamada a tu función
-  });
+window.addEventListener('DOMContentLoaded', () => {
+  audioPlayer();
+});
 
-function audioPlayer(){
-const audio = document.getElementById('audioPlayer');
-const canvas = document.getElementById('visualizerCanvas');
-const ctx = canvas.getContext('2d');
-const volumeSlider = document.getElementById('volumeControl');
+function audioPlayer() {
+  const audio = document.getElementById('audioPlayer');
+  const canvas = document.getElementById('visualizerCanvas');
+  const ctx = canvas.getContext('2d');
+  const volumeSlider = document.getElementById('volumeControl');
 
   const barCount = 32;
   let isPlaying = false;
+
+  let scWidget1 = null;
+  let scWidget2 = null;
 
   function drawSimulator() {
     requestAnimationFrame(drawSimulator);
@@ -18,23 +21,16 @@ const volumeSlider = document.getElementById('volumeControl');
     const barWidth = canvas.width / barCount;
 
     for (let i = 0; i < barCount; i++) {
-      let barHeight = isPlaying
-        ? Math.random() * canvas.height
-        : 4; // altura mínima cuando está quieto
-
+      const barHeight = isPlaying ? Math.random() * canvas.height : 4;
       ctx.fillStyle = '#a75ed4';
       ctx.fillRect(i * barWidth, canvas.height - barHeight, barWidth - 2, barHeight);
     }
   }
-  drawSimulator();
 
-  // ✅ SOLO UNA VEZ
-  const scWidget1 = SC.Widget(document.getElementById('sc-player-1'));
-  const scWidget2 = SC.Widget(document.getElementById('sc-player-2'));
+  drawSimulator();
 
   function setupWidget(widget) {
     widget.bind(SC.Widget.Events.READY, () => {
-      // Inicializa el volumen al valor actual del slider
       const initialVolume = parseFloat(volumeSlider.value) * 100;
       widget.setVolume(initialVolume);
     });
@@ -52,35 +48,40 @@ const volumeSlider = document.getElementById('volumeControl');
     });
   }
 
-  setupWidget(scWidget1);
-  setupWidget(scWidget2);
+  // Esperar a que los iframes estén completamente cargados
+  const iframe1 = document.getElementById('sc-player-1');
+  const iframe2 = document.getElementById('sc-player-2');
 
-  if (volumeSlider) {
-    // Inicializar volumen del audio
-    audio.volume = parseFloat(volumeSlider.value);
+  iframe1.addEventListener('load', () => {
+    scWidget1 = SC.Widget(iframe1);
+    setupWidget(scWidget1);
+  });
 
-    volumeSlider.addEventListener('input', () => {
-      const volume = parseFloat(volumeSlider.value);
+  iframe2.addEventListener('load', () => {
+    scWidget2 = SC.Widget(iframe2);
+    setupWidget(scWidget2);
+  });
 
-      // HTML audio
-      audio.volume = volume;
+  // Control de volumen para HTML audio y SoundCloud
+  function updateVolumeAll() {
+    const volume = parseFloat(volumeSlider.value);
+    audio.volume = volume;
 
-      // ✅ SOUND CLOUD
-      scWidget1.setVolume(volume * 100);
-      scWidget2.setVolume(volume * 100);
+    if (scWidget1) scWidget1.setVolume(volume * 100);
+    if (scWidget2) scWidget2.setVolume(volume * 100);
 
-      updateVolumeBackground();
-    });
-
-    updateVolumeBackground();
-  }
-
-  function updateVolumeBackground() {
-    const val = parseFloat(volumeSlider.value);
-    const percent = val * 100;
+    const percent = volume * 100;
     volumeSlider.style.background = `linear-gradient(to right, #4a72c8 0%, #4a72c8 ${percent}%, #ffffff ${percent}%, #ffffff 100%)`;
   }
+
+  // Inicializar el volumen y los eventos
+  if (volumeSlider) {
+    volumeSlider.addEventListener('input', updateVolumeAll);
+    updateVolumeAll();
+  }
 }
+
+
 
 //-------------------------------------- FECHA Y HORA --------------------------------------//
 
@@ -641,7 +642,7 @@ function precargarImagenesMerch() {
 
   imagenes.forEach(src => {
     const img = new Image();
-    i.src = 'imagenes/' + src;
+    src = 'imagenes/' + src;
     img.onload = () => console.log(`Imagen precargada: ${src}`);
   });
 }
@@ -678,52 +679,162 @@ function getVideosFromHTML() {
 // Cargar videos automáticamente del HTML
 const videos = getVideosFromHTML();
 
-// Actualizar estado del coverflow visualmente
+// Función para obtener el índice circular
+function getCircularIndex(index) {
+  const length = videos.length;
+  return ((index % length) + length) % length;
+}
+
+// Variable para rastrear el índice virtual actual
+let currentVirtualIndex = 0;
+
+// Crear elementos virtuales para el efecto infinito
+function createInfiniteItems() {
+  const track = document.getElementById('coverflowTrack');
+  const originalItems = Array.from(track.children);
+  
+  // Usa esto:
+while (track.firstChild) {
+  track.removeChild(track.firstChild);
+}
+  
+  // Crear un array extendido con copias para el efecto infinito
+  const copiesPerSide = 2; // 2 copias completas a cada lado
+  const extendedItems = [];
+  
+  // Copias del final al principio (para navegar hacia la izquierda)
+  for (let copy = 0; copy < copiesPerSide; copy++) {
+    for (let i = 0; i < videos.length; i++) {
+      const originalIndex = i;
+      const clonedItem = originalItems[originalIndex].cloneNode(true);
+      clonedItem.dataset.originalIndex = originalIndex;
+      clonedItem.dataset.isClone = 'true';
+      extendedItems.push(clonedItem);
+    }
+  }
+  
+  // Elementos originales (centro)
+  for (let i = 0; i < originalItems.length; i++) {
+    const item = originalItems[i];
+    item.dataset.originalIndex = i;
+    item.dataset.isClone = 'false';
+    extendedItems.push(item);
+  }
+  
+  // Copias del principio al final (para navegar hacia la derecha)
+  for (let copy = 0; copy < copiesPerSide; copy++) {
+    for (let i = 0; i < videos.length; i++) {
+      const originalIndex = i;
+      const clonedItem = originalItems[originalIndex].cloneNode(true);
+      clonedItem.dataset.originalIndex = originalIndex;
+      clonedItem.dataset.isClone = 'true';
+      extendedItems.push(clonedItem);
+    }
+  }
+  
+  // Añadir todos los elementos al track
+  extendedItems.forEach((item, index) => {
+    item.dataset.virtualIndex = index;
+    track.appendChild(item);
+  });
+  
+  // Actualizar los event listeners de los elementos clonados
+  extendedItems.forEach(item => {
+    const originalIndex = parseInt(item.dataset.originalIndex);
+    item.onclick = () => {
+  const itemVirtualIndex = parseInt(item.dataset.virtualIndex);
+  const diff = itemVirtualIndex - currentVirtualIndex;
+
+  if (diff === -1) {
+    moveCoverflow(-1); // mover izquierda
+  } else if (diff === 1) {
+    moveCoverflow(1); // mover derecha
+  } else {
+    selectVideo(originalIndex); // selección directa
+  }
+};
+  });
+  
+  // Establecer el índice virtual inicial (empezar en la sección original)
+  currentVirtualIndex = copiesPerSide * videos.length + currentVideoIndex;
+  
+  return extendedItems;
+}
+
+// Actualizar estado del coverflow visualmente con lógica infinita
 function updateCoverFlow() {
-  const items = document.querySelectorAll('.coverflow-item');
+  const allItems = document.querySelectorAll('.coverflow-item');
   const track = document.getElementById('coverflowTrack');
   const rows = document.querySelectorAll('.video-row');
 
-  items.forEach((item, index) => {
+  const copiesPerSide = 2;
+  const totalVideos = videos.length;
+  const totalItems = allItems.length;
+
+  const container = document.querySelector('.coverflow-container');
+  const containerWidth = container.offsetWidth;
+  const itemWidth = allItems[0] ? allItems[0].offsetWidth + 30 : 200;
+
+  let offset = containerWidth / 2 - itemWidth / 2 - currentVirtualIndex * itemWidth;
+
+  // Verificar si debemos reubicar virtualmente al centro (sin animación)
+  let repositioned = false;
+  if (currentVirtualIndex < copiesPerSide || currentVirtualIndex >= totalItems - copiesPerSide) {
+    // Reposicionar al centro
+    const originalIndex = parseInt(allItems[currentVirtualIndex].dataset.originalIndex);
+
+    // ❌ TEMPORALMENTE quitar transición
+    track.style.transition = 'none';
+
+    currentVirtualIndex = copiesPerSide * totalVideos + originalIndex;
+    offset = containerWidth / 2 - itemWidth / 2 - currentVirtualIndex * itemWidth;
+    repositioned = true;
+  }
+
+  // Aplicar transformación del carrusel
+  track.style.transform = `translateX(${offset}px)`;
+  
+
+  // ✅ Restaurar transición luego de un frame si se reposicionó
+  if (repositioned) {
+    requestAnimationFrame(() => {
+      track.style.transition = 'transform 0.5s ease';
+    });
+  }
+
+  allItems.forEach((item, virtualIndex) => {
     item.className = 'coverflow-item';
 
-    if (index === currentVideoIndex) {
+    const relativePosition = virtualIndex - currentVirtualIndex;
+
+    if (relativePosition === 0) {
       item.classList.add('center');
-    } else if (index === currentVideoIndex - 1) {
+    } else if (relativePosition === -1) {
       item.classList.add('left');
-    } else if (index === currentVideoIndex + 1) {
+    } else if (relativePosition === 1) {
       item.classList.add('right');
-    } else if (index < currentVideoIndex - 1) {
+    } else if (relativePosition < -1) {
       item.classList.add('far-left');
-    } else if (index > currentVideoIndex + 1) {
+    } else if (relativePosition > 1) {
       item.classList.add('far-right');
     }
 
-    // 🔧 ACTUALIZA pointerEvents del iframe
-  const iframe = item.querySelector('iframe');
-  if (iframe) {
-    iframe.style.pointerEvents = index === currentVideoIndex ? 'auto' : 'none';
-  }
+    const iframe = item.querySelector('iframe');
+    if (iframe) {
+      iframe.style.pointerEvents = relativePosition === 0 ? 'auto' : 'none';
+    }
 
-    // Ocultar los que están demasiado lejos
-    if (Math.abs(index - currentVideoIndex) > 3) {
+    const absDistance = Math.abs(relativePosition);
+    if (absDistance > 3) {
       item.style.opacity = "0";
       item.style.pointerEvents = "none";
     } else {
-      item.style.opacity = "1";
+      item.style.opacity = absDistance === 0 ? "1" : "0.6";
       item.style.pointerEvents = "auto";
     }
   });
 
-  // Centramos el video activo en pantalla desplazando el track
-const container = document.querySelector('.coverflow-container');
-const containerWidth = container.offsetWidth;
-const itemWidth = items[0].offsetWidth + 30; // usa tamaño real + gap
-
-const offset = containerWidth / 2 - itemWidth / 2 - currentVideoIndex * itemWidth;
-track.style.transform = `translateX(${offset}px)`;
-
-  // Actualizar lista
+  // Actualizar fila seleccionada
   rows.forEach((row, index) => {
     row.classList.toggle('selected', index === currentVideoIndex);
   });
@@ -746,13 +857,15 @@ function updateTrackInfo() {
   }
 }
 
-// Cambiar de video hacia izquierda o derecha
+// Cambiar de video hacia izquierda o derecha con lógica infinita
 function moveCoverflow(direction) {
-  const items = document.querySelectorAll('.coverflow-item');
-  currentVideoIndex += direction;
-
-  if (currentVideoIndex < 0) currentVideoIndex = 0;
-  if (currentVideoIndex >= items.length) currentVideoIndex = items.length - 1;
+  if (direction > 0) {
+    currentVirtualIndex++;
+    currentVideoIndex = getCircularIndex(currentVideoIndex + 1);
+  } else {
+    currentVirtualIndex--;
+    currentVideoIndex = getCircularIndex(currentVideoIndex - 1);
+  }
 
   updateCoverFlow();
 }
@@ -761,11 +874,52 @@ function moveCoverflow(direction) {
 function selectVideo(index) {
   if (index >= 0 && index < videos.length) {
     currentVideoIndex = index;
+    
+    // Encontrar el índice virtual correspondiente más cercano al centro
+    const allItems = document.querySelectorAll('.coverflow-item');
+    const copiesPerSide = 2;
+    const totalVideos = videos.length;
+    
+    // Preferir la sección central (elementos originales)
+    const preferredVirtualIndex = copiesPerSide * totalVideos + index;
+    
+    // Verificar si existe ese índice virtual
+    if (preferredVirtualIndex < allItems.length) {
+      currentVirtualIndex = preferredVirtualIndex;
+    } else {
+      // Buscar cualquier elemento con el índice original correcto
+      for (let i = 0; i < allItems.length; i++) {
+        const originalIndex = parseInt(allItems[i].dataset.originalIndex);
+        if (originalIndex === index) {
+          currentVirtualIndex = i;
+          break;
+        }
+      }
+    }
+    
     updateCoverFlow();
   }
 }
 
 function selectVideoFromList(index) {
+  const total = videos.length;
+
+  // Si el índice es el mismo, no hacer nada
+  if (index === currentVideoIndex) return;
+
+  // Caso especial: de último (5) al primero (0)
+  if (currentVideoIndex === total - 1 && index === 0) {
+    moveCoverflow(1); // hacia la derecha
+    return;
+  }
+
+  // Caso especial: de primero (0) al último (5)
+  if (currentVideoIndex === 0 && index === total - 1) {
+    moveCoverflow(-1); // hacia la izquierda
+    return;
+  }
+
+  // Para cualquier otro caso, selección directa
   selectVideo(index);
 }
 
@@ -779,12 +933,21 @@ document.addEventListener('keydown', function(e) {
 function refreshVideoData() {
   const updatedVideos = getVideosFromHTML();
   videos.splice(0, videos.length, ...updatedVideos);
+  createInfiniteItems();
+  updateCoverFlow();
+}
+
+// Inicializar cuando la página esté lista
+function initializeCoverflow() {
+  createInfiniteItems();
   updateCoverFlow();
 }
 
 // Si ya está cargado
 if (document.readyState !== 'loading') {
-  updateCoverFlow();
+  initializeCoverflow();
+} else {
+  document.addEventListener('DOMContentLoaded', initializeCoverflow);
 }
 
 // Control de volumen para iframes de YouTube (Movies)
@@ -800,7 +963,7 @@ document.getElementById("galleryVolumeControl").addEventListener("input", functi
   });
 });
 
-// Detectar dispositivo móvil
+//------------------------------------------------ Detectar dispositivo móvil ------------------------------------------//
 function isMobile() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
 }
@@ -883,6 +1046,37 @@ document.getElementById("galleryVolumeControl").addEventListener("input", functi
   }
 });
 
+// Soporte para gestos táctiles en móviles
+let touchStartX = 0;
+let touchEndX = 0;
+
+// Detectar inicio del toque
+document.addEventListener('touchstart', function(e) {
+  touchStartX = e.changedTouches[0].screenX;
+});
+
+// Detectar fin del toque
+document.addEventListener('touchend', function(e) {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipe();
+});
+
+// Manejar el gesto de deslizar
+function handleSwipe() {
+  const swipeThreshold = 50; // Distancia mínima para considerar un swipe
+  const swipeDistance = touchEndX - touchStartX;
+  
+  if (Math.abs(swipeDistance) > swipeThreshold) {
+    if (swipeDistance > 0) {
+      // Swipe hacia la derecha - ir al video anterior
+      moveCoverflow(-1);
+    } else {
+      // Swipe hacia la izquierda - ir al video siguiente
+      moveCoverflow(1);
+    }
+  }
+}
+
 // Reinicializar players cuando cambie el video activo en móvil
 const originalUpdateCoverFlow = updateCoverFlow;
 updateCoverFlow = function() {
@@ -920,51 +1114,11 @@ updateCoverFlow = function() {
 }
 
 //----------------------------------------- VOLUMEN SOUNDCLOUD ---------------------------------------//
-const iframes = [
-    SC.Widget(document.getElementById('sc-player-1')),
-    SC.Widget(document.getElementById('sc-player-2'))
-]
-
-  const volumeSlider = document.getElementById("volumeControl");
   
-  iframes.forEach(widget => {
-    widget.bind(SC.Widget.Events.READY, function () {
-      volumeSlider.addEventListener("input", () => {
-        const volume = parseFloat(volumeSlider.value);
-        widget.setVolume(volume * 100);
-      });
-    });
-  });
 
-if (volumeSlider) {
-    const audio = document.getElementById('audioPlayer');
-    // Inicializar volumen del audio
-    audio.volume = parseFloat(volumeSlider.value);
 
-    volumeSlider.addEventListener('input', () => {
-      const volume = parseFloat(volumeSlider.value);
 
-      // HTML audio
-      audio.volume = volume;
 
-      // ✅ SOUND CLOUD
-      scWidget1.setVolume(volume * 100);
-      scWidget2.setVolume(volume * 100);
-
-      updateVolumeBackground();
-    });
-
-    updateVolumeBackground();
-  }
-
-function updateVolumeBackground() {
-    const val = parseFloat(volumeSlider.value);
-    const percent = val * 100;
-    volumeSlider.style.background = `linear-gradient(to right, #4a72c8 0%, #4a72c8 ${percent}%, #ffffff ${percent}%, #ffffff 100%)`;
-  }
-
-volumeSlider.addEventListener("input", updateVolumeBackground);
-updateVolumeBackground();
 
 
   
@@ -1053,18 +1207,6 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("Precarga de ventanas + imágenes + reflow forzado completado.");
 });
 
-// Evita clics en iframes ocultos
-document.addEventListener("DOMContentLoaded", () => {
-  const allWindows = document.querySelectorAll(".mac-window, .itunes-window");
-
-  allWindows.forEach(win => {
-    const iframes = win.querySelectorAll("iframe");
-    iframes.forEach(iframe => {
-      iframe.dataset.originalPointerEvents = iframe.style.pointerEvents || "auto";
-      iframe.style.pointerEvents = "none"; // Desactivado al inicio
-    });
-  });
-});
 
 function activateAppleLockdown() {
   const menu = document.getElementById('appleMenu');
@@ -1085,13 +1227,64 @@ if (document.readyState === 'loading') {
 }
 
 
-// Detecta pérdida de foco en el input (cuando se oculta el teclado)
+// Detecta pérdida de foco en el input (cuando se oculta el teclado en dispositivos moviles)
 document.querySelectorAll('.login-input').forEach(input => {
   input.addEventListener('blur', () => {
     // Restaura scroll al top para evitar recorte visual
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
+  });
+});
+
+
+//DESACTIVAR LA OPCION DE DAR CLICKS SI LA VENTANA NO ESTÄ ABIERTA
+document.addEventListener("DOMContentLoaded", () => {
+  const windows = document.querySelectorAll(".mac-window");
+
+  windows.forEach(windowEl => {
+    const iframes = windowEl.querySelectorAll("iframe");
+
+    iframes.forEach(iframe => {
+      iframe.dataset.originalPointerEvents = iframe.style.pointerEvents || "auto";
+      iframe.style.pointerEvents = "none";
+    });
+
+    const updatePointerEvents = () => {
+      const computedStyle = getComputedStyle(windowEl);
+      const isVisible = computedStyle.display !== "none" && windowEl.classList.contains("show");
+
+      iframes.forEach(iframe => {
+        const rect = iframe.getBoundingClientRect();
+        const isOnScreen = (
+          rect.width > 0 &&
+          rect.height > 0 &&
+          rect.bottom > 0 &&
+          rect.right > 0 &&
+          rect.top < window.innerHeight &&
+          rect.left < window.innerWidth
+        );
+
+        iframe.style.pointerEvents = (isVisible && isOnScreen)
+          ? (iframe.dataset.originalPointerEvents || "auto")
+          : "none";
+      });
+    };
+
+    // Observar cambios de estilo y clase
+    const mutationObserver = new MutationObserver(updatePointerEvents);
+    mutationObserver.observe(windowEl, {
+      attributes: true,
+      attributeFilter: ['style', 'class']
+    });
+
+    // Observar scroll de contenido si es scrollable
+    const scrollable = windowEl.querySelector(".mac-window-content") || windowEl;
+    scrollable.addEventListener('scroll', updatePointerEvents);
+    window.addEventListener('scroll', updatePointerEvents); // si se hace scroll global
+
+    // También en resize por seguridad
+    window.addEventListener('resize', updatePointerEvents);
   });
 });
 

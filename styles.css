@@ -493,9 +493,8 @@ body {
 
 /* Layout principal con sidebar */
 .itunes-main {
-  display: flex;
   flex: 1;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* Área de contenido principal */
@@ -515,6 +514,7 @@ body {
   background: linear-gradient(to bottom, #000, #333);
   border-bottom: 1px solid #999;
   position: relative;
+  overflow: visible;
 }
 
 .coverflow-container {
@@ -610,6 +610,7 @@ body {
   cursor: pointer;
   z-index: 10;
   transition: background 0.3s ease;
+  display: block; /* <-- asegúrate de esto */
 }
 
 .coverflow-nav:hover {
@@ -853,7 +854,7 @@ body {
 
 /* ========================================== SOUNDS ============================================ */
 
-.itunes-window {
+#sets {
   width: 700px;
   max-height: 480px;
   background: #e8e8e8;
