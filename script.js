@@ -3,6 +3,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function audioPlayer() {
+  if (document.body.classList.contains('apple-lockdown')) return;
   const audio = document.getElementById('audioPlayer');
   const canvas = document.getElementById('visualizerCanvas');
   const ctx = canvas.getContext('2d');
@@ -79,6 +80,13 @@ function audioPlayer() {
     volumeSlider.addEventListener('input', updateVolumeAll);
     updateVolumeAll();
   }
+}
+
+
+
+function startDesktop() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('desktop').style.display = 'block';
 }
 
 
@@ -649,8 +657,8 @@ function precargarImagenesMerch() {
 window.addEventListener('load', precargarImagenesMerch);
 
 //--------------------------------------------- GALERIA DE VIDEOS ------------------------------------------//
-
 let currentVideoIndex = 0; // Video central por defecto
+let currentVirtualIndex = 0;
 
 // Función para leer automáticamente los datos desde el HTML
 function getVideosFromHTML() {
@@ -681,224 +689,70 @@ const videos = getVideosFromHTML();
 
 // Función para obtener el índice circular
 function getCircularIndex(index) {
-  const length = videos.length;
-  return ((index % length) + length) % length;
+  const total = document.querySelectorAll('#coverflowTrack .coverflow-item').length;
+  return ((index % total) + total) % total;
 }
 
-// Variable para rastrear el índice virtual actual
-let currentVirtualIndex = 0;
 
-// Crear elementos virtuales para el efecto infinito
-function createInfiniteItems() {
-  const track = document.getElementById('coverflowTrack');
-  const originalItems = Array.from(track.children);
-  
-  // Usa esto:
-while (track.firstChild) {
-  track.removeChild(track.firstChild);
-}
-  
-  // Crear un array extendido con copias para el efecto infinito
-  const copiesPerSide = 2; // 2 copias completas a cada lado
-  const extendedItems = [];
-  
-  // Copias del final al principio (para navegar hacia la izquierda)
-  for (let copy = 0; copy < copiesPerSide; copy++) {
-    for (let i = 0; i < videos.length; i++) {
-      const originalIndex = i;
-      const clonedItem = originalItems[originalIndex].cloneNode(true);
-      clonedItem.dataset.originalIndex = originalIndex;
-      clonedItem.dataset.isClone = 'true';
-      extendedItems.push(clonedItem);
-    }
-  }
-  
-  // Elementos originales (centro)
-  for (let i = 0; i < originalItems.length; i++) {
-    const item = originalItems[i];
-    item.dataset.originalIndex = i;
-    item.dataset.isClone = 'false';
-    extendedItems.push(item);
-  }
-  
-  // Copias del principio al final (para navegar hacia la derecha)
-  for (let copy = 0; copy < copiesPerSide; copy++) {
-    for (let i = 0; i < videos.length; i++) {
-      const originalIndex = i;
-      const clonedItem = originalItems[originalIndex].cloneNode(true);
-      clonedItem.dataset.originalIndex = originalIndex;
-      clonedItem.dataset.isClone = 'true';
-      extendedItems.push(clonedItem);
-    }
-  }
-  
-  // Añadir todos los elementos al track
-  extendedItems.forEach((item, index) => {
-    item.dataset.virtualIndex = index;
-    track.appendChild(item);
-  });
-  
-  // Actualizar los event listeners de los elementos clonados
-  extendedItems.forEach(item => {
-    const originalIndex = parseInt(item.dataset.originalIndex);
-    item.onclick = () => {
-  const itemVirtualIndex = parseInt(item.dataset.virtualIndex);
-  const diff = itemVirtualIndex - currentVirtualIndex;
-
-  if (diff === -1) {
-    moveCoverflow(-1); // mover izquierda
-  } else if (diff === 1) {
-    moveCoverflow(1); // mover derecha
-  } else {
-    selectVideo(originalIndex); // selección directa
-  }
-};
-  });
-  
-  // Establecer el índice virtual inicial (empezar en la sección original)
-  currentVirtualIndex = copiesPerSide * videos.length + currentVideoIndex;
-  
-  return extendedItems;
-}
 
 // Actualizar estado del coverflow visualmente con lógica infinita
-function updateCoverFlow() {
-  const allItems = document.querySelectorAll('.coverflow-item');
+function updateCoverflow() {
   const track = document.getElementById('coverflowTrack');
-  const rows = document.querySelectorAll('.video-row');
+  const items = Array.from(track.children);
+  const total = items.length;
+  const itemWidth = items[0].offsetWidth + 30;
 
-  const copiesPerSide = 2;
-  const totalVideos = videos.length;
-  const totalItems = allItems.length;
+  // Calculamos el centro visual real
+  const visualIndex = getCircularIndex(currentVirtualIndex);
 
-  const container = document.querySelector('.coverflow-container');
-  const containerWidth = container.offsetWidth;
-  const itemWidth = allItems[0] ? allItems[0].offsetWidth + 30 : 200;
+  // Centrar el ítem visual con desplazamiento físico limitado al rango real
+  const offsetX = -visualIndex * itemWidth + (track.parentElement.offsetWidth / 2 - itemWidth / 2);
+  track.style.transition = 'transform 0.5s ease';
+  track.style.transform = `translateX(${offsetX}px)`;
 
-  let offset = containerWidth / 2 - itemWidth / 2 - currentVirtualIndex * itemWidth;
+  // Limpiar clases anteriores
+  items.forEach(item => item.classList.remove('center', 'left', 'right', 'far-left', 'far-right'));
 
-  // Verificar si debemos reubicar virtualmente al centro (sin animación)
-  let repositioned = false;
-  if (currentVirtualIndex < copiesPerSide || currentVirtualIndex >= totalItems - copiesPerSide) {
-    // Reposicionar al centro
-    const originalIndex = parseInt(allItems[currentVirtualIndex].dataset.originalIndex);
+  // Asignar clases relativas basadas en índice lógico (circular)
+  for (let i = 0; i < total; i++) {
+    const relativeIndex = i - visualIndex;
 
-    // ❌ TEMPORALMENTE quitar transición
-    track.style.transition = 'none';
+    const adjusted =
+      relativeIndex === 0 ? 'center' :
+      relativeIndex === -1 || relativeIndex === total - 1 ? 'left' :
+      relativeIndex === 1 || relativeIndex === -total + 1 ? 'right' :
+      relativeIndex === -2 || relativeIndex === total - 2 ? 'far-left' :
+      relativeIndex === 2 || relativeIndex === -total + 2 ? 'far-right' :
+      null;
 
-    currentVirtualIndex = copiesPerSide * totalVideos + originalIndex;
-    offset = containerWidth / 2 - itemWidth / 2 - currentVirtualIndex * itemWidth;
-    repositioned = true;
+    if (adjusted) items[i].classList.add(adjusted);
   }
 
-  // Aplicar transformación del carrusel
-  track.style.transform = `translateX(${offset}px)`;
-  
-
-  // ✅ Restaurar transición luego de un frame si se reposicionó
-  if (repositioned) {
-    requestAnimationFrame(() => {
-      track.style.transition = 'transform 0.5s ease';
-    });
-  }
-
-  allItems.forEach((item, virtualIndex) => {
-    item.className = 'coverflow-item';
-
-    const relativePosition = virtualIndex - currentVirtualIndex;
-
-    if (relativePosition === 0) {
-      item.classList.add('center');
-    } else if (relativePosition === -1) {
-      item.classList.add('left');
-    } else if (relativePosition === 1) {
-      item.classList.add('right');
-    } else if (relativePosition < -1) {
-      item.classList.add('far-left');
-    } else if (relativePosition > 1) {
-      item.classList.add('far-right');
-    }
-
-    const iframe = item.querySelector('iframe');
-    if (iframe) {
-      iframe.style.pointerEvents = relativePosition === 0 ? 'auto' : 'none';
-    }
-
-    const absDistance = Math.abs(relativePosition);
-    if (absDistance > 3) {
-      item.style.opacity = "0";
-      item.style.pointerEvents = "none";
-    } else {
-      item.style.opacity = absDistance === 0 ? "1" : "0.6";
-      item.style.pointerEvents = "auto";
-    }
-  });
-
-  // Actualizar fila seleccionada
-  rows.forEach((row, index) => {
-    row.classList.toggle('selected', index === currentVideoIndex);
-  });
-
-  updateTrackInfo();
+  updateTrackInfo?.();
 }
 
-// Actualizar información debajo del coverflow (opcional)
-function updateTrackInfo() {
-  const trackInfo = document.querySelector('.track-info');
-  const video = videos[currentVideoIndex];
-
-  if (trackInfo && video) {
-    trackInfo.innerHTML = `
-      <img src="imagenes/MERCI.png">
-      <div>${video.title}</div>
-      <div>${video.artist}</div>
-      <div>0:00 - ${video.time}</div>
-    `;
-  }
-}
-
-// Cambiar de video hacia izquierda o derecha con lógica infinita
 function moveCoverflow(direction) {
-  if (direction > 0) {
-    currentVirtualIndex++;
-    currentVideoIndex = getCircularIndex(currentVideoIndex + 1);
-  } else {
-    currentVirtualIndex--;
-    currentVideoIndex = getCircularIndex(currentVideoIndex - 1);
-  }
-
-  updateCoverFlow();
+  currentVirtualIndex += direction;
+  const total = videos.length;
+  currentVideoIndex = getCircularIndex(currentVirtualIndex); // actualiza el índice visible
+  updateCoverflow();
 }
+
+
 
 // Seleccionar video manualmente
 function selectVideo(index) {
-  if (index >= 0 && index < videos.length) {
-    currentVideoIndex = index;
-    
-    // Encontrar el índice virtual correspondiente más cercano al centro
-    const allItems = document.querySelectorAll('.coverflow-item');
-    const copiesPerSide = 2;
-    const totalVideos = videos.length;
-    
-    // Preferir la sección central (elementos originales)
-    const preferredVirtualIndex = copiesPerSide * totalVideos + index;
-    
-    // Verificar si existe ese índice virtual
-    if (preferredVirtualIndex < allItems.length) {
-      currentVirtualIndex = preferredVirtualIndex;
-    } else {
-      // Buscar cualquier elemento con el índice original correcto
-      for (let i = 0; i < allItems.length; i++) {
-        const originalIndex = parseInt(allItems[i].dataset.originalIndex);
-        if (originalIndex === index) {
-          currentVirtualIndex = i;
-          break;
-        }
-      }
-    }
-    
-    updateCoverFlow();
-  }
+  const total = videos.length;
+  const current = getCircularIndex(currentVirtualIndex);
+  let diff = index - current;
+
+  // Permitir saltos circulares mínimos
+  if (diff > total / 2) diff -= total;
+  if (diff < -total / 2) diff += total;
+
+  currentVirtualIndex += diff;
+  currentVideoIndex = index;
+  updateCoverflow();
 }
 
 function selectVideoFromList(index) {
@@ -933,14 +787,12 @@ document.addEventListener('keydown', function(e) {
 function refreshVideoData() {
   const updatedVideos = getVideosFromHTML();
   videos.splice(0, videos.length, ...updatedVideos);
-  createInfiniteItems();
-  updateCoverFlow();
+  updateCoverflow();
 }
 
 // Inicializar cuando la página esté lista
 function initializeCoverflow() {
-  createInfiniteItems();
-  updateCoverFlow();
+  updateCoverflow();
 }
 
 // Si ya está cargado
@@ -962,6 +814,15 @@ document.getElementById("galleryVolumeControl").addEventListener("input", functi
     }), "*");
   });
 });
+
+
+
+
+
+
+
+
+
 
 //------------------------------------------------ Detectar dispositivo móvil ------------------------------------------//
 function isMobile() {
@@ -1124,118 +985,135 @@ updateCoverFlow = function() {
   
 // ----------------------------------- INICIO DE SESION -------------------------------- //
 
-document.addEventListener('DOMContentLoaded', () => {
-  const appleMenu = document.getElementById('appleMenu');
-
-  if (appleMenu) {
-    document.body.classList.add('apple-lockdown');
-    appleMenu.classList.add('show');
-    appleMenu.style.display = 'flex'; // asegúrate de que se muestre al inicio
-  }
-});
-
-function login() {
-  const username = document.getElementById('username').value;
-  if (!username.trim()) {
-    document.getElementById('message').textContent = "Por favor ingresa tu nombre de usuario.";
-    document.getElementById('message').style.color = "red";
-    return;
-  }
-
-  // Oculta el recuadro suavemente
-  const menu = document.getElementById('appleMenu');
-  menu.classList.remove('show');
-
-  // Espera que se desvanezca antes de mostrar el resto
-  setTimeout(() => {
-    menu.style.display = 'none';
-    document.body.classList.remove('apple-lockdown');
-  }, 400);
-}
-
-
-//PRECARGAR VENTANAS GALERIA DE VIDEOS Y MERCH para que no demoren en abrir en celular.
-document.addEventListener("DOMContentLoaded", () => {
-  const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  if (!isMobile) return;
-
-  const preloadWindows = ['gallery', 'merch'];
-
-   // 👇 NUEVO: Forzar display none para ciertas ventanas en móviles
-  if (isMobileDevice()) {
-    ['gallery', 'merch'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.style.display = 'none';
-    });
-  }
-
-
-  preloadWindows.forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-
-    // Mostrar de forma invisible para forzar el layout
-    el.style.position = 'absolute';
-    el.style.opacity = '0';
-    el.style.visibility = 'hidden';
-    el.style.display = 'block';
-
-    // Forzar reflow individual
-    el.offsetHeight;
-
-    // Restaurar estilos
-    el.style.display = 'none';
-    el.style.position = '';
-    el.style.opacity = '';
-    el.style.visibility = '';
-  });
-
-  // Precargar imágenes
-  const imgs = document.querySelectorAll('#gallery img, #merch img');
-  imgs.forEach(img => {
-    const preload = new Image();
-    preload.src = img.src;
-  });
-
-  // 🚨 Forzar reflow global con dummy element (mejora dispositivos lentos)
-  const dummy = document.createElement('div');
-  dummy.style.height = '1px';
-  document.body.appendChild(dummy);
-  dummy.offsetHeight; // Forzar reflow general
-  document.body.removeChild(dummy);
-
-  console.log("Precarga de ventanas + imágenes + reflow forzado completado.");
-});
-
-
 function activateAppleLockdown() {
   const menu = document.getElementById('appleMenu');
   if (!menu) {
     console.error("No se encontró #appleMenu");
     return;
   }
-
   document.body.classList.add('apple-lockdown');
   menu.classList.add('show');
-  console.log("Modo bloqueo activado correctamente");
+  console.log("🔒 Modo bloqueo activado correctamente");
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', activateAppleLockdown);
-} else {
-  activateAppleLockdown(); // DOM ya estaba listo
+function login() {
+  const username = document.getElementById('username').value;
+  const message = document.getElementById('message');
+
+  if (!username.trim()) {
+    if (message) {
+      message.textContent = "Por favor ingresa tu nombre de usuario.";
+      message.style.color = "red";
+    }
+    return;
+  }
+
+  const menu = document.getElementById('appleMenu');
+  menu.classList.remove('show');
+
+  setTimeout(() => {
+    menu.style.display = 'none';
+    document.body.classList.remove('apple-lockdown');
+  }, 400);
 }
 
+// UNIFICADO: Esperar al DOM para inicializar todo
+window.addEventListener('DOMContentLoaded', () => {
+  // Activar bloqueo
+  activateAppleLockdown();
 
-// Detecta pérdida de foco en el input (cuando se oculta el teclado en dispositivos moviles)
-document.querySelectorAll('.login-input').forEach(input => {
-  input.addEventListener('blur', () => {
-    // Restaura scroll al top para evitar recorte visual
-    window.scrollTo(0, 0);
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
+  // Inicializar audio player si no está bloqueado
+  if (!document.body.classList.contains('apple-lockdown')) {
+    audioPlayer();
+  }
+
+  // Inicializar coverflow
+  initializeCoverflow?.();
+
+  // Iniciar hora
+  updateTopBarDateTimeWeather?.();
+
+  // Precargar ventanas para móviles
+  const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if (isMobile) {
+    const preloadWindows = ['gallery', 'merch'];
+    preloadWindows.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.style.display = 'none';
+        el.style.position = 'absolute';
+        el.style.opacity = '0';
+        el.style.visibility = 'hidden';
+        el.style.display = 'block';
+        el.offsetHeight;
+        el.style.display = 'none';
+        el.style.position = '';
+        el.style.opacity = '';
+        el.style.visibility = '';
+      }
+    });
+
+    // Precargar imágenes
+    const imgs = document.querySelectorAll('#gallery img, #merch img');
+    imgs.forEach(img => {
+      const preload = new Image();
+      preload.src = img.src;
+    });
+
+    const dummy = document.createElement('div');
+    dummy.style.height = '1px';
+    document.body.appendChild(dummy);
+    dummy.offsetHeight;
+    document.body.removeChild(dummy);
+
+    console.log("📱 Precarga para móviles completada.");
+  }
+
+  // Input blur scroll fix para móviles
+  document.querySelectorAll('.login-input').forEach(input => {
+    input.addEventListener('blur', () => {
+      window.scrollTo(0, 0);
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    });
+  });
+
+  // Desactivar interacción con iframes en ventanas ocultas
+  const windows = document.querySelectorAll(".mac-window");
+  windows.forEach(windowEl => {
+    const iframes = windowEl.querySelectorAll("iframe");
+    iframes.forEach(iframe => {
+      iframe.dataset.originalPointerEvents = iframe.style.pointerEvents || "auto";
+      iframe.style.pointerEvents = "none";
+    });
+
+    const updatePointerEvents = () => {
+      const isVisible = getComputedStyle(windowEl).display !== "none" && windowEl.classList.contains("show");
+      iframes.forEach(iframe => {
+        const rect = iframe.getBoundingClientRect();
+        const isOnScreen = (
+          rect.width > 0 && rect.height > 0 &&
+          rect.bottom > 0 && rect.right > 0 &&
+          rect.top < window.innerHeight &&
+          rect.left < window.innerWidth
+        );
+        iframe.style.pointerEvents = (isVisible && isOnScreen) ? iframe.dataset.originalPointerEvents || "auto" : "none";
+      });
+    };
+
+    const mutationObserver = new MutationObserver(updatePointerEvents);
+    mutationObserver.observe(windowEl, {
+      attributes: true,
+      attributeFilter: ['style', 'class']
+    });
+
+    const scrollable = windowEl.querySelector(".mac-window-content") || windowEl;
+    scrollable.addEventListener('scroll', updatePointerEvents);
+    window.addEventListener('scroll', updatePointerEvents);
+    window.addEventListener('resize', updatePointerEvents);
   });
 });
+
 
 
 //DESACTIVAR LA OPCION DE DAR CLICKS SI LA VENTANA NO ESTÄ ABIERTA
@@ -1287,5 +1165,4 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener('resize', updatePointerEvents);
   });
 });
-
 

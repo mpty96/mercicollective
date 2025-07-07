@@ -1,0 +1,869 @@
+//----------------------------------- INICIO DE SESIÓN -----------------------------------//
+window.addEventListener('load', () => {
+  const loadingScreen = document.getElementById('loadingScreen');
+  const loadingBar = document.getElementById('loadingBar');
+
+  document.body.classList.add('apple-lockdown');
+
+  setTimeout(() => {
+    loadingBar.style.width = '100%';
+  }, 300);
+
+  setTimeout(() => {
+    loadingScreen.style.opacity = '0';
+    setTimeout(() => {
+      loadingScreen.style.display = 'none';
+      document.getElementById('appleMenu')?.classList.add('show');
+    }, 800);
+  }, 2200);
+});
+
+function login() {
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  const message = document.getElementById('message');
+  
+  // Contraseña predeterminada
+  const correctPassword = "LongLifeMerci327."; // Contraseña deseada
+
+  // Validar que se ingrese nombre de usuario
+  if (!username.trim()) {
+    if (message) {
+      message.textContent = "Por favor ingresa tu nombre de usuario.";
+      message.style.color = "red";
+    }
+    return;
+  }
+
+  // Validar que se ingrese contraseña
+  if (!password.trim()) {
+    if (message) {
+      message.textContent = "Por favor ingresa la contraseña.";
+      message.style.color = "red";
+    }
+    return;
+  }
+
+  // Validar contraseña correcta
+  if (password !== correctPassword) {
+    if (message) {
+      message.textContent = "Contraseña incorrecta. Inténtalo de nuevo.";
+      message.style.color = "red";
+    }
+    return;
+  }
+
+  // Si llegamos aquí, todo está correcto
+  if (message) {
+    message.textContent = "Iniciando sesión...";
+    message.style.color = "green";
+  }
+
+  const menu = document.getElementById('appleMenu');
+  
+  // Efecto suave de salida
+  menu.classList.remove('show');
+
+  setTimeout(() => {
+    menu.style.display = 'none';
+    document.body.classList.remove('apple-lockdown');
+    // Agregar clase para mostrar el escritorio con efecto
+    document.body.classList.add('loaded');
+  }, 600); // Tiempo para que termine la animación de salida
+}
+
+function togglePassword() {
+  const passwordInput = document.getElementById('password');
+  const passwordToggle = document.querySelector('.password-toggle');
+  
+  if (passwordInput.type === 'password') {
+    passwordInput.type = 'text';
+    passwordToggle.classList.remove('password-hidden');
+    passwordToggle.classList.add('password-visible');
+  } else {
+    passwordInput.type = 'password';
+    passwordToggle.classList.remove('password-visible');
+    passwordToggle.classList.add('password-hidden');
+  }
+}
+
+// Inicializar el estado
+document.addEventListener('DOMContentLoaded', function() {
+  const passwordToggle = document.querySelector('.password-toggle');
+  passwordToggle.classList.add('password-hidden');
+});
+
+//---------------------------------- INICIALIZACIÓN GLOBAL ----------------------------------//
+window.addEventListener('DOMContentLoaded', () => {
+        audioPlayer?.();
+  activateAppleLockdown();
+  
+
+  initializeCoverflow?.();
+  updateTopBarDateTimeWeather?.();
+
+  const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if (isMobile) {
+    ['gallery', 'merch'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.style.display = 'none';
+        el.style.position = 'absolute';
+        el.style.opacity = '0';
+        el.style.visibility = 'hidden';
+        el.style.display = 'block';
+        el.offsetHeight;
+        el.style.display = 'none';
+        el.style.position = '';
+        el.style.opacity = '';
+        el.style.visibility = '';
+      }
+    });
+
+    document.querySelectorAll('#gallery img, #merch img').forEach(img => {
+      const preload = new Image();
+      preload.src = img.src;
+    });
+
+    const dummy = document.createElement('div');
+    dummy.style.height = '1px';
+    document.body.appendChild(dummy);
+    dummy.offsetHeight;
+    document.body.removeChild(dummy);
+
+    console.log("📱 Precarga para móviles completada.");
+  }
+
+  document.querySelectorAll('.login-input').forEach(input => {
+    input.addEventListener('blur', () => {
+      window.scrollTo(0, 0);
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    });
+  });
+
+  document.querySelectorAll(".mac-window").forEach(windowEl => {
+    const iframes = windowEl.querySelectorAll("iframe");
+
+    iframes.forEach(iframe => {
+      iframe.dataset.originalPointerEvents = iframe.style.pointerEvents || "auto";
+      iframe.style.pointerEvents = "none";
+    });
+
+    const updatePointerEvents = () => {
+      const isVisible = getComputedStyle(windowEl).display !== "none" && windowEl.classList.contains("show");
+
+      iframes.forEach(iframe => {
+        const rect = iframe.getBoundingClientRect();
+        const isOnScreen = (
+          rect.width > 0 && rect.height > 0 &&
+          rect.bottom > 0 && rect.right > 0 &&
+          rect.top < window.innerHeight &&
+          rect.left < window.innerWidth
+        );
+
+        iframe.style.pointerEvents = (isVisible && isOnScreen)
+          ? iframe.dataset.originalPointerEvents || "auto"
+          : "none";
+      });
+    };
+
+    const observer = new MutationObserver(updatePointerEvents);
+    observer.observe(windowEl, { attributes: true, attributeFilter: ['style', 'class'] });
+
+    const scrollable = windowEl.querySelector(".mac-window-content") || windowEl;
+    scrollable.addEventListener('scroll', updatePointerEvents);
+    window.addEventListener('scroll', updatePointerEvents);
+    window.addEventListener('resize', updatePointerEvents);
+  });
+});
+
+function updateTopBarDateTimeWeather() {
+  const now = new Date();
+  const dayStr = now.toLocaleDateString('es-CL', { weekday: 'short' });
+  const dateStr = now.toLocaleDateString('es-CL', { year: 'numeric', month: 'short', day: 'numeric' });
+  const timeStr = now.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
+  const rightInfo = document.getElementById('topbar-right-info');
+  if (rightInfo) {
+    rightInfo.textContent = `${dayStr}. ${dateStr} - ${timeStr}`;
+  }
+}
+
+const slowVideos = document.querySelectorAll('.slow-video');
+  slowVideos.forEach(video => {
+    video.playbackRate = 0.5; // Reduce la velocidad a la mitad
+  });
+
+  // Opción adicional: permitir click para abrir detalles
+  slowVideos.forEach(video => {
+    video.addEventListener('click', () => {
+      const data = JSON.parse(video.dataset.product);
+      openMerchDetail(data);
+    });
+  });
+
+setInterval(updateTopBarDateTimeWeather, 60000);
+updateTopBarDateTimeWeather();
+
+
+//------------------------------------- MANEJO DE VENTANAS -------------------------------------//
+const openWindowsOnMobile = new Set();
+
+function isMobileDevice() {
+  return window.innerWidth <= 768;
+}
+
+function bringToFront(el) {
+  const allWindows = document.querySelectorAll(".mac-window, .genie-window");
+  let maxZ = 1000;
+  allWindows.forEach(w => {
+    const z = parseInt(window.getComputedStyle(w).zIndex) || 1000;
+    if (z > maxZ) maxZ = z;
+  });
+  el.style.zIndex = maxZ + 1;
+}
+
+function openWindow(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  if (isMobileDevice()) {
+    if (openWindowsOnMobile.has(id)) return;
+    el.style.left = '50%';
+    el.style.top = '50%';
+    el.style.transform = 'translate(-50%, -50%)';
+    el.style.display = 'flex';
+    if (id === 'contact') {
+      document.getElementById('icon-close-contact').style.display = 'flex';
+    }
+    openWindowsOnMobile.add(id);
+    setTimeout(() => el.classList.add('show'), 10);
+    bringToFront(el);
+    return;
+  }
+
+  if (id === 'contact') {
+    const icon = document.getElementById('icon-contact');
+    const rect = icon.getBoundingClientRect();
+    document.querySelectorAll(".mac-window.show, .genie-window.show").forEach(win => {
+      win.classList.remove('show');
+      win.style.display = 'none';
+    });
+    document.getElementById('icon-close-contact').style.display = 'flex';
+    document.getElementById('icon-close-safari').style.display = 'none';
+    document.querySelector('.dock').style.display = 'none';
+    document.getElementById('desktop').style.display = 'none';
+    el.style.top = `${rect.top}px`;
+    el.style.left = `${rect.left}px`;
+    el.style.transform = 'scale(0.1)';
+    el.style.opacity = '0';
+    el.style.display = 'flex';
+    setTimeout(() => {
+      el.style.top = '50%';
+      el.style.left = '50%';
+      el.style.transform = 'translate(-50%, -50%) scale(1)';
+      el.style.opacity = '1';
+    }, 10);
+  } else {
+    const screenW = window.innerWidth;
+    const screenH = window.innerHeight;
+    const dockHeight = 90;
+    el.style.display = 'block';
+    el.style.visibility = 'hidden';
+    el.style.transform = 'none';
+    const winHeight = el.offsetHeight || 400;
+    const winWidth = el.offsetWidth || 500;
+    el.style.display = 'none';
+    el.style.visibility = 'visible';
+    const maxTop = screenH - winHeight - dockHeight;
+    const maxLeft = screenW - winWidth;
+    const minTop = 40;
+    const minLeft = 40;
+    const top = Math.floor(Math.random() * (maxTop - minTop + 1)) + minTop;
+    const left = Math.floor(Math.random() * (maxLeft - minLeft + 1)) + minLeft;
+    el.style.left = `${left}px`;
+    el.style.top = `${top}px`;
+    el.style.transform = 'none';
+    el.style.display = 'flex';
+    setTimeout(() => el.classList.add('show'), 10);
+    bringToFront(el);
+  }
+}
+
+function closeWindow(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  if (isMobileDevice()) {
+    openWindowsOnMobile.delete(id);
+    if (id === 'contact') {
+      document.getElementById('icon-close-contact').style.display = 'none';
+    }
+    el.classList.remove('show');
+    setTimeout(() => {
+      el.style.display = 'none';
+    }, 300);
+    return;
+  }
+
+  if (id === 'contact') {
+    const icon = document.getElementById('icon-contact');
+    const rect = icon.getBoundingClientRect();
+    el.style.transform = 'scale(0.1)';
+    el.style.opacity = '0';
+    el.style.top = `${rect.top}px`;
+    el.style.left = `${rect.left}px`;
+    setTimeout(() => {
+      el.style.display = 'none';
+      el.style.transform = 'translate(-50%, -50%) scale(1)';
+      el.style.top = '50%';
+      el.style.left = '50%';
+      document.querySelector('.dock').style.display = 'flex';
+      document.getElementById('desktop').style.display = 'flex';
+      document.getElementById('icon-close-contact').style.display = 'none';
+      document.getElementById('icon-close-safari').style.display = 'none';
+    }, 600);
+  } else {
+    el.classList.remove('show');
+    setTimeout(() => {
+      el.style.display = 'none';
+    }, 300);
+  }
+}
+
+function handleOrientationChange() {
+  if (isMobileDevice()) {
+    openWindowsOnMobile.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.style.display === 'flex') {
+        el.style.left = '50%';
+        el.style.top = '50%';
+        el.style.transform = 'translate(-50%, -50%)';
+      }
+    });
+  }
+}
+
+function handleResize() {
+  const wasMobile = openWindowsOnMobile.size > 0;
+  const isNowMobile = isMobileDevice();
+  if (wasMobile && !isNowMobile) {
+    openWindowsOnMobile.clear();
+  }
+  handleOrientationChange();
+}
+
+window.addEventListener('orientationchange', handleOrientationChange);
+window.addEventListener('resize', handleResize);
+
+document.querySelectorAll('.mac-window').forEach(win => {
+  const header = win.querySelector('.mac-window-header');
+  let isDragging = false;
+  let offsetX = 0;
+  let offsetY = 0;
+  header.style.cursor = 'grab';
+
+  header.addEventListener('mousedown', e => {
+    isDragging = true;
+    bringToFront(win);
+    win.classList.add('dragging');
+    const rect = win.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+    win.style.transform = 'none';
+    win.style.left = `${rect.left}px`;
+    win.style.top = `${rect.top}px`;
+    document.body.style.userSelect = 'none';
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    const screenW = window.innerWidth;
+    const screenH = window.innerHeight;
+    const dockHeight = 90;
+    const winWidth = win.offsetWidth;
+    const winHeight = win.offsetHeight;
+    let newLeft = e.clientX - offsetX;
+    let newTop = e.clientY - offsetY;
+    if (newLeft < 0) newLeft = 0;
+    if (newTop < 0) newTop = 0;
+    if (newLeft + winWidth > screenW) newLeft = screenW - winWidth;
+    if (newTop + winHeight > screenH - dockHeight) newTop = screenH - dockHeight - winHeight;
+    win.style.left = `${newLeft}px`;
+    win.style.top = `${newTop}px`;
+  });
+
+  document.addEventListener('mouseup', () => {
+    isDragging = false;
+    win.classList.remove('dragging');
+    document.body.style.userSelect = '';
+  });
+});
+
+//-------------------------------------- COVERFLOW --------------------------------------//
+
+function refreshVideoData() {
+  const updatedVideos = getVideosFromHTML();
+  videos.splice(0, videos.length, ...updatedVideos);
+  updateCoverflow();
+}
+
+let currentVideoIndex = 0;
+let currentVirtualIndex = 0;
+
+function getVideosFromHTML() {
+  const videoRows = document.querySelectorAll('.video-row');
+  return Array.from(videoRows).map(row => {
+    return {
+      title: row.querySelector('.row-cell.name').textContent.trim().replace(/🎵\s*/, ''),
+      time: row.querySelector('.row-cell.time').textContent.trim(),
+      artist: row.querySelector('.row-cell.artist').textContent.trim(),
+      album: row.querySelector('.row-cell.album').textContent.trim(),
+      genre: 'Music Video'
+    };
+  });
+}
+
+const videos = getVideosFromHTML();
+
+function getCircularIndex(index) {
+  const total = document.querySelectorAll('#coverflowTrack .coverflow-item').length;
+  return ((index % total) + total) % total;
+}
+
+function updateCoverflow() {
+  const track = document.getElementById('coverflowTrack');
+  const items = Array.from(track.children);
+  const total = items.length;
+  const itemWidth = items[0].offsetWidth + 30;
+  const visualIndex = getCircularIndex(currentVirtualIndex);
+  const offsetX = -visualIndex * itemWidth + (track.parentElement.offsetWidth / 2 - itemWidth / 2);
+  track.style.transition = 'transform 0.5s ease';
+  track.style.transform = `translateX(${offsetX}px)`;
+  items.forEach(item => item.className = 'coverflow-item');
+  items.forEach((item, i) => {
+    const rel = i - visualIndex;
+    if (rel === 0) item.classList.add('center');
+    else if (rel === -1 || rel === total - 1) item.classList.add('left');
+    else if (rel === 1 || rel === -total + 1) item.classList.add('right');
+    else if (rel === -2 || rel === total - 2) item.classList.add('far-left');
+    else if (rel === 2 || rel === -total + 2) item.classList.add('far-right');
+  });
+  updateTrackInfo?.();
+}
+
+function moveCoverflow(direction) {
+  currentVirtualIndex += direction;
+  currentVideoIndex = getCircularIndex(currentVirtualIndex);
+  updateCoverflow();
+}
+
+function selectVideo(index) {
+  const total = videos.length;
+  const current = getCircularIndex(currentVirtualIndex);
+  let diff = index - current;
+  if (diff > total / 2) diff -= total;
+  if (diff < -total / 2) diff += total;
+  currentVirtualIndex += diff;
+  currentVideoIndex = index;
+  updateCoverflow();
+}
+
+function selectVideoFromList(index) {
+  if (index === currentVideoIndex) return;
+  const total = videos.length;
+  if (currentVideoIndex === total - 1 && index === 0) return moveCoverflow(1);
+  if (currentVideoIndex === 0 && index === total - 1) return moveCoverflow(-1);
+  selectVideo(index);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft') moveCoverflow(-1);
+  if (e.key === 'ArrowRight') moveCoverflow(1);
+});
+
+function initializeCoverflow() {
+  updateCoverflow();
+}
+
+//--- Soporte YouTube móvil ---//
+let ytPlayers = [];
+let ytAPIReady = false;
+
+function initializeYouTubePlayers() {
+  if (!isMobileDevice() || !ytAPIReady) return;
+
+  const iframes = document.querySelectorAll('#gallery iframe');
+  ytPlayers = [];
+
+  iframes.forEach((iframe, index) => {
+    const videoId = iframe.src.match(/embed\/([^?]+)/)?.[1];
+    if (videoId) {
+      const playerId = `youtube-player-${index}`;
+      iframe.id = playerId;
+      ytPlayers[index] = new YT.Player(playerId, {
+        videoId,
+        playerVars: {
+          enablejsapi: 1,
+          origin: window.location.origin
+        },
+        events: {
+          onReady: event => ytPlayers[index] = event.target
+        }
+      });
+    }
+  });
+}
+
+if (isMobileDevice() && !window.YT) {
+  const tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/iframe_api';
+  const firstScript = document.getElementsByTagName('script')[0];
+  firstScript.parentNode.insertBefore(tag, firstScript);
+  window.onYouTubeIframeAPIReady = () => {
+    ytAPIReady = true;
+    initializeYouTubePlayers();
+  };
+}
+
+// Control de volumen YouTube móvil
+const galleryVolumeSlider = document.getElementById("galleryVolumeControl");
+if (galleryVolumeSlider) {
+  galleryVolumeSlider.addEventListener("input", function () {
+    const volume = parseInt(this.value);
+    if (isMobileDevice()) {
+      ytPlayers.forEach(player => player?.setVolume?.(volume));
+    } else {
+      document.querySelectorAll("#gallery iframe").forEach(iframe => {
+        iframe.contentWindow.postMessage(JSON.stringify({
+          event: "command",
+          func: "setVolume",
+          args: [volume]
+        }), "*");
+      });
+    }
+  });
+}
+
+// Swipe táctil para coverflow
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener('touchstart', e => {
+  touchStartX = e.changedTouches[0].screenX;
+});
+
+document.addEventListener('touchend', e => {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipe();
+});
+
+function handleSwipe() {
+  const distance = touchEndX - touchStartX;
+  if (Math.abs(distance) > 50) {
+    if (distance > 0) moveCoverflow(-1);
+    else moveCoverflow(1);
+  }
+}
+
+// Reforzar inicialización de players al actualizar coverflow
+const originalUpdateCoverflow = updateCoverflow;
+updateCoverflow = function () {
+  originalUpdateCoverflow();
+  if (isMobileDevice() && ytAPIReady) {
+    setTimeout(initializeYouTubePlayers, 100);
+  }
+};
+
+//-------------------------------------- SOUNDCLOUD Y VOLUMEN --------------------------------------//
+function audioPlayer() {
+  if (document.body.classList.contains('apple-lockdown')) return;
+
+  const audio = document.getElementById('audioPlayer');
+  const canvas = document.getElementById('visualizerCanvas');
+  const ctx = canvas.getContext('2d');
+  const volumeSlider = document.getElementById('volumeControl');
+  const barCount = 32;
+  let isPlaying = false;
+  let scWidget1 = null;
+  let scWidget2 = null;
+
+  function drawSimulator() {
+    requestAnimationFrame(drawSimulator);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const barWidth = canvas.width / barCount;
+    for (let i = 0; i < barCount; i++) {
+      const barHeight = isPlaying ? Math.random() * canvas.height : 4;
+      ctx.fillStyle = '#a75ed4';
+      ctx.fillRect(i * barWidth, canvas.height - barHeight, barWidth - 2, barHeight);
+    }
+  }
+
+  drawSimulator();
+
+  function setupWidget(widget) {
+    widget.bind(SC.Widget.Events.READY, () => {
+      widget.setVolume(parseFloat(volumeSlider.value) * 100);
+    });
+    widget.bind(SC.Widget.Events.PLAY, () => isPlaying = true);
+    widget.bind(SC.Widget.Events.PAUSE, () => isPlaying = false);
+    widget.bind(SC.Widget.Events.FINISH, () => isPlaying = false);
+  }
+
+  const iframe1 = document.getElementById('sc-player-1');
+  const iframe2 = document.getElementById('sc-player-2');
+
+  iframe1?.addEventListener('load', () => {
+    scWidget1 = SC.Widget(iframe1);
+    setupWidget(scWidget1);
+  });
+
+  iframe2?.addEventListener('load', () => {
+    scWidget2 = SC.Widget(iframe2);
+    setupWidget(scWidget2);
+  });
+
+  function updateVolumeAll() {
+    const volume = parseFloat(volumeSlider.value);
+    audio.volume = volume;
+    scWidget1?.setVolume(volume * 100);
+    scWidget2?.setVolume(volume * 100);
+    const percent = volume * 100;
+    volumeSlider.style.background = `linear-gradient(to right, #4a72c8 0%, #4a72c8 ${percent}%, #ffffff ${percent}%, #ffffff 100%)`;
+  }
+
+  if (volumeSlider) {
+    volumeSlider.addEventListener('input', updateVolumeAll);
+    updateVolumeAll();
+  }
+}
+
+
+//-------------------------------------- MERCHANDISING --------------------------------------//
+function openMerchDetail(product) {
+  const mainImage = document.getElementById("mainMerchImage");
+  const title = document.getElementById("merchTitle");
+  const price = document.getElementById("merchPrice");
+  const thumbs = document.getElementById("merchThumbs");
+
+  mainImage.src = "imagenes/" + product.main;
+  title.textContent = product.title;
+  price.textContent = product.price;
+  thumbs.innerHTML = "";
+
+  product.thumbnails.forEach(img => {
+    const thumb = document.createElement("img");
+    thumb.src = "imagenes/" + img;
+    thumb.alt = "Thumb";
+    thumb.onclick = () => changeMainImage(img);
+    thumbs.appendChild(thumb);
+  });
+
+  document.getElementById("merchList").style.display = "none";
+  document.getElementById("merchDetail").style.display = "flex";
+
+  window.selectedProduct = product;
+}
+
+function changeMainImage(src) {
+  const mainImage = document.getElementById("mainMerchImage");
+  mainImage.src = "imagenes/" + src;
+}
+
+function handleRedButton() {
+  const detailView = document.getElementById("merchDetail");
+  const isDetailVisible = window.getComputedStyle(detailView).display !== "none";
+  if (isDetailVisible) {
+    showMerchList();
+  } else {
+    closeWindow('merch');
+  }
+}
+
+function showMerchList() {
+  document.getElementById("merchDetail").style.display = "none";
+  document.getElementById("merchList").style.display = "flex";
+}
+
+//-------------------------------------- CARRITO DE COMPRAS --------------------------------------//
+let cart = [];
+
+function getShopifyProductID(title, size) {
+  const variants = {
+    "Lindsay Lohan White Tee": {
+      S: "46381412647165",
+      M: "46381412679933",
+      L: "46381412712701",
+      XL: "46381412745469"
+    },
+    "Lindsay Lohan Black Tee": {
+      S: "46381471990013",
+      M: "46381472022781",
+      L: "46381472055549",
+      XL: "46381472088317"
+    }
+  };
+  return variants[title]?.[size] || null;
+}
+
+function formatCLP(value) {
+  return `${value.toLocaleString('es-CL')}`;
+}
+
+function updateCart() {
+  const cartContainer = document.getElementById("cartItems");
+  const totalContainer = document.getElementById("totalPrice");
+  const checkoutButton = document.querySelector(".checkout-btn");
+  const checkoutLink = checkoutButton.closest("a");
+  cartContainer.innerHTML = "";
+  let totalPrice = 0;
+  const shopifyBase = "https://mercicollectiveshop.myshopify.com/cart/";
+  const cartShopifyItems = [];
+
+  cart.forEach((item, index) => {
+    const numericPrice = parseInt(item.price.replace("$", "").replace("CLP", "").replace(/\./g, "").trim());
+    const itemTotal = numericPrice * item.quantity;
+    totalPrice += itemTotal;
+    const shopifyId = getShopifyProductID(item.title, item.size);
+    if (shopifyId) {
+      cartShopifyItems.push(`${shopifyId}:${item.quantity}`);
+    }
+    const cartItem = document.createElement("div");
+    cartItem.classList.add("cart-item");
+    cartItem.innerHTML = `
+      <button class="remove-btn" onclick="removeFromCart(${index})">x</button>
+      <img src="imagenes/${item.main}" alt="${item.title}" />
+      <div class="cart-item-text">
+        <p>${item.title} - SIZE ${item.size}</p>
+      </div>
+      <div>${item.quantity}</div>
+      <div>${formatCLP(itemTotal)}</div>
+    `;
+    cartContainer.appendChild(cartItem);
+  });
+
+  totalContainer.textContent = formatCLP(totalPrice);
+  checkoutLink.href = cartShopifyItems.length > 0 ? shopifyBase + cartShopifyItems.join(",") : "#";
+}
+
+function showShoppingCart() {
+  const cartWindow = document.getElementById("shoppingCart");
+  if (isMobileDevice()) {
+    if (openWindowsOnMobile.has('shoppingCart')) return;
+    openWindowsOnMobile.add('shoppingCart');
+    cartWindow.style.left = '50%';
+    cartWindow.style.top = '50%';
+    cartWindow.style.transform = 'translate(-50%, -50%)';
+  }
+  cartWindow.style.display = "flex";
+  setTimeout(() => cartWindow.classList.add("show"), 10);
+  bringToFront(cartWindow);
+}
+
+function addToCart() {
+  const size = document.getElementById("size").value;
+  if (!size) {
+    alert("Por favor selecciona una talla.");
+    return;
+  }
+  const newItem = {
+    ...window.selectedProduct,
+    size,
+    quantity: 1
+  };
+  const existingIndex = cart.findIndex(item => item.title === newItem.title && item.size === newItem.size);
+  if (existingIndex !== -1) {
+    cart[existingIndex].quantity += 1;
+  } else {
+    cart.push(newItem);
+  }
+  updateCart();
+  showShoppingCart();
+}
+
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  updateCart();
+}
+
+document.querySelector("#merchDetail button")?.addEventListener("click", addToCart);
+
+function precargarImagenesMerch() {
+  const imagenes = [
+    'polera1_blanca.mp4', 'polera2.jpg', 'polera3.jpg',
+    'polera1_negra.mp4', 'polera4.jpg', 'weon.jpeg'
+  ];
+  imagenes.forEach(src => {
+    const img = new Image();
+    img.src = 'imagenes/' + src;
+    img.onload = () => console.log(`Imagen precargada: ${src}`);
+  });
+}
+
+window.addEventListener('load', precargarImagenesMerch);
+
+//-------------------------------------- SOCIAL MEDIA --------------------------------------//
+function openSocialWindow() {
+  const social = document.getElementById("socialWindow");
+  document.querySelector('.dock').style.display = 'none';
+  document.getElementById('desktop').style.display = 'none';
+
+  document.querySelectorAll(".mac-window.show, .genie-window.show, .fullscreen-window.show").forEach(win => {
+    win.classList.remove('show');
+    win.style.display = 'none';
+  });
+
+  if (isMobileDevice()) {
+    openWindowsOnMobile.add('socialWindow');
+  }
+
+  document.body.dataset.originalBg = document.body.style.backgroundImage;
+  document.body.style.backgroundImage = "url('imagenes/socialmedia.jpg')";
+
+  social.style.display = 'flex';
+  setTimeout(() => social.classList.add('show'), 10);
+  document.getElementById('icon-close-safari').style.display = 'flex';
+}
+
+function closeSocialWindow() {
+  const social = document.getElementById("socialWindow");
+
+  if (isMobileDevice()) {
+    openWindowsOnMobile.delete('socialWindow');
+  }
+
+  social.classList.remove('show');
+  setTimeout(() => {
+    social.style.display = 'none';
+  }, 300);
+
+  document.body.style.backgroundImage = document.body.dataset.originalBg || "";
+  document.querySelector('.dock').style.display = 'flex';
+  document.getElementById('desktop').style.display = 'flex';
+  document.getElementById('icon-close-safari').style.display = 'none';
+}
+
+function precargarFondos() {
+  const fondoSocial = new Image();
+  fondoSocial.src = "imagenes/socialmedia.jpg";
+}
+
+window.addEventListener("load", precargarFondos);
+
+function enviarCorreo(destino) {
+  const correo = document.getElementById('correo').value;
+  const asunto = document.getElementById('asunto').value;
+  const mensaje = document.getElementById('mensaje').value;
+
+  if (!correo || !asunto || !mensaje) {
+    alert("Please fill all fields.");
+    return;
+  }
+
+  let destinatario = "";
+  if (destino === 'merci') destinatario = "awge@example.com";
+  if (destino === 'support') destinatario = "support@example.com";
+
+  const mailto = `mailto:${destinatario}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent('From: ' + correo + '' + mensaje)}`;
+  window.location.href = mailto;
+}

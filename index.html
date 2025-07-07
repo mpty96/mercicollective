@@ -4,11 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MERCI</title>
+  <script src="script2.js?v=2.0.4" defer></script>
   <script src="https://w.soundcloud.com/player/api.js"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
-  <link rel="stylesheet" href="styles.css?v=2.0.3">
+  <link rel="stylesheet" href="styles.css?v=2.0.4">
 </head>
-<body>
+<body >
+  <div id="loadingScreen">
+    <img src="imagenes/mercimetalic.png" alt="Logo" id="loadingLogo"/>
+    <div id="loadingBarContainer">
+      <div id="loadingBar"></div>
+    </div>
+  </div>
+
 
 <!-------------------------------------------- Barra superior ------------------------------------------->
 <div class="top-bar">
@@ -35,6 +43,18 @@
 
     <!-- Input de usuario -->
     <input type="text" id="username" placeholder="Nombre de usuario" class="login-input" />
+    <!-- Input de contraseña -->
+    <div class="password-container">
+      <input type="password" id="password" placeholder="Contraseña" class="login-input" />
+      <button type="button" class="password-toggle" onclick="togglePassword()">
+        <div class="eye-icon">
+          <div class="eye-shape"></div>
+          <div class="eye-pupil"></div>
+          <div class="eye-slash"></div>
+        </div>
+      </button>
+    </div>
+    <div id="message" style="height: 20px; font-size: 12px; color: red; margin-bottom: 10px;"></div>
 
     <!-- Botón de iniciar sesión -->
     <button class="info-btn" onclick="login()">Iniciar Sesión</button>
@@ -101,41 +121,41 @@
     <div class="merch-list" id="merchList">
       <!-- Polera 1 -->
       <div class="merch-item">
-        <h3>Lindsay Lohan White Tee</h3>
-        <img src="imagenes/polera.gif" loading="eager" alt="Polera 3D"
-             class="merch-gif"
-             onclick="openMerchDetail({
-               title: 'Lindsay Lohan White Tee',
-               price: '$29.990 CLP',
-               main: 'polera.gif',
-               thumbnails: ['polera.gif', 'polera2.jpg', 'polera3.jpg']
-             })">
-        <h4>$29.990 CLP</h4>
+        <h3>FREE LOHAN WHITE TEE</h3>
+        <video autoplay loop muted playsinline class="merch-video slow-video" 
+          data-product='{
+          "title": "Lindsay Lohan White Tee",
+          "price": "$26.990 CLP",
+          "main": "polera1_blanca.mp4",
+          "thumbnails": ["polera1_blanca.mp4", "polera2.jpg", "polera3.jpg"]}'>
+          <source src="imagenes/polera1_blanca.mp4" type="video/mp4">
+          </video>
+        <h4>$26.990 CLP</h4>
         <button onclick="openMerchDetail({
                title: 'Lindsay Lohan White Tee',
-               price: '$29.990 CLP',
-               main: 'polera.gif',
-               thumbnails: ['polera.gif', 'polera2.jpg', 'polera3.jpg']
+               price: '$26.990 CLP',
+               main: 'polera1_blanca.mp4',
+               thumbnails: ['polera1_blanca.mp4', 'polera2.jpg', 'polera3.jpg']
              })">BUY</button>
       </div>
 
       <!-- Polera 2 -->
       <div class="merch-item">
-        <h3>Lindsay Lohan Black Tee</h3>
-        <img src="imagenes/polera2.gif" loading="eager" alt="Essentials GIF"
-             class="merch-gif"
-             onclick="openMerchDetail({
-               title: 'Lindsay Lohan Black Tee',
-               price: '$24.990 CLP',
-               main: 'polera2.gif',
-               thumbnails: ['polera2.gif', 'polera4.jpg', 'weon.jpeg']
-             })">
-        <h4>$24.990 CLP</h4>
+        <h3>FREE LOHAN BLACK TEE</h3>
+        <video autoplay loop muted playsinline class="merch-video slow-video" 
+          data-product='{
+          "title": "Lindsay Lohan White Tee",
+          "price": "$26.990 CLP",
+          "main": "polera1_negra.mp4",
+          "thumbnails": ["polera1_negra.mp4", "polera2.jpg", "polera3.jpg"]}'>
+          <source src="imagenes/polera1_negra.mp4" type="video/mp4">
+          </video>
+        <h4>$26.990 CLP</h4>
         <button onclick="openMerchDetail({
                title: 'Lindsay Lohan Black Tee',
-               price: '$24.990 CLP',
-               main: 'polera2.gif',
-               thumbnails: ['polera2.gif', 'polera4.jpg', 'weon.jpeg']
+               price: '$26.990 CLP',
+               main: 'polera1_negra.mp4',
+               thumbnails: ['polera1_negra.mp4', 'polera4.jpg', 'weon.jpeg']
              })">BUY</button>
       </div>
     </div>
@@ -144,7 +164,7 @@
     <div class="merch-detail-container" id="merchDetail" style="display:none;">
       <img src="imagenes/back.png" loading="eager" alt="Back Icon" class="back-icon" onclick="handleRedButton('merchDetail')" />
       <div class="merch-main-view">
-        <img id="mainMerchImage" src="" alt="Vista Principal">
+        <video id="mainMerchImage" autoplay loop muted playsinline></video>
         <h3 id="merchTitle">Titulo</h3>
         <h4 id="merchPrice">Precio</h4>
         <div class="size-selector">
@@ -318,27 +338,27 @@
         <div class="coverflow-container">
           <div class="coverflow-track" id="coverflowTrack">
             <div class="coverflow-item" onclick="selectVideo(0)">
-              <iframe src="https://www.youtube.com/embed/-xm6aOGkTjA?enablejsapi=1"></iframe>
+              <iframe src="https://www.youtube.com/embed/-xm6aOGkTjA?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
               <div class="reflection"></div>
             </div>
             <div class="coverflow-item" onclick="selectVideo(1)">
-              <iframe src="https://www.youtube.com/embed/1YbWTZzX8Ms?enablejsapi=1"></iframe>
+              <iframe src="https://www.youtube.com/embed/1YbWTZzX8Ms?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
               <div class="reflection"></div>
             </div>
             <div class="coverflow-item" onclick="selectVideo(2)">
-              <iframe src="https://www.youtube.com/embed/6XXHWUFK4DQ?enablejsapi=1"></iframe>
+              <iframe src="https://www.youtube.com/embed/6XXHWUFK4DQ?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
               <div class="reflection"></div>
             </div>
             <div class="coverflow-item" onclick="selectVideo(3)">
-              <iframe src="https://www.youtube.com/embed/tQIP6Mkn8Jc?enablejsapi=1"></iframe>
+              <iframe src="https://www.youtube.com/embed/tQIP6Mkn8Jc?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
               <div class="reflection"></div>
             </div>
             <div class="coverflow-item" onclick="selectVideo(4)">
-              <iframe src="https://www.youtube.com/embed/DJQ7g2m-id4?enablejsapi=1"></iframe>
+              <iframe src="https://www.youtube.com/embed/DJQ7g2m-id4?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
               <div class="reflection"></div>
             </div>
             <div class="coverflow-item" onclick="selectVideo(5)">
-              <iframe src="https://www.youtube.com/embed/zV-gN9GJP3w?enablejsapi=1"></iframe>
+              <iframe src="https://www.youtube.com/embed/zV-gN9GJP3w?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
               <div class="reflection"></div>
             </div>
           </div>
@@ -451,6 +471,5 @@
 
 
 <!--------------------------------------------------------- JAVASCRIPT ---------------------------------------------------->
-<script src="script.js?v=2.0.3" defer></script>
 </body>
 </html>
