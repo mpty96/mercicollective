@@ -234,20 +234,40 @@ function openWindow(id) {
   if (!el) return;
 
   if (isMobileDevice()) {
-    if (openWindowsOnMobile.has(id)) return;
+  // Cierra cualquier otra ventana abierta en móviles antes de abrir la nueva
+  openWindowsOnMobile.forEach(openId => {
+    if (openId !== id) closeWindow(openId);
+  });
+
+    
+    // Asegurar que la ventana esté correctamente posicionada
+    el.style.position = 'fixed';
     el.style.left = '50%';
     el.style.top = '50%';
     el.style.transform = 'translate(-50%, -50%)';
     el.style.display = 'flex';
+    el.style.visibility = 'visible';
+    el.style.opacity = '1';
+    
+    // Para ventana de contacto
     if (id === 'contact') {
       document.getElementById('icon-close-contact').style.display = 'flex';
     }
+    
+    // Añadir al set y forzar el reflow antes de la animación
     openWindowsOnMobile.add(id);
-    setTimeout(() => el.classList.add('show'), 10);
-    bringToFront(el);
+    el.offsetHeight; // Forzar reflow
+    
+    // Aplicar clase show para la animación
+    setTimeout(() => {
+      el.classList.add('show');
+      bringToFront(el);
+    }, 10);
+    
     return;
   }
 
+  // Resto del código para desktop se mantiene igual...
   if (id === 'contact') {
     const icon = document.getElementById('icon-contact');
     const rect = icon.getBoundingClientRect();
@@ -296,22 +316,29 @@ function openWindow(id) {
   }
 }
 
+// También actualiza la función closeWindow para móviles
 function closeWindow(id) {
   const el = document.getElementById(id);
   if (!el) return;
 
   if (isMobileDevice()) {
-    openWindowsOnMobile.delete(id);
     if (id === 'contact') {
       document.getElementById('icon-close-contact').style.display = 'none';
     }
+    
     el.classList.remove('show');
+    
     setTimeout(() => {
       el.style.display = 'none';
+      el.style.visibility = 'hidden';
+      el.style.opacity = '0';
+      // Remover del set DESPUÉS de que termine la animación
+      openWindowsOnMobile.delete(id);
     }, 300);
     return;
   }
 
+  // Resto del código para desktop se mantiene igual...
   if (id === 'contact') {
     const icon = document.getElementById('icon-contact');
     const rect = icon.getBoundingClientRect();
@@ -335,6 +362,22 @@ function closeWindow(id) {
       el.style.display = 'none';
     }, 300);
   }
+}
+
+// Función adicional para debugear en móviles
+function debugMobileWindow(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  
+  console.log(`Debug ventana ${id}:`, {
+    display: el.style.display,
+    visibility: el.style.visibility,
+    opacity: el.style.opacity,
+    hasShowClass: el.classList.contains('show'),
+    inOpenSet: openWindowsOnMobile.has(id),
+    position: el.style.position,
+    transform: el.style.transform
+  });
 }
 
 function handleOrientationChange() {
@@ -406,7 +449,6 @@ document.querySelectorAll('.mac-window').forEach(win => {
   });
 });
 
-
 //________________________________________________________________________________________________//
 //-------------------------------------- COVERFLOW --------------------------------------//
 //________________________________________________________________________________________________//
@@ -419,6 +461,43 @@ function refreshVideoData() {
 
 let currentVideoIndex = 0;
 let currentVirtualIndex = 0;
+
+function updateTrackInfo() {
+  // Obtener el video actual
+  const currentVideo = videos[currentVideoIndex];
+  
+  if (!currentVideo) return;
+  
+  // Actualizar información en el header de iTunes si existe
+  const titleElement = document.querySelector('.window-title');
+  if (titleElement) {
+    titleElement.textContent = `${currentVideo.title} - ${currentVideo.artist}`;
+  }
+  
+  // Actualizar información en algún elemento de info del track (si existe)
+  const trackInfoElement = document.querySelector('.track-info');
+  if (trackInfoElement) {
+    trackInfoElement.innerHTML = `
+      <div class="current-track">
+        <div class="track-title">${currentVideo.title}</div>
+        <div class="track-artist">${currentVideo.artist}</div>
+        <div class="track-album">${currentVideo.album}</div>
+        <div class="track-time">${currentVideo.time}</div>
+      </div>
+    `;
+  }
+  
+  // Actualizar footer con información del track actual
+  const footer = document.querySelector('.itunes-footer');
+  if (footer) {
+    const totalItems = videos.length;
+    const currentPosition = currentVideoIndex + 1;
+    footer.textContent = `${currentPosition} of ${totalItems} items - ${currentVideo.title} by ${currentVideo.artist}`;
+  }
+  
+  // Log para debug (opcional)
+  console.log('Track actualizado:', currentVideo.title, 'por', currentVideo.artist);
+}
 
 function getVideosFromHTML() {
   const videoRows = document.querySelectorAll('.video-row');
@@ -439,6 +518,7 @@ function getCircularIndex(index) {
   const total = document.querySelectorAll('#coverflowTrack .coverflow-item').length;
   return ((index % total) + total) % total;
 }
+
 
 function updateCoverflow() {
   const track = document.getElementById('coverflowTrack');
@@ -469,8 +549,6 @@ function updateCoverflow() {
   updateTrackInfo?.();
 }
 
-
-
 function moveCoverflow(direction) {
   currentVirtualIndex += direction;
   currentVideoIndex = getCircularIndex(currentVirtualIndex);
@@ -494,6 +572,7 @@ function selectVideoFromList(index) {
   if (currentVideoIndex === total - 1 && index === 0) return moveCoverflow(1);
   if (currentVideoIndex === 0 && index === total - 1) return moveCoverflow(-1);
   selectVideo(index);
+  updateCoverflow();
 }
 
 document.addEventListener('keydown', e => {
@@ -506,93 +585,236 @@ function initializeCoverflow() {
 }
 
 //--- Soporte YouTube móvil ---//
+//--- Soporte YouTube móvil ---//
 let ytPlayers = [];
 let ytAPIReady = false;
+let playersReadyCount = 0;
+let totalPlayers = 0;
+let volumeControlSetup = false;
 
 function initializeYouTubePlayers() {
   if (!isMobileDevice() || !ytAPIReady) return;
 
-  const iframes = document.querySelectorAll('#gallery iframe');
+  // Selector correcto para los iframes en el coverflow
+  const iframes = document.querySelectorAll('#gallery .coverflow-item iframe');
   ytPlayers = [];
+  playersReadyCount = 0;
+  totalPlayers = iframes.length;
+  
+  console.log(`🎬 Inicializando ${totalPlayers} players de YouTube`);
 
   iframes.forEach((iframe, index) => {
     const videoId = iframe.src.match(/embed\/([^?]+)/)?.[1];
-    if (videoId) {
-      const playerId = `youtube-player-${index}`;
-      iframe.id = playerId;
+    if (!videoId) {
+      totalPlayers--;
+      return;
+    }
+
+    const playerId = `youtube-player-${index}`;
+    iframe.id = playerId;
+
+    // Actualizar src del iframe con parámetros necesarios
+    iframe.src = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}&controls=1&modestbranding=1`;
+
+    // Inicializar posición del array
+    ytPlayers[index] = null;
+
+    try {
       ytPlayers[index] = new YT.Player(playerId, {
         videoId,
         playerVars: {
           enablejsapi: 1,
-          origin: window.location.origin
+          origin: window.location.origin,
+          controls: 1,
+          modestbranding: 1,
+          rel: 0
         },
         events: {
-          onReady: event => ytPlayers[index] = event.target
+          onReady: event => {
+            console.log(`✅ Player ${index} listo para video: ${videoId}`);
+            ytPlayers[index] = event.target;
+            playersReadyCount++;
+
+            // Aplicar volumen inicial si existe el slider
+            const slider = document.getElementById("galleryVolumeControl");
+            if (slider) {
+              const vol = parseInt(slider.value);
+              try {
+                event.target.setVolume(vol);
+                console.log(`🎚 Volumen inicial aplicado a player ${index}:`, vol);
+              } catch (e) {
+                console.warn(`⚠️ No se pudo aplicar volumen a player ${index}`, e);
+              }
+            }
+
+            // Verificar si todos los players están listos
+            if (playersReadyCount === totalPlayers && !volumeControlSetup) {
+              console.log(`🎉 Todos los players (${totalPlayers}) están listos`);
+              setupGalleryVolumeControl();
+            }
+          },
+          onError: event => {
+            console.error(`❌ Error en player ${index}:`, event.data);
+          }
         }
       });
+    } catch (e) {
+      console.error(`❌ Error creando player ${index}:`, e);
+      totalPlayers--;
     }
   });
+
+  // Si no hay iframes, configurar el control de volumen inmediatamente
+  if (totalPlayers === 0) {
+    setupGalleryVolumeControl();
+  }
 }
 
+// Cargar API de YouTube solo en móviles
 if (isMobileDevice() && !window.YT) {
   const tag = document.createElement('script');
   tag.src = 'https://www.youtube.com/iframe_api';
   const firstScript = document.getElementsByTagName('script')[0];
   firstScript.parentNode.insertBefore(tag, firstScript);
-  window.onYouTubeIframeAPIReady = () => {
-    ytAPIReady = true;
-    initializeYouTubePlayers();
-  };
 }
 
+// Callback unificado para cuando la API esté lista
+window.onYouTubeIframeAPIReady = () => {
+  console.log('🚀 YouTube API lista');
+  ytAPIReady = true;
+  initializeYouTubePlayers();
+};
+
 // Control de volumen YouTube móvil
-const galleryVolumeSlider = document.getElementById("galleryVolumeControl");
-if (galleryVolumeSlider) {
-  galleryVolumeSlider.addEventListener("input", function () {
-    const volume = parseInt(this.value);
-    if (isMobileDevice()) {
-      ytPlayers.forEach(player => player?.setVolume?.(volume));
-    } else {
-      document.querySelectorAll("#gallery iframe").forEach(iframe => {
+function isGalleryVisible() {
+  const gallery = document.getElementById("gallery");
+  return gallery && gallery.classList.contains("show") && getComputedStyle(gallery).display !== "none";
+}
+
+function setupGalleryVolumeControl() {
+  if (volumeControlSetup) return; // Evitar setup múltiple
+  
+  const slider = document.getElementById("galleryVolumeControl");
+  if (!slider) {
+    console.warn('⚠️ Slider de volumen no encontrado');
+    return;
+  }
+
+  // Remover listener previo si existe
+  slider.removeEventListener("input", handleVolumeChange);
+  
+  // Agregar nuevo listener
+  slider.addEventListener("input", handleVolumeChange);
+  volumeControlSetup = true;
+  console.log('🎚 Control de volumen configurado correctamente');
+}
+
+function handleVolumeChange() {
+  const volume = parseInt(this.value);
+  if (!isGalleryVisible()) return;
+
+  console.log(`🔊 Intentando cambiar volumen a: ${volume}`);
+
+  if (isMobileDevice()) {
+    let successCount = 0;
+    let attemptCount = 0;
+    
+    ytPlayers.forEach((player, i) => {
+      if (player && typeof player.setVolume === "function") {
+        attemptCount++;
+        try {
+          player.setVolume(volume);
+          successCount++;
+          console.log(`🔊 Volumen actualizado en móvil para player ${i}:`, volume);
+        } catch (e) {
+          console.warn(`⚠️ Error al actualizar volumen en player ${i}:`, e);
+        }
+      } else {
+        console.warn(`⚠️ Player ${i} no válido o sin función setVolume`);
+      }
+    });
+    
+    console.log(`📊 Volumen aplicado a ${successCount}/${attemptCount} players activos`);
+  } else {
+    // Fallback para escritorio
+    document.querySelectorAll("#gallery .coverflow-item iframe").forEach((iframe, index) => {
+      try {
         iframe.contentWindow.postMessage(JSON.stringify({
           event: "command",
           func: "setVolume",
           args: [volume]
         }), "*");
-      });
-    }
-  });
+        console.log(`🖥 Volumen enviado a iframe ${index} (escritorio)`);
+      } catch (e) {
+        console.warn(`⚠️ Error enviando volumen a iframe ${index}:`, e);
+      }
+    });
+  }
 }
 
-// Swipe táctil para coverflow
-let touchStartX = 0;
-let touchEndX = 0;
-
-document.addEventListener('touchstart', e => {
-  touchStartX = e.changedTouches[0].screenX;
-});
-
-document.addEventListener('touchend', e => {
-  touchEndX = e.changedTouches[0].screenX;
-  handleSwipe();
-});
-
-function handleSwipe() {
-  const distance = touchEndX - touchStartX;
-  if (Math.abs(distance) > 50) {
-    if (distance > 0) moveCoverflow(-1);
-    else moveCoverflow(1);
+// Funciones para integrar con selectVideo
+function reinitializePlayersAfterSelection() {
+  if (isMobileDevice() && ytAPIReady) {
+    console.log('🔄 Reinicializando players después de selección...');
+    setTimeout(() => {
+      volumeControlSetup = false; // Permitir nueva configuración
+      initializeYouTubePlayers();
+    }, 500);
   }
+}
+
+// Hook para selectVideo (agregar esto a tu función selectVideo existente)
+const originalSelectVideo = window.selectVideo;
+if (originalSelectVideo) {
+  window.selectVideo = function(index) {
+    originalSelectVideo(index);
+    reinitializePlayersAfterSelection();
+  };
+}
+
+// Hook para selectVideoFromList (agregar esto a tu función selectVideoFromList existente)
+const originalSelectVideoFromList = window.selectVideoFromList;
+if (originalSelectVideoFromList) {
+  window.selectVideoFromList = function(index) {
+    originalSelectVideoFromList(index);
+    reinitializePlayersAfterSelection();
+  };
 }
 
 // Reforzar inicialización de players al actualizar coverflow
-const originalUpdateCoverflow = updateCoverflow;
-updateCoverflow = function () {
-  originalUpdateCoverflow();
+const originalUpdateCoverflow = window.updateCoverflow;
+if (originalUpdateCoverflow) {
+  window.updateCoverflow = function () {
+    originalUpdateCoverflow();
+    if (isMobileDevice() && ytAPIReady) {
+      setTimeout(() => {
+        volumeControlSetup = false;
+        initializeYouTubePlayers();
+      }, 100);
+    }
+  };
+}
+
+// Inicialización cuando se abre la ventana
+function initializeGalleryOnOpen() {
   if (isMobileDevice() && ytAPIReady) {
-    setTimeout(initializeYouTubePlayers, 100);
+    setTimeout(() => {
+      volumeControlSetup = false;
+      initializeYouTubePlayers();
+    }, 200);
   }
-};
+}
+
+// Función de respaldo para asegurar inicialización
+function ensureYouTubeInitialization() {
+  if (isMobileDevice() && ytAPIReady && isGalleryVisible() && !volumeControlSetup) {
+    console.log('🔧 Ejecutando inicialización de respaldo...');
+    initializeYouTubePlayers();
+  }
+}
+
+// Ejecutar verificación cada 2 segundos si es necesario
+setInterval(ensureYouTubeInitialization, 2000);
 
 
 //________________________________________________________________________________________________//

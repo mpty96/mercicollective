@@ -2319,7 +2319,7 @@ body {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height: 50px; /* Altura fija para consistencia */
+  height: 50px;
   padding: 8px 15px;
   gap: 15px;
   flex-wrap: nowrap;
@@ -2348,7 +2348,7 @@ body {
 }
 
 .itunes-time-volume {
-display: flex;
+  display: flex;
   align-items: center;
   flex-direction: row;
   margin-right: 30px;
@@ -2376,9 +2376,9 @@ display: flex;
   border-radius: 11px;
 }
 
-/* COVERFLOW OPTIMIZADO - La parte más importante */
+/* COVERFLOW OPTIMIZADO - Corregido para móvil */
 .gallery-coverflow {
-  height: 45vh; /* Altura fija para mejor control */
+  height: 45vh;
   padding: 15px 0;
   overflow: hidden;
   position: relative;
@@ -2394,25 +2394,24 @@ display: flex;
   width: 100%;
   height: 100%;
   position: relative;
-  perspective: 1200px; /* Aumentado para mejor efecto 3D */
+  perspective: 1200px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* TRACK - Centrado perfecto */
 .coverflow-track {
-  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Suavizado mejorado */
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   gap: 34px;
   transform-style: preserve-3d;
   will-change: transform;
   height: 100%;
 }
 
-/* ITEMS - Dimensiones y proporciones optimizadas */
+/* ITEMS - Dimensiones corregidas para contexto de ventana */
 .coverflow-item {
-  flex: 0 0 75vw; /* Ligeramente más grande para mejor visualización */
-  max-width: 75vw;
+  flex: 0 0 calc(75% - 40px); /* Cambiado de 75vw a 75% del contenedor */
+  max-width: calc(75% - 40px);
   height: auto;
   transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
               opacity 0.6s ease,
@@ -2422,10 +2421,11 @@ display: flex;
   cursor: pointer;
 }
 
-/* IFRAMES - Proporciones exactas 16:9 */
+/* IFRAMES - Proporciones ajustadas al contexto */
 .coverflow-item iframe {
   width: 100%;
-  height: calc(75vw * 9 / 16); /* Proporción 16:9 perfecta */
+  height: calc((100vw * 0.98 * 0.75 - 40px) * 9 / 16); /* Calculado basado en el ancho de la ventana */
+  max-height: 35vh; /* Límite máximo para evitar overflow */
   border-radius: 12px;
   border: 2px solid rgba(255,255,255,0.1);
   box-shadow: 
@@ -2435,7 +2435,7 @@ display: flex;
   transition: box-shadow 0.3s ease;
 }
 
-/* ESTADOS DEL COVERFLOW - Efectos 3D mejorados */
+/* ESTADOS DEL COVERFLOW */
 .coverflow-item.center {
   transform: scale(1.05) translateZ(50px);
   opacity: 1;
@@ -2473,7 +2473,7 @@ display: flex;
   filter: brightness(0.6);
 }
 
-/* REFLECTIONS - Mejorados */
+/* REFLECTIONS */
 .reflection {
   position: absolute;
   top: 100%;
@@ -2494,7 +2494,7 @@ display: flex;
   opacity: 0.6;
 }
 
-/* BOTONES DE NAVEGACIÓN - Optimizados para touch */
+/* BOTONES DE NAVEGACIÓN */
 .coverflow-nav {
   width: 45px;
   height: 45px;
@@ -2533,14 +2533,14 @@ display: flex;
   right: 15px;
 }
 
-/* Lista de videos debajo */
+/* Lista de videos */
 .video-title-list {
   background: #fff;
   overflow-y: auto;
   flex: 1;
+  min-height: 0; /* Importante para que funcione el scroll */
 }
 
-/* Corrección 4: alineación perfecta con corte de texto */
 .video-list-header, .video-row {
   display: flex;
   align-items: center;
@@ -2558,7 +2558,6 @@ display: flex;
   white-space: nowrap;
 }
 
-/* Ajustar proporciones específicas */
 .header-cell.name, .row-cell.name {
   flex: 2;
 }
@@ -2585,7 +2584,36 @@ display: flex;
 
 /* MEJORAS DE RENDIMIENTO */
 .coverflow-item iframe {
-  transform: translateZ(0); /* Forzar aceleración de hardware */
+  transform: translateZ(0);
+}
+
+/* Media queries para ajustes finos en móvil */
+@media (max-width: 768px) {
+  .coverflow-item {
+    flex: 0 0 calc(85% - 40px);
+    max-width: calc(85% - 40px);
+  }
+  
+  .coverflow-item iframe {
+    height: calc((100vw * 0.98 * 0.85 - 40px) * 9 / 16);
+    max-height: 30vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-coverflow {
+    height: 40vh;
+  }
+  
+  .coverflow-item iframe {
+    max-height: 25vh;
+  }
+  
+  .coverflow-nav {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    }
   }
 }
 
@@ -2858,6 +2886,13 @@ display: flex;
   }
 }
 
+@media screen and (max-width: 768px) {
+  .mac-window:not(.show) {
+    pointer-events: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+}
 
 
 
