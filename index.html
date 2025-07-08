@@ -4,10 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MERCI</title>
-  <script src="script2.js?v=2.0.4" defer></script>
+  <script src="script2.js?v=2.0.5" defer></script>
+
   <script src="https://w.soundcloud.com/player/api.js"></script>
+
   <script src="https://www.youtube.com/iframe_api"></script>
-  <link rel="stylesheet" href="styles.css?v=2.0.4">
+
+  <link rel="stylesheet" href="styles.css?v=2.0.5">
+
+  <link rel="icon" type="image/png" href="imagenes/mercimetalic.png">
 </head>
 <body >
   <div id="loadingScreen">
@@ -39,7 +44,7 @@
   <div class="apple-window-body">
     <img src="imagenes/mercimetalic.png" alt="Apple Logo" class="login-logo" />
     <h1>Merci WebOS</h1>
-    <p class="version">Version 1.0.1</p>
+    <p class="version">Version 1.0.2</p>
 
     <!-- Input de usuario -->
     <input type="text" id="username" placeholder="Nombre de usuario" class="login-input" />
@@ -105,85 +110,104 @@
 <!---------------------------------------------------------------------------------------------------->
 
 <!----------------------------------------- Ventana Merch -------------------------------------------->
+<!----------------------------------------- Ventana Merch --------------------------------------------> 
 <div class="mac-window dark" id="merch">
-  <div class="mac-window-header">
-    <div class="window-buttons">
-      <span class="btn red" onclick="handleRedButton()">X</span>
-      <span class="btn yellow"></span>
-      <span class="btn green"></span>
-    </div>
-    <span class="window-title">Merch</span>
-  </div>
-  <div class="mac-window-content">
-     <img src="imagenes/cart.png" alt="Cart Icon" loading="eager" class="cart-icon" onclick="openWindow('shoppingCart')" />
-    
-    <!-- Vista Lista de Productos -->
-    <div class="merch-list" id="merchList">
-      <!-- Polera 1 -->
-      <div class="merch-item">
-        <h3>FREE LOHAN WHITE TEE</h3>
-        <video autoplay loop muted playsinline class="merch-video slow-video" 
-          data-product='{
-          "title": "Lindsay Lohan White Tee",
-          "price": "$26.990 CLP",
-          "main": "polera1_blanca.mp4",
-          "thumbnails": ["polera1_blanca.mp4", "polera2.jpg", "polera3.jpg"]}'>
-          <source src="imagenes/polera1_blanca.mp4" type="video/mp4">
-          </video>
-        <h4>$26.990 CLP</h4>
-        <button onclick="openMerchDetail({
-               title: 'Lindsay Lohan White Tee',
-               price: '$26.990 CLP',
-               main: 'polera1_blanca.mp4',
-               thumbnails: ['polera1_blanca.mp4', 'polera2.jpg', 'polera3.jpg']
-             })">BUY</button>
-      </div>
-
-      <!-- Polera 2 -->
-      <div class="merch-item">
-        <h3>FREE LOHAN BLACK TEE</h3>
-        <video autoplay loop muted playsinline class="merch-video slow-video" 
-          data-product='{
-          "title": "Lindsay Lohan White Tee",
-          "price": "$26.990 CLP",
-          "main": "polera1_negra.mp4",
-          "thumbnails": ["polera1_negra.mp4", "polera2.jpg", "polera3.jpg"]}'>
-          <source src="imagenes/polera1_negra.mp4" type="video/mp4">
-          </video>
-        <h4>$26.990 CLP</h4>
-        <button onclick="openMerchDetail({
-               title: 'Lindsay Lohan Black Tee',
-               price: '$26.990 CLP',
-               main: 'polera1_negra.mp4',
-               thumbnails: ['polera1_negra.mp4', 'polera4.jpg', 'weon.jpeg']
-             })">BUY</button>
-      </div>
-    </div>
-
-    <!-- Vista Detalles del Producto -->
-    <div class="merch-detail-container" id="merchDetail" style="display:none;">
-      <img src="imagenes/back.png" loading="eager" alt="Back Icon" class="back-icon" onclick="handleRedButton('merchDetail')" />
-      <div class="merch-main-view">
-        <video id="mainMerchImage" autoplay loop muted playsinline></video>
-        <h3 id="merchTitle">Titulo</h3>
-        <h4 id="merchPrice">Precio</h4>
-        <div class="size-selector">
-          <label for="size">Talla:</label>
-          <select id="size">
-            <option value="S">S</option>
-            <option value="M">M</option>
-            <option value="L">L</option>
-            <option value="XL">XL</option>
-          </select>
+    <div class="mac-window-header">
+        <div class="window-buttons">
+            <span class="btn red" onclick="handleRedButton()">X</span>
+            <span class="btn yellow"></span>
+            <span class="btn green"></span>
         </div>
-        <button>BUY</button>
-      </div>
-
-      <div class="merch-thumbs" id="merchThumbs" loading="eager">
-        <!-- Se insertan dinámicamente -->
-      </div>
+        <span class="window-title">Merch</span>
     </div>
-  </div>
+    <div class="mac-window-content">
+      <div class="cart-icon-container">
+        <img src="imagenes/cart.png" alt="Cart Icon" loading="eager" class="cart-icon" onclick="openWindow('shoppingCart')" />
+        <div id="cartNotificationBadge" class="cart-notification-badge hidden">0</div>
+
+        <!-- Vista Lista de Productos -->
+        <div class="merch-list" id="merchList">
+            <!-- Polera 1 -->
+            <div class="merch-item">
+                <h3>FREE LOHAN WHITE TEE</h3>
+                <video 
+                    class="merch-gif" 
+                    autoplay 
+                    muted 
+                    loop 
+                    playsinline
+                    onclick="openMerchDetail({ 
+                        title: 'FREE LOHAN WHITE TEE', 
+                        price: '$26.990 CLP', 
+                        main: 'polera1_blanca.webm', 
+                        thumbnails: ['polera1_blanca.webm', 'polera2.jpg', 'polera3.jpg'] })">
+                    <source src="imagenes/polera1_blanca.webm" type="video/webm">
+                    Tu navegador no soporta videos HTML5.
+                </video>
+                <h4>$26.990 CLP</h4>
+                <button onclick="openMerchDetail({ 
+                    title: 'FREE LOHAN WHITE TEE', 
+                    price: '$26.990 CLP', 
+                    main: 'polera1_blanca.webm', 
+                    thumbnails: ['polera1_blanca.webm', 'polera2.jpg', 'polera3.jpg'] 
+                })">BUY</button>
+            </div>
+            
+            <!-- Polera 2 -->
+            <div class="merch-item">
+                <h3>FREE LOHAN BLACK TEE</h3>
+                <video 
+                    class="merch-gif" 
+                    autoplay 
+                    muted 
+                    loop 
+                    playsinline
+                    onclick="openMerchDetail({ 
+                        title: 'FREE LOHAN BLACK TEE', 
+                        price: '$26.990 CLP', 
+                        main: 'polera1_negra.webm', 
+                        thumbnails: ['polera1_negra.webm', 'polera4.jpg', 'weon.jpeg'] 
+                    })"
+                >
+                    <source src="imagenes/polera1_negra.webm" type="video/webm">
+                    Tu navegador no soporta videos HTML5.
+                </video>
+                <h4>$26.990 CLP</h4>
+                <button onclick="openMerchDetail({ 
+                    title: 'FREE LOHAN BLACK TEE', 
+                    price: '$26.990 CLP', 
+                    main: 'polera1_negra.webm', 
+                    thumbnails: ['polera1_negra.webm', 'polera4.jpg', 'weon.jpeg'] 
+                })">BUY</button>
+            </div>
+        </div>
+        
+        <!-- Vista Detalles del Producto -->
+        <div class="merch-detail-container" id="merchDetail" style="display:none;">
+            <img src="imagenes/back.png" loading="eager" alt="Back Icon" class="back-icon" onclick="handleRedButton('merchDetail')" />
+            <div class="merch-main-view">
+                <div id="mainMerchImageContainer">
+                    <!-- El contenido se inserta dinámicamente (img o video) -->
+                </div>
+                <h3 id="merchTitle">Titulo</h3>
+                <h4 id="merchPrice">Precio</h4>
+                <div class="size-selector">
+                    <label for="size">Talla:</label>
+                    <select id="size">
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                    </select>
+                </div>
+                <button>BUY</button>
+            </div>
+            <div class="merch-thumbs" id="merchThumbs" loading="eager">
+                <!-- Se insertan dinámicamente -->
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 
 <!------------------------------------------- Ventana Social Media --------------------------------------------->

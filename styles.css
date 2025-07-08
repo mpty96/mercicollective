@@ -1265,6 +1265,8 @@ width: 700px;
   color: white;
 }
 
+/* Estilos para videos y GIFs - mantienen las mismas dimensiones */
+.merch-gif,
 .merch-video {
   width: 100%;
   height: auto;
@@ -1272,6 +1274,12 @@ width: 700px;
   box-shadow: 0 0 8px rgba(255,255,255,0.2);
   object-fit: cover;
   cursor: pointer;
+  /* Mejoras para calidad de video */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 /* Contenedor de detalles centrado */
@@ -1294,10 +1302,18 @@ width: 700px;
   color: white;
 }
 
-.merch-main-view img {
+/* Estilos para imágenes y videos en vista principal */
+.merch-main-view img,
+.merch-main-view video {
   max-width: 280px;
   border-radius: 10px;
   margin-bottom: 15px;
+  /* Mejoras para calidad de video */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .merch-main-view h3 {
@@ -1315,16 +1331,24 @@ width: 700px;
   gap: 10px;
 }
 
-.merch-thumbs img {
+/* Estilos para thumbnails - tanto imágenes como videos */
+.merch-thumbs img,
+.merch-thumbs video {
   width: 80px;
   height: auto;
   border-radius: 6px;
   cursor: pointer;
   border: 2px solid transparent;
   transition: border 0.3s;
+  /* Mejoras para calidad de video */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
-.merch-thumbs img:hover {
+.merch-thumbs img:hover,
+.merch-thumbs video:hover {
   border: 2px solid white;
 }
 
@@ -1387,6 +1411,76 @@ width: 700px;
   z-index: 10;
 }
 
+/* Badge de notificación del carrito */
+.cart-notification-badge {
+  position: absolute;
+  right: 6px;
+  top: 32px;
+  background-color: #ff4444;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  z-index: 10;
+  transition: all 0.3s ease;
+  border: 1px solid white; /* Borde blanco para mejor contraste */
+}
+
+/* Ocultar el badge cuando no hay items */
+.cart-notification-badge.hidden {
+  display: none;
+}
+
+/* Animación cuando se actualiza el badge */
+.cart-notification-badge.updated {
+  animation: badgePulse 0.4s ease-in-out;
+}
+
+/* Animación de pulso */
+@keyframes badgePulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+    box-shadow: 0 4px 8px rgba(255, 68, 68, 0.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Para números mayores a 99 */
+.cart-notification-badge.large-number {
+  width: 22px;
+  height: 18px;
+  border-radius: 9px;
+  font-size: 10px;
+}
+
+/* Responsividad para dispositivos móviles */
+@media (max-width: 768px) {
+  .cart-notification-badge {
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    top: -4px;
+    right: -4px;
+  }
+  
+  .cart-notification-badge.large-number {
+    width: 20px;
+    height: 16px;
+    font-size: 9px;
+  }
+}
+
 .cart-icon:hover {
   transform: scale(1.2);
   opacity: 1;
@@ -1422,6 +1516,11 @@ width: 700px;
   width: 80px;
   height: auto;
   border-radius: 4px;
+}
+
+.cart-item video:hover {
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
 }
 
 .cart-item-text {
@@ -1788,7 +1887,7 @@ position: fixed;
     align-items: center;
     width: 100%;
     max-width: 300px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 0, 0, 0.05);
     border-radius: 12px;
     padding: 20px;
     text-align: center;
