@@ -1210,6 +1210,12 @@ function openSocialWindow() {
   social.style.display = 'flex';
   setTimeout(() => social.classList.add('show'), 10);
   document.getElementById('icon-close-safari').style.display = 'flex';
+  
+  // Iniciar reproducción de videos
+  const videos = social.querySelectorAll('video');
+  videos.forEach(video => {
+    video.play().catch(e => console.log('Error al reproducir video:', e));
+  });
 }
 
 function closeSocialWindow() {
@@ -1222,6 +1228,11 @@ function closeSocialWindow() {
   social.classList.remove('show');
   setTimeout(() => {
     social.style.display = 'none';
+    // Pausar videos al cerrar
+    const videos = social.querySelectorAll('video');
+    videos.forEach(video => {
+      video.pause();
+    });
   }, 300);
 
   document.body.style.backgroundImage = document.body.dataset.originalBg || "";
@@ -1233,6 +1244,14 @@ function closeSocialWindow() {
 function precargarFondos() {
   const fondoSocial = new Image();
   fondoSocial.src = "imagenes/socialmedia.webp";
+  
+  // Precargar videos
+  const videos = ['cd_yt.webm', 'cd_ig.webm', 'cd_soundcloud.webm'];
+  videos.forEach(videoSrc => {
+    const video = document.createElement('video');
+    video.src = `imagenes/${videoSrc}`;
+    video.preload = 'metadata';
+  });
 }
 
 window.addEventListener("load", precargarFondos);

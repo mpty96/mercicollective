@@ -991,10 +991,9 @@ opacity: 1;
   transform: scale(1);
 }
 
-
 #icon-close-safari{
   position: fixed;
-  top: 50px; /* ajusta según la altura deseada */
+  top: 50px;
   left: 20px;
   width: 60px;
   display: none;
@@ -1004,19 +1003,19 @@ opacity: 1;
 .social-icons {
   display: flex;
   justify-content: center;
-  gap: 60px;
+  gap: 10px;
   margin-bottom: 30px;
 }
 
-.social-icons img {
-  width: 64px;
-  height: 64px;
+.social-icons video {
+  width: 300px;
+  height: 300px;
   image-rendering: pixelated;
   cursor: pointer;
   transition: transform 0.2s;
 }
 
-.social-icons img:hover {
+.social-icons video:hover {
   transform: scale(1.2);
 }
 
