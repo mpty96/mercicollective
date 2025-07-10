@@ -112,13 +112,14 @@ body.loaded {
   margin-bottom: 20px;
   cursor: pointer;
   font-size: 13px;
+  position: relative;
 }
 
 .radar-disk img{
   width: 60px;
 }
 
-/*------------------------------ Contenedor general del Dock ------------------------------*/
+/*============================================== Contenedor general del Dock =================================*/
 .dock-wrapper {
   position: fixed;
   bottom: 0;
@@ -296,7 +297,7 @@ body.loaded {
   left: 50% !important;
 }
 
-/*--------------------- VENTANA INICIO DE SESIÖN -----------------*/
+/*========================================== VENTANA INICIO DE SESIÖN ======================================*/
 .apple-icon {
   height: 16px;
   width: 16px;
@@ -326,14 +327,14 @@ body.loaded {
   overflow: hidden;
   z-index: 9999;
   opacity: 0;
-  transform: scale(0.8) translate(-50%, -50%); /* Centrado perfecto */;
+  transform: scale(0.8) translate(-50%, -50%); 
   transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   visibility: hidden;
 }
 
 #appleMenu.show {
 opacity: 1;
-  transform: scale(1) translate(-50%, -50%); /* Mantener centrado */
+  transform: scale(1) translate(-50%, -50%); 
   visibility: visible;
   pointer-events: auto;
 }
@@ -342,7 +343,7 @@ opacity: 1;
 #appleMenu .login-content {
   opacity: 0;
   transform: translateY(10px);
-  transition: all 0.4s ease 0.2s; /* Delay de 0.2s */
+  transition: all 0.4s ease 0.2s; 
 }
 
 .apple-window-header {
@@ -402,7 +403,6 @@ opacity: 1;
   border-radius: 4px;
   font-family: inherit;
   box-sizing: border-box;
-  /* Mantener el mismo font-size siempre */
   font-size: inherit;
   letter-spacing: normal;
   font-weight: normal;
@@ -462,7 +462,7 @@ opacity: 1;
   transition: opacity 0.2s ease;
 }
 
-/* Línea diagonal para el ojo tachado - CENTRADA */
+/* Línea diagonal para el ojo tachado  */
 .eye-slash {
   position: absolute;
   top: 50%;
@@ -513,6 +513,131 @@ opacity: 1;
   color: #888;
   margin-top: 20px;
   line-height: 1.4;
+}
+
+
+/*=============================================== VENTANA USUARIOS EN LINEA ======================================*/
+#onlineTitle {
+    font-weight: 600;
+    color: #4a90e2;
+    margin: 12px 0 1px 20px;
+    font-size: 15px;
+  }
+
+  ul.messenger-style {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  ul.messenger-style li {
+    display: flex;
+    align-items: center;
+    padding: 8px 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  ul.messenger-style li:hover {
+    background-color: #f5f5f5;
+  }
+
+  ul.messenger-style img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    margin-right: 14px;
+    object-fit: cover;
+  }
+
+  #activeUsers {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e0e0e0;
+    min-width: 280px;
+    max-width: 350px;
+    height: 600px;
+  }
+
+  #activeUsersContent {
+    padding: 0;
+    background: #ffffff;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  #activeUsersContent::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #activeUsersContent::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+
+  #activeUsersContent::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+  }
+
+  #activeUsersContent::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+
+  #userCountBadge {
+  position: absolute;
+  right: 5px;  /* Ajustado para estar sobre el icono */
+  top: 5px;    /* Ajustado para estar en la esquina superior derecha del icono */
+  background-color: #ff4444;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  z-index: 10;
+  transition: all 0.3s ease;
+  border: 1px solid white;
+}
+
+/* Ocultar el badge cuando no hay items */
+#userCountBadge.hidden {
+  display: none;
+}
+
+/* Animación cuando se actualiza el badge */
+#userCountBadge.updated {
+  animation: badgePulse 0.4s ease-in-out;
+}
+
+#userCountBadge.large-number {
+  width: 22px;
+  height: 18px;
+  border-radius: 9px;
+  font-size: 10px;
+}
+  
+
+  @keyframes badgePulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+    background-color: #ff6666;
+  }
+  100% {
+    transform: scale(1);
+    background-color: #ff4444;
+  }
 }
 
 
@@ -907,10 +1032,10 @@ opacity: 1;
 .retro-contact-header {
   display: flex;
   justify-content: flex-start;
-  align-items: center;       /* ✅ Centra verticalmente el botón */
+  align-items: center;       
   padding: 4px 6px;
   background: #999;
-  height: 22px;              /* ✅ Controla altura total del header */
+  height: 22px;              
   border-bottom: 2px solid #333;
 }
 
@@ -1710,6 +1835,12 @@ position: fixed;
   .disk img {
     width: 60px;
   }
+  
+  .radar-disk{
+    margin-bottom: 15px;
+    margin-left: 7px;
+    font-size: 13px;
+  }
 
   .disk p {
     font-size: 13px;
@@ -1867,6 +1998,64 @@ position: fixed;
 }
 
 
+/*====================================== USUARIOS ACTIVOS =====================================*/
+#onlineTitle {
+  font-weight: 600;
+  color: #4a90e2;
+  margin: 8px 0 1px 12px;
+  font-size: 14px;
+}
+
+#activeUsers .window-title {
+  display: none;
+}
+
+
+ul.messenger-style {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul.messenger-style li {
+  display: flex;
+  align-items: center;
+  padding: 6px 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13px;
+  color: #666;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+ul.messenger-style li:hover {
+  background-color: #f5f5f5;
+}
+
+ul.messenger-style img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: 12px;
+  object-fit: cover;
+}
+
+/* Estilos para la ventana principal */
+#activeUsers {
+  background: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+  height: 60vh !important;
+  width: 60vw !important;
+}
+
+#activeUsersContent {
+  padding: 0;
+  background: #ffffff;
+}
+
+
 /*========================================= CONTACTO ====================================*/
   .genie-window {
   width: 90vw;
@@ -1958,7 +2147,7 @@ position: fixed;
 
   .merch-banner {
   position: absolute;
-  top: 30px; /* justo bajo el .mac-window-header (ajústalo si es necesario) */
+  top: 30px; 
   left: 0;
   width: 100%;
   background-color: #ff0000;
@@ -1967,9 +2156,9 @@ position: fixed;
   font-weight: bold;
   font-size: 10px;
   padding: 1px 1px;
-  z-index: 12; /* encima del fondo pero debajo del modal o botones si fuera necesario */
+  z-index: 12; 
   box-sizing: border-box;
-  pointer-events: none; /* no bloquea clicks */
+  pointer-events: none; 
 }
 
   .cart-icon {
@@ -2070,7 +2259,6 @@ position: fixed;
     position: relative;
   }
 
-  /* Icono de back mejorado */
   .back-icon {
     position: absolute;
     top: 2vh;
@@ -2208,9 +2396,9 @@ position: fixed;
     transition: all 0.3s ease;
   }
 
-  .merch-main-view img[src*="tabla_blanca.png"],
-  .merch-main-view img[src*="tabla_negra.png"] {
-    width: 60vw;
+  .merch-main-view img[src*="freelohan_blanca_tabla.png"],
+  .merch-main-view img[src*="freelohan_negra_tabla.png"] {
+    width: 73vw;
     height: auto;
     max-width: none;
   }

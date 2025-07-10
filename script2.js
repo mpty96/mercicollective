@@ -1091,6 +1091,3 @@ function cerrarMensaje() {
   document.getElementById('mensaje-envio').style.display = 'none';
 }
 
-
-
-//-------------------------------------------- USUARIOS ACTIVOS ------------------------------------//

@@ -9,13 +9,13 @@
         src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
 </script>
   <!--SCRIPT.JS-->
-  <script src="script2.js?v=2.1.4" defer></script>
+  <script src="script2.js?v=2.1.5" defer></script>
   <!--SCRIPT SOUNDCLOUD-->
   <script src="https://w.soundcloud.com/player/api.js"></script>
   <!--SCRIPT YOUTUBE-->
   <script src="https://www.youtube.com/iframe_api"></script>
   <!--STYLES.CSS-->
-  <link rel="stylesheet" href="styles.css?v=2.1.4">
+  <link rel="stylesheet" href="styles.css?v=2.1.5">
   <link rel="icon" type="image/png" href="imagenes/mercimetalic.png">
 </head>
 <body >
@@ -82,8 +82,9 @@
 
     <div class="radar-disk" id="icon-users" onclick="openWindow('activeUsers')">
       <img src="imagenes/usuarios.png" alt="Usuarios Activos" />
+      <div class="cart-notification-badge hidden" id="userCountBadge">0</div>
       <p>Usuarios</p>
-      <p>activos</p>
+      <p>en linea</p>
     </div>
   </main>
 
@@ -121,14 +122,15 @@
 <div class="mac-window" id="activeUsers">
   <div class="mac-window-header">
     <div class="window-buttons">
-      <span class="btn red" onclick="closeWindow('activeUsers')"></span>
+      <span class="btn red" onclick="closeWindow('activeUsers')">X</span>
       <span class="btn yellow"></span>
       <span class="btn green"></span>
     </div>
     <div class="window-title">Usuarios Activos</div>
   </div>
   <div class="mac-window-content" id="activeUsersContent">
-    <ul id="userList"></ul>
+    <div id="onlineTitle">En línea (X)</div>
+    <ul id="userList" class="messenger-style"></ul>
   </div>
 </div>
 
@@ -164,13 +166,13 @@
                         title: 'FREE LOHAN WHITE TEE', 
                         price: '$26.990 CLP', 
                         main: 'freelohan_blanca1.gif', 
-                        thumbnails: ['freelohan_blanca1.gif', 'freelohan_blanca_frente.png', 'freelohan_blanca_espalda.png', 'tabla_blanca.png'] })">
+                        thumbnails: ['freelohan_blanca1.gif', 'freelohan_blanca_frente.png', 'freelohan_blanca_espalda.png', 'freelohan_blanca_tabla.png'] })">
                 <h4>$26.990 CLP</h4>
                 <button onclick="openMerchDetail({ 
                     title: 'FREE LOHAN WHITE TEE', 
                     price: '$26.990 CLP', 
                     main: 'freelohan_blanca1.gif', 
-                    thumbnails: ['freelohan_blanca1.gif', 'freelohan_blanca_frente.png', 'freelohan_blanca_espalda.png', 'tabla_blanca.png'] 
+                    thumbnails: ['freelohan_blanca1.gif', 'freelohan_blanca_frente.png', 'freelohan_blanca_espalda.png', 'freelohan_blanca_tabla.png'] 
                 })">BUY</button>
             </div>
             
@@ -185,7 +187,7 @@
                         title: 'FREE LOHAN BLACK TEE', 
                         price: '$26.990 CLP', 
                         main: 'freelohan_negra.gif', 
-                        thumbnails: ['freelohan_negra.gif', 'freelohan_negra_frente.png', 'freelohan_negra_espalda.png', 'tabla_negra.png'] 
+                        thumbnails: ['freelohan_negra.gif', 'freelohan_negra_frente.png', 'freelohan_negra_espalda.png', 'freelohan_negra_tabla.png'] 
                     })"
                 >
                 <h4>$26.990 CLP</h4>
@@ -193,7 +195,7 @@
                     title: 'FREE LOHAN BLACK TEE', 
                     price: '$26.990 CLP', 
                     main: 'freelohan_negra.gif', 
-                    thumbnails: ['freelohan_negra.gif', 'freelohan_negra_frente.png', 'freelohan_negra_espalda.png', 'tabla_negra.png'] 
+                    thumbnails: ['freelohan_negra.gif', 'freelohan_negra_frente.png', 'freelohan_negra_espalda.png', 'freelohan_negra_tabla.png'] 
                 })">BUY</button>
             </div>
         </div>
@@ -528,6 +530,9 @@
    })();
 </script>
   
+
+
+<!--------------------------------------------- SCRIPT USUARIOS ACTIVOS ----------------------------------->
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getDatabase, ref, onValue, set, remove, onDisconnect } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
@@ -563,20 +568,70 @@
   function updateUserList() {
     const userList = document.getElementById('userList');
     const usersRef = ref(db, 'activeUsers');
+    const title = document.getElementById('onlineTitle');
+    const badge = document.getElementById('userCountBadge');
 
     onValue(usersRef, (snapshot) => {
       const users = snapshot.val();
       userList.innerHTML = '';
+      let userCount = 0; // Inicializar en 0
 
       if (users) {
-        Object.keys(users).forEach(username => {
+        const userKeys = Object.keys(users);
+        userCount = userKeys.length; // ESTA LÍNEA FALTABA - Asignar el conteo real
+        title.textContent = `En línea (${userCount})`;
+
+        userKeys.forEach(username => {
           const li = document.createElement('li');
           li.innerHTML = `<img src="imagenes/online_user.png" style="width:16px; margin-right:6px;">${username}`;
           userList.appendChild(li);
         });
+      } else {
+        userCount = 0; // Asegurar que sea 0 cuando no hay usuarios
+        title.textContent = `En línea (0)`;
       }
+      
+      // Actualizar el badge con el conteo correcto
+      updateUserCountBadge(userCount);
     });
   }
+
+  function updateUserCountBadge(count) {
+  const badge = document.getElementById('userCountBadge');
+  
+  if (!badge) return; // Si no existe el badge, salir
+  
+  if (count > 0) {
+    badge.textContent = count;
+    badge.classList.remove('hidden');
+    
+    // Agregar animación de actualización
+    badge.classList.add('updated');
+    setTimeout(() => {
+      badge.classList.remove('updated');
+    }, 400);
+    
+    // Aplicar estilo para números grandes
+    if (count > 99) {
+      badge.textContent = '99+';
+      badge.classList.add('large-number');
+    } else if (count > 9) {
+      badge.classList.add('large-number');
+    } else {
+      badge.classList.remove('large-number');
+    }
+  } else {
+    badge.classList.add('hidden');
+  }
+}
+
+// Función opcional para inicializar el badge al cargar la página
+function initializeUserCountBadge() {
+  const badge = document.getElementById('userCountBadge');
+  if (badge) {
+    badge.classList.add('hidden'); // Inicialmente oculto
+  }
+}
 
   // Llama esto al cargar la página
   updateUserList();
