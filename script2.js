@@ -1,6 +1,6 @@
-//________________________________________________________________________________________________//
-//----------------------------------- INICIO DE SESIÓN Y PANTALLA DE CARGA -----------------------------------//
-//________________________________________________________________________________________________//
+//_________________________________________________________________________________________________________//
+//----------------------------------- INICIO DE SESIÓN Y PANTALLA DE CARGA --------------------------------//
+//_________________________________________________________________________________________________________//
 
 window.addEventListener('load', () => {
   const loadingScreen = document.getElementById('loadingScreen');
@@ -72,6 +72,7 @@ function login() {
     document.body.classList.remove('apple-lockdown');
     // Agregar clase para mostrar el escritorio con efecto
     document.body.classList.add('loaded');
+    registerUser(username);
   }, 600); // Tiempo para que termine la animación de salida
 }
 
@@ -1089,3 +1090,40 @@ function mostrarMensaje(texto, exito = true) {
 function cerrarMensaje() {
   document.getElementById('mensaje-envio').style.display = 'none';
 }
+
+
+
+//-------------------------------------------- USUARIOS ACTIVOS ------------------------------------//
+const activeUsers = new Set();
+let currentUsername = '';
+
+function registerUser(username) {
+  currentUsername = username;
+  activeUsers.add(username);
+  updateUserList();
+  console.log(`[+] Usuario activo: ${username}`);
+}
+
+function unregisterUser() {
+  activeUsers.delete(currentUsername);
+  updateUserList();
+  console.log(`[-] Usuario salió: ${currentUsername}`);
+}
+
+function updateUserList() {
+  const userList = document.getElementById('userList');
+  if (!userList) return;
+  userList.innerHTML = '';
+  activeUsers.forEach(user => {
+    const li = document.createElement('li');
+    li.textContent = user;
+    userList.appendChild(li);
+  });
+}
+
+// Lógica para añadir usuario al iniciar sesión
+// ⚠️ Asegúrate que esta línea se llame luego de login():
+// registerUser(username);
+
+// También eliminamos el usuario si cierra la pestaña
+window.addEventListener('beforeunload', unregisterUser);
