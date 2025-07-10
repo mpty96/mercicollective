@@ -884,9 +884,9 @@ function updateCart() {
     // Determinar gif basado en el título del producto
     let gifSrc = '';
     if (item.title.includes('White')) {
-      gifSrc = 'polera1_blanca.gif';
+      gifSrc = 'freelohan_blanca.gif';
     } else if (item.title.includes('Black')) {
-      gifSrc = 'polera1_negra.gif';
+      gifSrc = 'freelohan_negra.gif';
     } else if (item.main) {
       gifSrc = item.main;
     }
