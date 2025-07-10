@@ -339,7 +339,6 @@ opacity: 1;
   pointer-events: auto;
 }
 
-/* Animación para elementos internos del appleMenu */
 #appleMenu .login-content {
   opacity: 0;
   transform: translateY(10px);
@@ -554,7 +553,7 @@ opacity: 1;
   }
 
   #activeUsers {
-    background: #ffffff;
+    background: #c4c4c4;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     border: 1px solid #e0e0e0;
@@ -565,7 +564,7 @@ opacity: 1;
 
   #activeUsersContent {
     padding: 0;
-    background: #ffffff;
+    background: #c4c4c4;
     max-height: 400px;
     overflow-y: auto;
   }
@@ -723,6 +722,7 @@ opacity: 1;
   color: #000000;
 }
 
+
 /*------------------------------------------ VENTANA GALERIA DE VIDEOS ----------------------------------------*/
 .mac-window#gallery {
   width: 1200px;
@@ -731,8 +731,6 @@ opacity: 1;
   flex-direction: column;
 }
 
-
-/* Barra superior de Movies */
 .itunes-controls {
   height: 60px;
   background: linear-gradient(to bottom, #f0f0f0, #d8d8d8);
@@ -744,7 +742,6 @@ opacity: 1;
   gap: 10px;
 }
 
-/* Columna izquierda */
 .itunes-controls-left {
   display: flex;
   align-items: center;
@@ -752,31 +749,26 @@ opacity: 1;
   justify-content: flex-start;
 }
 
-/* Columna central (icono) */
 .itunes-controls-center {
   display: flex;
   justify-content: center;
   flex: 1;
 }
 
-/* Columna derecha (search) */
 .itunes-controls-right {
   display: flex;
   justify-content: flex-end;
   flex: 1;
 }
 
-/* Volumen */
 .itunes-time-volume input {
   width: 120px;
 }
 
-/* Ícono */
 #mercimetalic {
   height: 350px;
 }
 
-/* Search */
 .search-box {
   width: 140px;
   height: 22px;
@@ -793,8 +785,6 @@ opacity: 1;
   border-radius: 2px;
 }
 
-
-/* Layout principal con sidebar */
 .itunes-main {
   flex: 1;
   overflow: visible;
@@ -898,7 +888,6 @@ opacity: 1;
   pointer-events: none;
 }
 
-/* Botones de navegación */
 .coverflow-nav {
   position: absolute;
   top: 50%;
@@ -913,7 +902,7 @@ opacity: 1;
   cursor: pointer;
   z-index: 10;
   transition: background 0.3s ease;
-  display: block; /* <-- asegúrate de esto */
+  display: block;
 }
 
 .coverflow-nav:hover {
@@ -991,7 +980,6 @@ opacity: 1;
 .row-cell.album { flex: 1.5; }
 .row-cell.genre { flex: 1; }
 
-/* Footer con estadísticas */
 .itunes-footer {
   height: 20px;
   background: linear-gradient(to bottom, #e8e8e8, #d0d0d0);
@@ -1002,6 +990,7 @@ opacity: 1;
   font-size: 10px;
   color: #666;
 }
+
 
 /*========================================= VENTANA CONTACTO ======================================*/
 .retro-contact {
@@ -1067,7 +1056,7 @@ opacity: 1;
 
 #icon-close-contact {
   position: fixed;
-  top: 50px; /* ajusta según la altura deseada */
+  top: 50px; 
   left: 20px;
   width: 60px;
   display: none;
@@ -1134,6 +1123,7 @@ opacity: 1;
   text-align: center;
 }
 
+
 /*=========================================== SOCIAL MEDIA =========================================*/
 .fullscreen-window {
   position: fixed;
@@ -1184,8 +1174,6 @@ opacity: 1;
 .social-icons img:hover {
   transform: scale(1.2);
 }
-
-
 
 
 /* ========================================== SOUNDS ============================================ */
@@ -1300,7 +1288,7 @@ opacity: 1;
 .itunes-main-content {
   display: flex;
   flex: 1;
-  height: calc(100% - 100px); /* Resto del espacio después de top-controls */
+  height: calc(100% - 100px); 
 }
 
 /* Volumen y visualizador */
@@ -1339,7 +1327,6 @@ opacity: 1;
   box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
 }
 
-/* Sidebar (ya existente, se mantiene) */
 .itunes-sidebar {
   width: 140px;
   background: #d8d8d8;
@@ -1356,14 +1343,12 @@ opacity: 1;
   overflow-y: auto;
 }
 
-/* Lista de iframes de soundcloud */
 .soundcloud-list iframe {
   margin-bottom: 12px;
   border-radius: 6px;
   border: 1px solid #bbb;
 }
 
-/* Slider de volumen relleno blanco (visual) */
 #volumeControl {
   -webkit-appearance: none;
   appearance: none;
@@ -1389,9 +1374,6 @@ opacity: 1;
   margin-top: -1px;
 }
 
-
-
-
 /*============================================ CARRITO DE COMPRAS ==========================================*/
 #merch{
 width: 700px;
@@ -1403,9 +1385,16 @@ width: 700px;
   display: none;
 }
 
+  .merch-main-view img[src*="freelohan_blanca_tabla.png"],
+  .merch-main-view img[src*="freelohan_negra_tabla.png"] {
+    width: 490px;
+    height: auto;
+    max-width: none;
+  }
+
 .merch-banner {
   position: absolute;
-  top: 35px; /* justo bajo el .mac-window-header (ajústalo si es necesario) */
+  top: 35px; 
   left: 0;
   width: 100%;
   background-color: #ff0000;
@@ -1414,9 +1403,9 @@ width: 700px;
   font-weight: bold;
   font-size: 15px;
   padding: 1px 1px;
-  z-index: 12; /* encima del fondo pero debajo del modal o botones si fuera necesario */
+  z-index: 12; 
   box-sizing: border-box;
-  pointer-events: none; /* no bloquea clicks */
+  pointer-events: none;
 }
 
 .merch-content-column {
@@ -1485,12 +1474,10 @@ width: 700px;
   color: white;
 }
 
-/* Estilos para imágenes y videos en vista principal */
 .merch-main-view img {
   max-width: 280px;
   border-radius: 10px;
   margin-bottom: 30px;
-  /* Mejoras para calidad de video */
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
   backface-visibility: hidden;
@@ -1521,7 +1508,6 @@ width: 700px;
   cursor: pointer;
   border: 2px solid transparent;
   transition: border 0.3s;
-  /* Mejoras para calidad de video */
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
   backface-visibility: hidden;
@@ -1580,7 +1566,7 @@ width: 700px;
   width: 30px;
   height: 30px;
   cursor: pointer;
-  filter: brightness(0) invert(1); /* lo deja blanco si es PNG negro */
+  filter: brightness(0) invert(1); 
   opacity: 0.8;
   transition: transform 0.2s ease, opacity 0.2s ease;
   z-index: 10;
@@ -1593,7 +1579,7 @@ width: 700px;
   left: 20px;
   height: 30px;
   cursor: pointer;
-  filter: brightness(0) invert(1); /* lo deja blanco si es PNG negro */
+  filter: brightness(0) invert(1); 
   opacity: 0.8;
   transition: transform 0.2s ease, opacity 0.2s ease;
   z-index: 10;
@@ -1617,7 +1603,7 @@ width: 700px;
   font-family: Arial, sans-serif;
   z-index: 10;
   transition: all 0.3s ease;
-  border: 1px solid white; /* Borde blanco para mejor contraste */
+  border: 1px solid white; 
 }
 
 /* Ocultar el badge cuando no hay items */
@@ -1685,7 +1671,7 @@ width: 700px;
   flex-direction: column;
   gap: 20px;
   margin-bottom: 30px;
-  max-height: 420px; /* 4 ítems de ~100px + padding extra */
+  max-height: 420px;
   overflow-y: auto;
   padding-right: 5px;
 }
@@ -1756,6 +1742,8 @@ width: 700px;
   background: white;
   color: black;
 }
+
+
 
 /*==========================================================================================================*/
 /*============================================== DISEÑO RESPONSIVE =========================================*/
