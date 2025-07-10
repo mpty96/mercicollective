@@ -1635,7 +1635,7 @@ position: fixed;
 
   /* Desktop más compacto */
   .desktop {
-    padding: 35px 10px;
+    padding: 45px 10px;
     gap: 1px;
   }
 
@@ -1644,12 +1644,12 @@ position: fixed;
   }
 
   .disk img {
-    width: 55px;
+    width: 60px;
   }
 
   .disk p {
-    font-size: 11px;
-    margin-top: 3px;
+    font-size: 13px;
+    margin-top: 1px;
   }
 
   /* Dock más pequeño */
@@ -1661,8 +1661,8 @@ position: fixed;
   }
 
   .dock-icon img {
-    width: 45px;
-    height: 45px;
+    width: 16vw;
+    height: 10vh;
   }
 
   /* Ventanas más adaptadas */
@@ -1851,13 +1851,15 @@ position: fixed;
   }
 
 /*=============================================== SHOP OPTIMIZADO =============================================*/
-  
+  /*Evitar scroll*/
+  #merch .mac-window-content {
+    overflow: hidden;
+  }
+
   .cart-icon {
     position: absolute;
     top: 40px;
     right: 15px;
-    width: 32px !important;
-    height: 32px !important;
     cursor: pointer;
     z-index: 10;
     transition: transform 0.2s ease;
@@ -1869,27 +1871,22 @@ position: fixed;
 
   /* Lista de productos - layout optimizado */
   .merch-list {
-    display: flex;
-    flex-direction: row;
-    padding: 20px 15px;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 20px;
-    align-items: center;
-    overflow-y: auto;
-    max-height: calc(90vh - 100px);
+    padding: 5px;
+    overflow: hidden; /* evita scroll vertical */
+    margin-top: -50px;
+    padding-top: 0 !important;
   }
 
   /* Items de productos */
   .merch-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 300px;
-    background: rgba(255, 0, 0, 0.05);
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    flex: 0 1 45%;
+    max-width: 45%;
+    padding: 10px;
+    margin: 0;
+    
   }
 
   .merch-item h3 {
@@ -1901,25 +1898,26 @@ position: fixed;
   }
 
   .merch-gif {
-    max-width: 100%;
-    width: 200px;
+    width: 35vw;
     height: auto;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
+    margin-bottom: 10px;
   }
 
   .merch-gif:hover {
     transform: scale(1.05);
   }
 
-  .merch-item h4 {
-    font-size: 16px;
-    font-weight: bold;
-    color: #ffffff;
-    margin-bottom: 15px;
+  .merch-item h3 {
+    font-size: 13px;
+    margin-bottom: 8px;
   }
+
+  .merch-item h4 {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #ffffff;
+  }
+
 
   /* Botones optimizados para touch */
   .merch-item button {
@@ -1945,21 +1943,22 @@ position: fixed;
   /* Vista de detalles del producto */
   .merch-detail-container {
     display: flex;
-    flex-direction: column;
-    padding: 20px 15px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
     gap: 20px;
-    overflow-y: auto;
-    max-height: calc(90vh - 100px);
+    overflow: hidden;
+    height: 100vh;
+    box-sizing: border-box;
     position: relative;
   }
 
   /* Icono de back mejorado */
   .back-icon {
     position: absolute;
-    top: 3px;
-    left: 15px;
-    width: 32px !important;
-    height: 32px !important;
+    top: 1px;
+    left: 1px;
     cursor: pointer;
     z-index: 10;
     transition: transform 0.2s ease;
@@ -1975,21 +1974,25 @@ position: fixed;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding-top: 50px;
-    gap: 15px;
+    padding-top: 0px;
+    gap: auto;
+    flex: 1;
+    order: 1;
+    max-width: 70%;
+    margin-left: 30px;
   }
 
   .merch-main-view img {
     max-width: 100%;
-    width: 250px;
+    width: 150px;
     height: auto;
-    border-radius: 8px;
+    border-radius: 5px;
   }
 
   .merch-main-view h3 {
     font-size: 20px;
     font-weight: 600;
-    color: white;
+    color: rgb(255, 255, 255);
     margin: 0;
   }
 
@@ -2050,16 +2053,20 @@ position: fixed;
   /* Thumbnails optimizados */
   .merch-thumbs {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    padding: 0 10px;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 15px;
+    padding: 60px 0 0 0;
+    order: 2;
+    align-items: center;
+    position: absolute;
+    right: 0px;
+    top: 0;
   }
 
   .merch-thumbs img {
-    width: 70px;
-    height: 70px;
+    width: 40px;
+    height: 40px;
     object-fit: cover;
     border-radius: 6px;
     cursor: pointer;
@@ -2067,28 +2074,30 @@ position: fixed;
     transition: all 0.3s ease;
   }
 
+  .merch-main-view img[src*="tabla_blanca.png"],
+  .merch-main-view img[src*="tabla_negra.png"] {
+    width: 60vw;
+    height: auto;
+    max-width: none;
+  }
+
   .merch-thumbs img:hover,
   .merch-thumbs img.active {
-    border-color: white;
+    border-color: rgb(255, 255, 255);
     transform: scale(1.05);
   }
 
-  /* Shopping Cart responsive */
-  #shoppingCart.mac-window {
-    width: 90vw;
-    height: 90vh;
-  }
-
   .cart-dark-content {
-    padding: 20px 15px;
+  padding: 20px 15px;
     overflow-y: auto;
+    height: calc(100vh - 100px);
   }
 
   .cart-title {
     font-size: 24px;
     color: white;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-weight: 600;
   }
 
@@ -2096,8 +2105,8 @@ position: fixed;
     display: flex;
     flex-direction: column;
     gap: 15px;
-    max-height: calc(60vh - 150px);
-    overflow-y: auto;
+    max-height: none;
+    overflow-y: visible;
     margin-bottom: 20px;
     padding-right: 5px;
   }
@@ -2141,6 +2150,27 @@ position: fixed;
     color: #ffffff;
   }
 
+  .cart-notification-badge {
+  position: absolute;
+  top: 30px;
+  right: 8px;
+  background: #ff4444;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  z-index: 11;
+  }
+
+  .cart-notification-badge.hidden {
+  display: none;
+  }
+
   .remove-btn {
     background: transparent;
     border: 1px solid #ff4444;
@@ -2163,7 +2193,7 @@ position: fixed;
   /* Sección de checkout */
   .cart-checkout-section {
     border-top: 1px solid rgba(255, 255, 255, 0.2);
-    padding-top: 20px;
+    padding-top: 10px;
     text-align: center;
   }
 
@@ -2171,7 +2201,7 @@ position: fixed;
     font-size: 20px;
     font-weight: 600;
     color: white;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
   }
 
   .checkout-btn {
@@ -2635,51 +2665,6 @@ body {
   .itunes-controls-right {
     justify-content: center;
     width: 100%;
-  }
-}
-
-/* Breakpoint para dispositivos muy pequeños (hasta 480px) */
-@media screen and (max-width: 480px) {
-
-  .merch-list {
-    padding: 15px 10px;
-    gap: 20px;
-  }
-
-  .merch-item {
-    max-width: 280px;
-    padding: 15px;
-  }
-
-  .merch-gif {
-    width: 180px;
-  }
-
-  .merch-main-view img {
-    width: 220px;
-  }
-
-  .merch-item h3,
-  .merch-main-view h3 {
-    font-size: 16px;
-  }
-
-  .cart-item {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .cart-item img {
-    width: 50px;
-    height: 50px;
-  }
-
-  .cart-item-text h4 {
-    font-size: 13px;
-  }
-
-  .cart-item-text p {
-    font-size: 11px;
   }
 }
 
