@@ -27,7 +27,7 @@ function login() {
   const message = document.getElementById('message');
   
   // Contraseña predeterminada
-  const correctPassword = "2025."; // Contraseña deseada
+  const correctPassword = ""; // Contraseña deseada
 
   // Validar que se ingrese nombre de usuario
   if (!username.trim()) {
@@ -39,6 +39,7 @@ function login() {
   }
 
   // Validar que se ingrese contraseña
+  /* DESACTIVAR TEMPORALMENTE CONTRASEÑA
   if (!password.trim()) {
     if (message) {
       message.textContent = "Por favor ingresa la contraseña.";
@@ -55,7 +56,7 @@ function login() {
     }
     return;
   }
-
+  */
   // Si llegamos aquí, todo está correcto
   if (message) {
     message.textContent = "Iniciando sesión...";

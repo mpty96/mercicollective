@@ -388,7 +388,7 @@ opacity: 1;
 
 .password-container {
   position: relative;
-  display: inline-block;
+  display: none; /*SIN CONTRASEÑA POR MIENTRAS*/
   width: 80%;
   margin-bottom: 15px;
 }
