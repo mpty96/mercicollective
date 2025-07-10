@@ -27,7 +27,7 @@ function login() {
   const message = document.getElementById('message');
   
   // Contraseña predeterminada
-  const correctPassword = "LongLifeMerci327."; // Contraseña deseada
+  const correctPassword = "2025."; // Contraseña deseada
 
   // Validar que se ingrese nombre de usuario
   if (!username.trim()) {
@@ -97,7 +97,7 @@ function togglePassword() {
 
 window.addEventListener('DOMContentLoaded', () => {
   audioPlayer?.();
-  activateAppleLockdown();
+  activateAppleLockdown?.();
   initializeCoverflow?.();
   updateTopBarDateTimeWeather?.();
 
@@ -580,241 +580,87 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') moveCoverflow(1);
 });
 
+
 function initializeCoverflow() {
   updateCoverflow();
 }
 
-//--- Soporte YouTube móvil ---//
-//--- Soporte YouTube móvil ---//
+
+function setupGalleryVolumeControl() {
+  const slider = document.getElementById("galleryVolumeControl");
+  if (!slider) return;
+
+  slider.addEventListener("input", function () {
+    const volume = parseInt(this.value);
+    if (!isGalleryVisible()) return;
+
+    ytPlayers.forEach(player => {
+      try {
+        if (player && typeof player.setVolume === "function") {
+          player.setVolume(volume);
+        }
+      } catch (e) {
+        // Silenciosamente ignora el error
+      }
+    });
+  });
+}
+
+
+
+// === 🎥 YouTube API: cargar si no está ===
 let ytPlayers = [];
 let ytAPIReady = false;
-let playersReadyCount = 0;
-let totalPlayers = 0;
-let volumeControlSetup = false;
 
 function initializeYouTubePlayers() {
-  if (!isMobileDevice() || !ytAPIReady) return;
 
-  // Selector correcto para los iframes en el coverflow
-  const iframes = document.querySelectorAll('#gallery .coverflow-item iframe');
+  const iframes = document.querySelectorAll('#coverflowTrack iframe');
+
   ytPlayers = [];
-  playersReadyCount = 0;
-  totalPlayers = iframes.length;
-  
-  console.log(`🎬 Inicializando ${totalPlayers} players de YouTube`);
-
+  let playersReady = 0; // AÑADIR CONTADOR
   iframes.forEach((iframe, index) => {
-    const videoId = iframe.src.match(/embed\/([^?]+)/)?.[1];
-    if (!videoId) {
-      totalPlayers--;
-      return;
-    }
+    console.log(`🎬 Procesando iframe ${index}:`, iframe);
+    
+    const src = iframe.src;
+    const videoId = src.match(/embed\/([^?]+)/)?.[1];
+    if (!videoId) return;
 
     const playerId = `youtube-player-${index}`;
     iframe.id = playerId;
 
-    // Actualizar src del iframe con parámetros necesarios
-    iframe.src = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}&controls=1&modestbranding=1`;
-
-    // Inicializar posición del array
-    ytPlayers[index] = null;
-
-    try {
-      ytPlayers[index] = new YT.Player(playerId, {
-        videoId,
-        playerVars: {
-          enablejsapi: 1,
-          origin: window.location.origin,
-          controls: 1,
-          modestbranding: 1,
-          rel: 0
-        },
-        events: {
-          onReady: event => {
-            console.log(`✅ Player ${index} listo para video: ${videoId}`);
-            ytPlayers[index] = event.target;
-            playersReadyCount++;
-
-            // Aplicar volumen inicial si existe el slider
-            const slider = document.getElementById("galleryVolumeControl");
-            if (slider) {
-              const vol = parseInt(slider.value);
-              try {
-                event.target.setVolume(vol);
-                console.log(`🎚 Volumen inicial aplicado a player ${index}:`, vol);
-              } catch (e) {
-                console.warn(`⚠️ No se pudo aplicar volumen a player ${index}`, e);
-              }
-            }
-
-            // Verificar si todos los players están listos
-            if (playersReadyCount === totalPlayers && !volumeControlSetup) {
-              console.log(`🎉 Todos los players (${totalPlayers}) están listos`);
-              setupGalleryVolumeControl();
-            }
-          },
-          onError: event => {
-            console.error(`❌ Error en player ${index}:`, event.data);
+    ytPlayers[index] = new YT.Player(playerId, {
+      videoId,
+      playerVars: {
+        enablejsapi: 1,
+        origin: window.location.origin
+      },
+      events: {
+        onReady: event => {
+          ytPlayers[index] = event.target;
+          playersReady++; // INCREMENTAR CONTADOR
+          console.log(`✅ Player ${index} listo:`, videoId);
+          
+          // CUANDO TODOS LOS PLAYERS ESTÉN LISTOS, CONFIGURAR VOLUMEN
+          if (playersReady === iframes.length) {
+            setupGalleryVolumeControl();
           }
         }
-      });
-    } catch (e) {
-      console.error(`❌ Error creando player ${index}:`, e);
-      totalPlayers--;
-    }
+      }
+    });
   });
-
-  // Si no hay iframes, configurar el control de volumen inmediatamente
-  if (totalPlayers === 0) {
-    setupGalleryVolumeControl();
-  }
 }
 
-// Cargar API de YouTube solo en móviles
-if (isMobileDevice() && !window.YT) {
-  const tag = document.createElement('script');
-  tag.src = 'https://www.youtube.com/iframe_api';
-  const firstScript = document.getElementsByTagName('script')[0];
-  firstScript.parentNode.insertBefore(tag, firstScript);
-}
-
-// Callback unificado para cuando la API esté lista
+// === 🧠 Cargar API solo una vez ===
 window.onYouTubeIframeAPIReady = () => {
-  console.log('🚀 YouTube API lista');
   ytAPIReady = true;
   initializeYouTubePlayers();
+  waitForYouTubeAPIAndSetupVolume(); // <- aquí
 };
 
-// Control de volumen YouTube móvil
 function isGalleryVisible() {
   const gallery = document.getElementById("gallery");
   return gallery && gallery.classList.contains("show") && getComputedStyle(gallery).display !== "none";
 }
-
-function setupGalleryVolumeControl() {
-  if (volumeControlSetup) return; // Evitar setup múltiple
-  
-  const slider = document.getElementById("galleryVolumeControl");
-  if (!slider) {
-    console.warn('⚠️ Slider de volumen no encontrado');
-    return;
-  }
-
-  // Remover listener previo si existe
-  slider.removeEventListener("input", handleVolumeChange);
-  
-  // Agregar nuevo listener
-  slider.addEventListener("input", handleVolumeChange);
-  volumeControlSetup = true;
-  console.log('🎚 Control de volumen configurado correctamente');
-}
-
-function handleVolumeChange() {
-  const volume = parseInt(this.value);
-  if (!isGalleryVisible()) return;
-
-  console.log(`🔊 Intentando cambiar volumen a: ${volume}`);
-
-  if (isMobileDevice()) {
-    let successCount = 0;
-    let attemptCount = 0;
-    
-    ytPlayers.forEach((player, i) => {
-      if (player && typeof player.setVolume === "function") {
-        attemptCount++;
-        try {
-          player.setVolume(volume);
-          successCount++;
-          console.log(`🔊 Volumen actualizado en móvil para player ${i}:`, volume);
-        } catch (e) {
-          console.warn(`⚠️ Error al actualizar volumen en player ${i}:`, e);
-        }
-      } else {
-        console.warn(`⚠️ Player ${i} no válido o sin función setVolume`);
-      }
-    });
-    
-    console.log(`📊 Volumen aplicado a ${successCount}/${attemptCount} players activos`);
-  } else {
-    // Fallback para escritorio
-    document.querySelectorAll("#gallery .coverflow-item iframe").forEach((iframe, index) => {
-      try {
-        iframe.contentWindow.postMessage(JSON.stringify({
-          event: "command",
-          func: "setVolume",
-          args: [volume]
-        }), "*");
-        console.log(`🖥 Volumen enviado a iframe ${index} (escritorio)`);
-      } catch (e) {
-        console.warn(`⚠️ Error enviando volumen a iframe ${index}:`, e);
-      }
-    });
-  }
-}
-
-// Funciones para integrar con selectVideo
-function reinitializePlayersAfterSelection() {
-  if (isMobileDevice() && ytAPIReady) {
-    console.log('🔄 Reinicializando players después de selección...');
-    setTimeout(() => {
-      volumeControlSetup = false; // Permitir nueva configuración
-      initializeYouTubePlayers();
-    }, 500);
-  }
-}
-
-// Hook para selectVideo (agregar esto a tu función selectVideo existente)
-const originalSelectVideo = window.selectVideo;
-if (originalSelectVideo) {
-  window.selectVideo = function(index) {
-    originalSelectVideo(index);
-    reinitializePlayersAfterSelection();
-  };
-}
-
-// Hook para selectVideoFromList (agregar esto a tu función selectVideoFromList existente)
-const originalSelectVideoFromList = window.selectVideoFromList;
-if (originalSelectVideoFromList) {
-  window.selectVideoFromList = function(index) {
-    originalSelectVideoFromList(index);
-    reinitializePlayersAfterSelection();
-  };
-}
-
-// Reforzar inicialización de players al actualizar coverflow
-const originalUpdateCoverflow = window.updateCoverflow;
-if (originalUpdateCoverflow) {
-  window.updateCoverflow = function () {
-    originalUpdateCoverflow();
-    if (isMobileDevice() && ytAPIReady) {
-      setTimeout(() => {
-        volumeControlSetup = false;
-        initializeYouTubePlayers();
-      }, 100);
-    }
-  };
-}
-
-// Inicialización cuando se abre la ventana
-function initializeGalleryOnOpen() {
-  if (isMobileDevice() && ytAPIReady) {
-    setTimeout(() => {
-      volumeControlSetup = false;
-      initializeYouTubePlayers();
-    }, 200);
-  }
-}
-
-// Función de respaldo para asegurar inicialización
-function ensureYouTubeInitialization() {
-  if (isMobileDevice() && ytAPIReady && isGalleryVisible() && !volumeControlSetup) {
-    console.log('🔧 Ejecutando inicialización de respaldo...');
-    initializeYouTubePlayers();
-  }
-}
-
-// Ejecutar verificación cada 2 segundos si es necesario
-setInterval(ensureYouTubeInitialization, 2000);
 
 
 //________________________________________________________________________________________________//
@@ -896,62 +742,23 @@ function openMerchDetail(product) {
   // Limpiar contenedor principal
   mainImageContainer.innerHTML = "";
   
-  // Crear elemento principal según el tipo de archivo
-  if (product.main.endsWith('.mp4') || product.main.endsWith('.webm') || product.main.endsWith('.ogg')) {
-    const mainVideo = document.createElement("video");
-    mainVideo.id = "mainMerchImage";
-    mainVideo.src = "imagenes/" + product.main;
-    mainVideo.alt = "Vista Principal";
-    mainVideo.autoplay = true;
-    mainVideo.muted = true;
-    mainVideo.loop = true;
-    mainVideo.playsinline = true;
-    // Mejoras para calidad de video
-    mainVideo.preload = "auto";
-    mainVideo.style.imageRendering = "crisp-edges";
-    mainVideo.addEventListener('loadedmetadata', () => {
-      mainVideo.playbackRate = 0.5;
-    });
-    mainImageContainer.appendChild(mainVideo);
-  } else {
-    const mainImage = document.createElement("img");
-    mainImage.id = "mainMerchImage";
-    mainImage.src = "imagenes/" + product.main;
-    mainImage.alt = "Vista Principal";
-    mainImageContainer.appendChild(mainImage);
-  }
+  // Crear elemento imagen principal
+  const mainImage = document.createElement("img");
+  mainImage.id = "mainMerchImage";
+  mainImage.src = "imagenes/" + product.main;
+  mainImage.alt = "Vista Principal";
+  mainImageContainer.appendChild(mainImage);
 
   title.textContent = product.title;
   price.textContent = product.price;
   thumbs.innerHTML = "";
 
   product.thumbnails.forEach(img => {
-    // Verificar si es un video o una imagen
-    if (img.endsWith('.mp4') || img.endsWith('.webm') || img.endsWith('.ogg')) {
-      // Crear elemento video para thumbnails
-      const thumb = document.createElement("video");
-      thumb.src = "imagenes/" + img;
-      thumb.alt = "Thumb";
-      thumb.autoplay = true;
-      thumb.muted = true;
-      thumb.loop = true;
-      thumb.playsinline = true;
-      thumb.preload = "auto";
-      thumb.style.imageRendering = "crisp-edges";
-      thumb.onclick = () => changeMainImage(img);
-      // Establecer velocidad reducida para thumbnails
-      thumb.addEventListener('loadedmetadata', () => {
-        thumb.playbackRate = 0.5;
-      });
-      thumbs.appendChild(thumb);
-    } else {
-      // Crear elemento imagen para thumbnails normales
-      const thumb = document.createElement("img");
-      thumb.src = "imagenes/" + img;
-      thumb.alt = "Thumb";
-      thumb.onclick = () => changeMainImage(img);
-      thumbs.appendChild(thumb);
-    }
+    const thumb = document.createElement("img");
+    thumb.src = "imagenes/" + img;
+    thumb.alt = "Thumb";
+    thumb.onclick = () => changeMainImage(img);
+    thumbs.appendChild(thumb);
   });
 
   document.getElementById("merchList").style.display = "none";
@@ -966,35 +773,13 @@ function changeMainImage(src) {
   // Limpiar contenedor
   mainImageContainer.innerHTML = "";
   
-  // Verificar si es un video
-  if (src.endsWith('.mp4') || src.endsWith('.webm') || src.endsWith('.ogg')) {
-    // Crear nuevo elemento video
-    const videoElement = document.createElement("video");
-    videoElement.id = "mainMerchImage";
-    videoElement.src = "imagenes/" + src;
-    videoElement.alt = "Vista Principal";
-    videoElement.autoplay = true;
-    videoElement.muted = true;
-    videoElement.loop = true;
-    videoElement.playsinline = true;
-    videoElement.preload = "auto";
-    videoElement.style.imageRendering = "crisp-edges";
-    
-    // Establecer velocidad reducida
-    videoElement.addEventListener('loadedmetadata', () => {
-      videoElement.playbackRate = 0.5;
-    });
-    
-    mainImageContainer.appendChild(videoElement);
-  } else {
-    // Crear nuevo elemento imagen
-    const imgElement = document.createElement("img");
-    imgElement.id = "mainMerchImage";
-    imgElement.src = "imagenes/" + src;
-    imgElement.alt = "Vista Principal";
-    
-    mainImageContainer.appendChild(imgElement);
-  }
+  // Crear nuevo elemento imagen
+  const imgElement = document.createElement("img");
+  imgElement.id = "mainMerchImage";
+  imgElement.src = "imagenes/" + src;
+  imgElement.alt = "Vista Principal";
+  
+  mainImageContainer.appendChild(imgElement);
 }
 
 function handleRedButton() {
@@ -1012,229 +797,8 @@ function showMerchList() {
   document.getElementById("merchList").style.display = "flex";
 }
 
-//PRECARGAR VIDEOS E IMAGENES PARA AGILIZAR VENTANA MERCH
-const preloadCache = new Map();
-
-function precargarImagenesMerch() {
-  const currentProduct = window.selectedProduct;
-  if (!currentProduct) return;
-
-  // Crear clave única para el producto
-  const cacheKey = `${currentProduct.title}_${currentProduct.price}`;
-  
-  // Si ya está en cache, no hacer nada
-  if (preloadCache.has(cacheKey)) {
-    return;
-  }
-
-  // Crear conjunto de promesas para precarga
-  const preloadPromises = [];
-  
-  // Precargar video principal - manejar casos específicos
-  let videoFileName = currentProduct.video;
-  if (!videoFileName) {
-    // Determinar el video basado en el título del producto
-    if (currentProduct.title.includes('White')) {
-      videoFileName = 'polera1_blanca.mp4';
-    } else if (currentProduct.title.includes('Black')) {
-      videoFileName = 'polera1_negra.mp4';
-    }
-  }
-  
-  if (videoFileName) {
-    const videoPromise = new Promise((resolve, reject) => {
-      const video = document.createElement('video');
-      video.preload = 'metadata'; // Solo metadata para ser más eficiente
-      video.muted = true;
-      video.loop = true;
-      
-      video.addEventListener('loadedmetadata', () => {
-        resolve(video);
-      });
-      
-      video.addEventListener('error', () => {
-        reject(new Error(`Error cargando video: ${videoFileName}`));
-      });
-      
-      video.src = `imagenes/${videoFileName}`;
-    });
-    
-    preloadPromises.push(videoPromise);
-  }
-  
-  // Precargar imagen principal si existe
-  if (currentProduct.main) {
-    const imagePromise = new Promise((resolve, reject) => {
-      const img = new Image();
-      
-      img.addEventListener('load', () => {
-        resolve(img);
-      });
-      
-      img.addEventListener('error', () => {
-        reject(new Error(`Error cargando imagen: ${currentProduct.main}`));
-      });
-      
-      img.src = `imagenes/${currentProduct.main}`;
-    });
-    
-    preloadPromises.push(imagePromise);
-  }
-  
-  // Precargar imágenes adicionales si existen
-  if (currentProduct.gallery && Array.isArray(currentProduct.gallery)) {
-    currentProduct.gallery.forEach(imageSrc => {
-      const imagePromise = new Promise((resolve, reject) => {
-        const img = new Image();
-        
-        img.addEventListener('load', () => {
-          resolve(img);
-        });
-        
-        img.addEventListener('error', () => {
-          reject(new Error(`Error cargando imagen de galería: ${imageSrc}`));
-        });
-        
-        img.src = `imagenes/${imageSrc}`;
-      });
-      
-      preloadPromises.push(imagePromise);
-    });
-  }
-  
-  // Ejecutar todas las precargas
-  Promise.allSettled(preloadPromises)
-    .then(results => {
-      // Almacenar en cache
-      preloadCache.set(cacheKey, {
-        timestamp: Date.now(),
-        elements: results.filter(r => r.status === 'fulfilled').map(r => r.value)
-      });
-      
-      // Limpiar cache antigua (opcional - elementos más antiguos de 5 minutos)
-      cleanupCache();
-    })
-    .catch(error => {
-      console.warn('Error en precarga:', error);
-    });
-}
-
-// Función auxiliar para limpiar cache antigua
-function cleanupCache() {
-  const now = Date.now();
-  const maxAge = 5 * 60 * 1000; // 5 minutos
-  
-  for (const [key, value] of preloadCache.entries()) {
-    if (now - value.timestamp > maxAge) {
-      preloadCache.delete(key);
-    }
-  }
-}
-
-// Función alternativa más agresiva para precarga completa
-function precargarImagenesMerchCompleta() {
-  const currentProduct = window.selectedProduct;
-  if (!currentProduct) return;
-
-  const cacheKey = `${currentProduct.title}_${currentProduct.price}_complete`;
-  
-  if (preloadCache.has(cacheKey)) {
-    return;
-  }
-
-  const preloadPromises = [];
-  
-  // Precargar video completo
-  if (currentProduct.video) {
-    const videoPromise = new Promise((resolve, reject) => {
-      const video = document.createElement('video');
-      video.preload = 'auto'; // Precarga completa
-      video.muted = true;
-      
-      video.addEventListener('canplaythrough', () => {
-        resolve(video);
-      });
-      
-      video.addEventListener('error', () => {
-        reject(new Error(`Error cargando video: ${currentProduct.video}`));
-      });
-      
-      video.src = `imagenes/${currentProduct.video}`;
-    });
-    
-    preloadPromises.push(videoPromise);
-  }
-  
-  // Resto de la lógica igual...
-  Promise.allSettled(preloadPromises)
-    .then(results => {
-      preloadCache.set(cacheKey, {
-        timestamp: Date.now(),
-        elements: results.filter(r => r.status === 'fulfilled').map(r => r.value)
-      });
-    });
-}
-
-// Función para obtener elemento precargado del cache
-function getPreloadedElement(filename) {
-  for (const [key, value] of preloadCache.entries()) {
-    const element = value.elements.find(el => 
-      el.src && el.src.includes(filename)
-    );
-    if (element) {
-      return element.cloneNode(true);
-    }
-  }
-  return null;
-}
-
-// Función específica para obtener video precargado por título de producto
-function getPreloadedVideoByTitle(productTitle) {
-  let videoFileName = '';
-  
-  if (productTitle.includes('White')) {
-    videoFileName = 'polera1_blanca.mp4';
-  } else if (productTitle.includes('Black')) {
-    videoFileName = 'polera1_negra.mp4';
-  }
-  
-  return videoFileName ? getPreloadedElement(videoFileName) : null;
-}
-
-// Función para precargar ambos videos al inicio (opcional)
-function precargarTodosLosVideos() {
-  const videos = ['polera1_blanca.mp4', 'polera1_negra.mp4'];
-  
-  videos.forEach(videoFile => {
-    if (!preloadCache.has(videoFile)) {
-      const video = document.createElement('video');
-      video.preload = 'metadata';
-      video.muted = true;
-      video.loop = true;
-      
-      video.addEventListener('loadedmetadata', () => {
-        preloadCache.set(videoFile, {
-          timestamp: Date.now(),
-          elements: [video]
-        });
-      });
-      
-      video.src = `imagenes/${videoFile}`;
-    }
-  });
-}
-
-// Función para controlar la velocidad de los videos
-function setVideoSpeed(speed = 0.5) {
-  const videos = document.querySelectorAll('video.merch-gif');
-  videos.forEach(video => {
-    video.playbackRate = speed; // 0.5 = mitad de velocidad, 1 = velocidad normal, 2 = doble velocidad
-  });
-}
-
 document.addEventListener('DOMContentLoaded', function() {
-  setVideoSpeed(0.5); // Reproduce los videos a la mitad de velocidad
-    updateCartNotificationBadge();
+  updateCartNotificationBadge();
 });
 
 //________________________________________________________________________________________________//
@@ -1268,13 +832,11 @@ function updateCartNotificationBadge() {
   const badge = document.getElementById('cartNotificationBadge');
   if (!badge) return;
   
-  // Calcular total de items en el carrito
   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
   
   if (totalItems > 0) {
     badge.classList.remove('hidden');
     
-    // Mostrar "99+" si hay más de 99 items
     if (totalItems > 99) {
       badge.textContent = '99+';
       badge.classList.add('large-number');
@@ -1283,13 +845,11 @@ function updateCartNotificationBadge() {
       badge.classList.remove('large-number');
     }
     
-    // Animación de actualización
     badge.classList.remove('updated');
     setTimeout(() => {
       badge.classList.add('updated');
     }, 10);
     
-    // Remover la animación después de que termine
     setTimeout(() => {
       badge.classList.remove('updated');
     }, 400);
@@ -1299,7 +859,6 @@ function updateCartNotificationBadge() {
   }
 }
 
-// Actualizar la función updateCart existente
 function updateCart() {
   const cartContainer = document.getElementById("cartItems");
   const totalContainer = document.getElementById("totalPrice");
@@ -1322,36 +881,19 @@ function updateCart() {
     const cartItem = document.createElement("div");
     cartItem.classList.add("cart-item");
     
-    // Intentar diferentes propiedades para el video
-    let videoSrc = '';
-    if (item.video) {
-      videoSrc = item.video;
-    } else if (item.videoFile) {
-      videoSrc = item.videoFile;
-    } else if (item.videoSrc) {
-      videoSrc = item.videoSrc;
-    } else if (item.src) {
-      videoSrc = item.src;
+    // Determinar gif basado en el título del producto
+    let gifSrc = '';
+    if (item.title.includes('White')) {
+      gifSrc = 'polera1_blanca.gif';
+    } else if (item.title.includes('Black')) {
+      gifSrc = 'polera1_negra.gif';
     } else if (item.main) {
-      videoSrc = item.main;
-    } else {
-      // Determinar video basado en el título del producto
-      if (item.title.includes('White')) {
-        videoSrc = 'polera1_blanca.webm';
-      } else if (item.title.includes('Black')) {
-        videoSrc = 'polera1_negra.webm';
-      }
+      gifSrc = item.main;
     }
-    
-    console.log("Video source encontrado:", videoSrc);
     
     cartItem.innerHTML = `
       <button class="remove-btn" onclick="removeFromCart(${index})">x</button>
-      <video autoplay muted loop style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;">
-        <source src="imagenes/${videoSrc}" type="video/mp4">
-        <source src="imagenes/${videoSrc}" type="video/webm">
-        Tu navegador no soporta el elemento video.
-      </video>
+      <img src="imagenes/${gifSrc}" alt="${item.title}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;">
       <div class="cart-item-text">
         <p>${item.title} - SIZE ${item.size}</p>
       </div>
@@ -1364,17 +906,14 @@ function updateCart() {
   totalContainer.textContent = formatCLP(totalPrice);
   checkoutLink.href = cartShopifyItems.length > 0 ? shopifyBase + cartShopifyItems.join(",") : "#";
   
-  // Actualizar el badge de notificación
   updateCartNotificationBadge();
 }
 
-// Actualizar función removeFromCart
 function removeFromCart(index) {
   cart.splice(index, 1);
   updateCart();
 }
 
-// Actualizar función addToCart
 function addToCart() {
   const size = document.getElementById("size").value;
   if (!size) {
@@ -1382,15 +921,11 @@ function addToCart() {
     return;
   }
   
-  console.log("window.selectedProduct:", window.selectedProduct);
-  
   const newItem = {
     ...window.selectedProduct,
     size,
     quantity: 1
   };
-  
-  console.log("newItem creado:", newItem);
   
   const existingIndex = cart.findIndex(item => item.title === newItem.title && item.size === newItem.size);
   if (existingIndex !== -1) {
@@ -1399,19 +934,15 @@ function addToCart() {
     cart.push(newItem);
   }
   
-  console.log("Cart actualizado:", cart);
-  
   updateCart();
-  openWindow('shoppingCart'); // Cambié showShoppingCart() por openWindow('shoppingCart')
+  openWindow('shoppingCart');
 }
-
 
 document.querySelector("#merchDetail button")?.addEventListener("click", addToCart);
 
-
-//________________________________________________________________________________________________//
-//-------------------------------------- SOCIAL MEDIA --------------------------------------//
-//________________________________________________________________________________________________//
+//===========================================================================================//
+//-------------------------------------- SOCIAL MEDIA ---------------------------------------//
+//==========================================================================================//
 function openSocialWindow() {
   const social = document.getElementById("socialWindow");
   document.querySelector('.dock').style.display = 'none';
@@ -1429,15 +960,36 @@ function openSocialWindow() {
   document.body.dataset.originalBg = document.body.style.backgroundImage;
   document.body.style.backgroundImage = "url('imagenes/socialmedia.webp')";
 
+  // Ocultar GIFs temporalmente en móviles
+  const gifImgs = social.querySelectorAll('.social-icons img');
+  if (isMobileDevice()) {
+  let loadedCount = 0;
+  const clones = [];
+
+  gifImgs.forEach(img => {
+    const clone = img.cloneNode(true);
+    clone.style.visibility = 'hidden';
+    img.replaceWith(clone);
+
+    clone.onload = () => {
+      loadedCount++;
+      if (loadedCount === gifImgs.length) {
+        document.querySelectorAll('.social-icons img').forEach(i => i.style.visibility = 'visible');
+      }
+    };
+
+    if (clone.complete) {
+      clone.onload();
+    }
+
+    clones.push(clone);
+  });
+}
+
+  // Mostrar ventana
   social.style.display = 'flex';
   setTimeout(() => social.classList.add('show'), 10);
   document.getElementById('icon-close-safari').style.display = 'flex';
-  
-  // Iniciar reproducción de videos
-  const videos = social.querySelectorAll('video');
-  videos.forEach(video => {
-    video.play().catch(e => console.log('Error al reproducir video:', e));
-  });
 }
 
 function closeSocialWindow() {
@@ -1450,11 +1002,6 @@ function closeSocialWindow() {
   social.classList.remove('show');
   setTimeout(() => {
     social.style.display = 'none';
-    // Pausar videos al cerrar
-    const videos = social.querySelectorAll('video');
-    videos.forEach(video => {
-      video.pause();
-    });
   }, 300);
 
   document.body.style.backgroundImage = document.body.dataset.originalBg || "";
@@ -1464,15 +1011,20 @@ function closeSocialWindow() {
 }
 
 function precargarFondos() {
+  // Precargar fondo de la ventana
   const fondoSocial = new Image();
   fondoSocial.src = "imagenes/socialmedia.webp";
-  
-  // Precargar videos
-  const videos = ['cd_yt.webm', 'cd_ig.webm', 'cd_soundcloud.webm'];
-  videos.forEach(videoSrc => {
-    const video = document.createElement('video');
-    video.src = `imagenes/${videoSrc}`;
-    video.preload = 'metadata';
+
+  // Precargar íconos sociales en formato GIF
+  const iconosGif = [
+    "imagenes/cd_yt.gif",
+    "imagenes/cd_ig.gif",
+    "imagenes/cd_sc.gif"
+  ];
+
+  iconosGif.forEach(src => {
+    const img = new Image();
+    img.src = src;
   });
 }
 

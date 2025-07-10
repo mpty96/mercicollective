@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MERCI</title>
-  <script src="script2.js?v=2.0.7" defer></script>
+  <script src="script2.js?v=2.0.8" defer></script>
 
   <script src="https://w.soundcloud.com/player/api.js"></script>
 
   <script src="https://www.youtube.com/iframe_api"></script>
 
-  <link rel="stylesheet" href="styles.css?v=2.0.7">
+  <link rel="stylesheet" href="styles.css?v=2.0.8">
 
   <link rel="icon" type="image/png" href="imagenes/mercimetalic.png">
 </head>
@@ -70,10 +70,7 @@
 
   <!----------------------------------------- Escritorio ------------------------------------------>
   <main class="desktop" id="desktop">
-    <div class="disk" onclick="openWindow('about')">
-      <img src="imagenes/hdd.png" alt="About Us" />
-      <p>About Us</p>
-    </div>
+    
 
     <div class="disk" id="icon-contact" onclick="openWindow('contact')">
       <img src="imagenes/hdd.png" alt="Contacto" />
@@ -131,54 +128,44 @@
             <!-- Polera 1 -->
             <div class="merch-item">
                 <h3>FREE LOHAN WHITE TEE</h3>
-                <video 
+                <img 
                     class="merch-gif" 
-                    autoplay 
-                    muted 
-                    loop 
-                    playsinline
+                    src="imagenes/freelohan_blanca.gif"
+                    alt="FREE LOHAN WHITE TEE"
                     onclick="openMerchDetail({ 
                         title: 'FREE LOHAN WHITE TEE', 
                         price: '$26.990 CLP', 
-                        main: 'polera1_blanca.webm', 
-                        thumbnails: ['polera1_blanca.webm', 'polera2.jpg', 'polera3.jpg'] })">
-                    <source src="imagenes/polera1_blanca.webm" type="video/webm">
-                    Tu navegador no soporta videos HTML5.
-                </video>
+                        main: 'polera1_blanca.gif', 
+                        thumbnails: ['polera1_blanca.gif', 'polera2.jpg', 'polera3.jpg'] })">
                 <h4>$26.990 CLP</h4>
                 <button onclick="openMerchDetail({ 
                     title: 'FREE LOHAN WHITE TEE', 
                     price: '$26.990 CLP', 
-                    main: 'polera1_blanca.webm', 
-                    thumbnails: ['polera1_blanca.webm', 'polera2.jpg', 'polera3.jpg'] 
+                    main: 'polera1_blanca.gif', 
+                    thumbnails: ['freelohan_blanca.gif', 'polera2.jpg', 'polera3.jpg'] 
                 })">BUY</button>
             </div>
             
             <!-- Polera 2 -->
             <div class="merch-item">
                 <h3>FREE LOHAN BLACK TEE</h3>
-                <video 
+                <img 
                     class="merch-gif" 
-                    autoplay 
-                    muted 
-                    loop 
-                    playsinline
+                    src="imagenes/polera1_negra.gif"
+                    alt="FREE LOHAN BLACK TEE"
                     onclick="openMerchDetail({ 
                         title: 'FREE LOHAN BLACK TEE', 
                         price: '$26.990 CLP', 
-                        main: 'polera1_negra.webm', 
-                        thumbnails: ['polera1_negra.webm', 'polera4.jpg', 'weon.jpeg'] 
+                        main: 'polera1_negra.gif', 
+                        thumbnails: ['polera1_negra.gif', 'polera4.jpg', 'weon.jpeg'] 
                     })"
                 >
-                    <source src="imagenes/polera1_negra.webm" type="video/webm">
-                    Tu navegador no soporta videos HTML5.
-                </video>
                 <h4>$26.990 CLP</h4>
                 <button onclick="openMerchDetail({ 
                     title: 'FREE LOHAN BLACK TEE', 
                     price: '$26.990 CLP', 
-                    main: 'polera1_negra.webm', 
-                    thumbnails: ['polera1_negra.webm', 'polera4.jpg', 'weon.jpeg'] 
+                    main: 'polera1_negra.gif', 
+                    thumbnails: ['polera1_negra.gif', 'polera4.jpg', 'weon.jpeg'] 
                 })">BUY</button>
             </div>
         </div>
@@ -188,7 +175,7 @@
             <img src="imagenes/back.png" loading="eager" alt="Back Icon" class="back-icon" onclick="handleRedButton('merchDetail')" />
             <div class="merch-main-view">
                 <div id="mainMerchImageContainer">
-                    <!-- El contenido se inserta dinámicamente (img o video) -->
+                    <!-- El contenido se inserta dinámicamente -->
                 </div>
                 <h3 id="merchTitle">Titulo</h3>
                 <h4 id="merchPrice">Precio</h4>
@@ -208,7 +195,7 @@
             </div>
         </div>
     </div>
-</div>
+  </div>
 </div>
 
 
@@ -217,22 +204,13 @@
 <div class="fullscreen-window" id="socialWindow">
   <div class="social-icons">
     <a href="https://www.youtube.com/@MERCICOLLECTIVE" target="_blank">
-      <video src="imagenes/cd_yt.webm" loading="eager" autoplay muted loop>
-        <source src="imagenes/cd_yt.webm" type="video/webm">
-        Tu navegador no soporta videos.
-      </video>
+      <img src="imagenes/cd_yt.gif" alt="YouTube" loading="eager">
     </a>
     <a href="https://www.instagram.com/merci_______________________/" target="_blank">
-      <video src="imagenes/cd_ig.webm" loading="eager" autoplay muted loop>
-        <source src="imagenes/cd_ig.webm" type="video/webm">
-        Tu navegador no soporta videos.
-      </video>
+      <img src="imagenes/cd_ig.gif" alt="Instagram" loading="eager">
     </a>
     <a href="https://soundcloud.com/merci-collective" target="_blank">
-      <video src="imagenes/cd_soundcloud.webm" loading="eager" autoplay muted loop>
-        <source src="imagenes/cd_soundcloud.webm" type="video/webm">
-        Tu navegador no soporta videos.
-      </video>
+      <img src="imagenes/cd_sc.gif" alt="SoundCloud" loading="eager">
     </a>
   </div>
 </div>
@@ -240,7 +218,6 @@
 <div class="disk" id="icon-close-safari" onclick="closeSocialWindow()">
   <img src="imagenes/hddmerci.png" loading="eager" alt="Cerrar Safari" />
 </div>
-
 
 <!------------------------------------------ Ventana del carrito de compras ------------------------------------->
 
@@ -377,27 +354,27 @@
         <div class="coverflow-container">
           <div class="coverflow-track" id="coverflowTrack">
             <div class="coverflow-item" onclick="selectVideo(0)">
-              <iframe src="https://www.youtube.com/embed/-xm6aOGkTjA?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/-xm6aOGkTjA?enablejsapi=1" allow="autoplay" allowfullscreen></iframe>
               <div class="reflection"></div>
             </div>
             <div class="coverflow-item" onclick="selectVideo(1)">
-              <iframe src="https://www.youtube.com/embed/1YbWTZzX8Ms?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/1YbWTZzX8Ms?enablejsapi=1" allow="autoplay" allowfullscreen></iframe>
               <div class="reflection"></div>
             </div>
             <div class="coverflow-item" onclick="selectVideo(2)">
-              <iframe src="https://www.youtube.com/embed/6XXHWUFK4DQ?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/6XXHWUFK4DQ?enablejsapi=1" allow="autoplay" allowfullscreen></iframe>
               <div class="reflection"></div>
             </div>
             <div class="coverflow-item" onclick="selectVideo(3)">
-              <iframe src="https://www.youtube.com/embed/tQIP6Mkn8Jc?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/tQIP6Mkn8Jc?enablejsapi=1" allow="autoplay" allowfullscreen></iframe>
               <div class="reflection"></div>
             </div>
             <div class="coverflow-item" onclick="selectVideo(4)">
-              <iframe src="https://www.youtube.com/embed/DJQ7g2m-id4?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/DJQ7g2m-id4?enablejsapi=1" allow="autoplay" allowfullscreen></iframe>
               <div class="reflection"></div>
             </div>
             <div class="coverflow-item" onclick="selectVideo(5)">
-              <iframe src="https://www.youtube.com/embed/zV-gN9GJP3w?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/zV-gN9GJP3w?enablejsapi=1" allow="autoplay" allowfullscreen></iframe>
               <div class="reflection"></div>
             </div>
           </div>

@@ -1004,10 +1004,10 @@ opacity: 1;
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-bottom: 30px;
+  margin-top: 100px;
 }
 
-.social-icons video {
+.social-icons img {
   width: 300px;
   height: 300px;
   image-rendering: pixelated;
@@ -1015,7 +1015,7 @@ opacity: 1;
   transition: transform 0.2s;
 }
 
-.social-icons video:hover {
+.social-icons img:hover {
   transform: scale(1.2);
 }
 
@@ -1808,7 +1808,7 @@ position: fixed;
   max-width: 700px;
   height: 55vh;
   max-height: 400px;
-  top: 50% ;
+  top: 40% ;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -2265,16 +2265,62 @@ body {
   
 
 /*============================================== SOCIAL MEDIA =================================*/
+#socialWindow {
+  opacity: 0 !important;
+  transition: opacity 0.2s ease-in-out !important;
+}
+
+#socialWindow.show {
+  opacity: 1 !important;
+}
+
+.social-icons {
+  position: absolute;        
+  top: 33%;                  
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-wrap: nowrap;        
+  justify-content: center;
+  align-items: center;
+  gap: 0px;                 
+  padding: 0;
+}
+
+.social-icons img {
+  width: 200px;               /* Tamaño fijo más fácil de controlar */
+  height: auto;
+  object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  margin-left: -35px;
+  margin-right: -35px;
+}
+
+@media (max-width: 480px) {
+  
+  #socialWindow {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  }
+
+#socialWindow.show {
+  opacity: 1;
+  }
+
   .social-icons {
-    gap: 30px;
-    flex-wrap: wrap;
-    padding: 0 20px;
+    gap: 0;
+    top: 33%;
   }
 
   .social-icons img {
-    width: 56px;
-    height: 56px;
+    width: 200px;
+    margin-left: -35px;
+    margin-right: -35px;
   }
+}
+
+
 
 /*=========================================== ABOUT US ======================================*/
   .about-layout {
@@ -2297,7 +2343,7 @@ body {
     font-size: 20px;
   }
 
-  /*============================================= MOVIES MOBILE OPTIMIZADO =================================*/
+  /*============================================= MOVIES =================================*/
 
 #gallery.mac-window {
   width: 98%;
@@ -2337,6 +2383,7 @@ body {
 
 .itunes-controls-left {
   justify-content: flex-start;
+  visibility: hidden;
 }
 
 .itunes-controls-center {
@@ -2345,35 +2392,12 @@ body {
 
 .itunes-controls-right {
   justify-content: flex-end;
-}
-
-.itunes-time-volume {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  margin-right: 30px;
-  gap: 5px;
-  flex: none;
-}
-
-#galleryVolumeControl {
-  width: 80px;
-  height: 6px;
-  flex-shrink: 0;
+  visibility: hidden;
 }
 
 #mercimetalic {
   height: 35px;
   width: auto;
-}
-
-.search-box {
-  width: 100%;
-  max-width: 100px;
-  font-size: 12px;
-  height: 15px;
-  padding: 0 8px;
-  border-radius: 11px;
 }
 
 /* COVERFLOW OPTIMIZADO - Corregido para móvil */
@@ -2408,9 +2432,8 @@ body {
   height: 100%;
 }
 
-/* ITEMS - Dimensiones corregidas para contexto de ventana */
 .coverflow-item {
-  flex: 0 0 calc(75% - 40px); /* Cambiado de 75vw a 75% del contenedor */
+  flex: 0 0 calc(75% - 40px); 
   max-width: calc(75% - 40px);
   height: auto;
   transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
@@ -2421,11 +2444,10 @@ body {
   cursor: pointer;
 }
 
-/* IFRAMES - Proporciones ajustadas al contexto */
 .coverflow-item iframe {
   width: 100%;
-  height: calc((100vw * 0.98 * 0.75 - 40px) * 9 / 16); /* Calculado basado en el ancho de la ventana */
-  max-height: 35vh; /* Límite máximo para evitar overflow */
+  height: calc((100vw * 0.98 * 0.75 - 40px) * 9 / 16); 
+  max-height: 35vh; 
   border-radius: 12px;
   border: 2px solid rgba(255,255,255,0.1);
   box-shadow: 
@@ -2435,7 +2457,7 @@ body {
   transition: box-shadow 0.3s ease;
 }
 
-/* ESTADOS DEL COVERFLOW */
+
 .coverflow-item.center {
   transform: scale(1.05) translateZ(50px);
   opacity: 1;
@@ -2535,7 +2557,7 @@ body {
 
 /* Lista de videos */
 .video-title-list {
-  background: #fff;
+  background: #ffffff;
   overflow-y: auto;
   flex: 1;
   min-height: 0; /* Importante para que funcione el scroll */
