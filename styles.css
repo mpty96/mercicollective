@@ -1572,10 +1572,11 @@ width: 700px;
 /*============================================== DISEÑO RESPONSIVE =========================================*/
 /*==========================================================================================================*/
 
-@media screen and (max-width: 768px) { 
-
+@media screen and (max-width: 468px) { 
   .mac-window {
   display: none;
+  width: 90vw !important;     
+  height: 70vh !important;
 }
 
 body.apple-lockdown {
@@ -1804,7 +1805,7 @@ position: fixed;
 
 /*========================================= CONTACTO ====================================*/
   .genie-window {
-  width: 100vw;
+  width: 90vw;
   max-width: 700px;
   height: 55vh;
   max-height: 400px;
@@ -1835,11 +1836,9 @@ position: fixed;
   .retro-form input,
   .retro-form textarea {
     font-size: 12px;
-    padding: 1px;
   }
 
   .retro-buttons button {
-    padding: 1px;
     font-size: 10px;
   }
 
@@ -2016,10 +2015,6 @@ position: fixed;
     font-weight: 500;
   }
 
-  .mac-window {
-  display: none;
-}
-
   .size-selector select {
     padding: 10px 15px;
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -2080,9 +2075,8 @@ position: fixed;
 
   /* Shopping Cart responsive */
   #shoppingCart.mac-window {
-    width: 95vw !important;
-    height: 90vh !important;
-    max-height: 90vh;
+    width: 90vw;
+    height: 90vh;
   }
 
   .cart-dark-content {
@@ -2203,8 +2197,8 @@ position: fixed;
 
 /*============================================== SOUNDS =========================================*/ 
 .mac-window.itunes-window {
-  width: 100vw !important;
-  height: 90vh !important;
+  width: 90vw;
+  height: 90vh;
 
 }
 
@@ -2296,30 +2290,6 @@ body {
   margin-left: -35px;
   margin-right: -35px;
 }
-
-@media (max-width: 480px) {
-  
-  #socialWindow {
-  opacity: 0;
-  transition: opacity 0.2s ease-in-out;
-  }
-
-#socialWindow.show {
-  opacity: 1;
-  }
-
-  .social-icons {
-    gap: 0;
-    top: 33%;
-  }
-
-  .social-icons img {
-    width: 200px;
-    margin-left: -35px;
-    margin-right: -35px;
-  }
-}
-
 
 
 /*=========================================== ABOUT US ======================================*/
@@ -2670,12 +2640,6 @@ body {
 
 /* Breakpoint para dispositivos muy pequeños (hasta 480px) */
 @media screen and (max-width: 480px) {
-  
-  #merch.mac-window,
-  #shoppingCart.mac-window {
-    width: 100vw !important;
-    height: 87vh !important;
-  }
 
   .merch-list {
     padding: 15px 10px;
