@@ -92,7 +92,7 @@ function togglePassword() {
 
 
 //________________________________________________________________________________________________//
-//---------------------------------- INICIALIZACIÓN GLOBAL ----------------------------------//
+//---------------------------------- INICIALIZACIÓN GLOBAL ---------------------------------------//
 //________________________________________________________________________________________________//
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -100,6 +100,7 @@ window.addEventListener('DOMContentLoaded', () => {
   activateAppleLockdown?.();
   initializeCoverflow?.();
   updateTopBarDateTimeWeather?.();
+  updateCartNotificationBadge();
 
   // Ocultar contraseña al escribir
   const passwordToggle = document.querySelector('.password-toggle');
@@ -210,7 +211,7 @@ updateTopBarDateTimeWeather();
 
 
 //________________________________________________________________________________________________//
-//------------------------------------- MANEJO DE VENTANAS -------------------------------------//
+//------------------------------------- MANEJO DE VENTANAS ---------------------------------------//
 //________________________________________________________________________________________________//
 
 const openWindowsOnMobile = new Set();
@@ -450,7 +451,7 @@ document.querySelectorAll('.mac-window').forEach(win => {
 });
 
 //________________________________________________________________________________________________//
-//-------------------------------------- COVERFLOW --------------------------------------//
+//------------------------------------------- COVERFLOW -------------------------------------------//
 //________________________________________________________________________________________________//
 
 function refreshVideoData() {
@@ -664,7 +665,7 @@ function isGalleryVisible() {
 
 
 //________________________________________________________________________________________________//
-//-------------------------------------- SOUNDCLOUD Y VOLUMEN --------------------------------------//
+//------------------------------------- SOUNDCLOUD Y VOLUMEN -------------------------------------//
 //________________________________________________________________________________________________//
 
 function audioPlayer() {
@@ -731,7 +732,7 @@ function audioPlayer() {
 
 
 //________________________________________________________________________________________________//
-//-------------------------------------- MERCH --------------------------------------//
+//---------------------------------------------- MERCH -------------------------------------------//
 //________________________________________________________________________________________________//
 function openMerchDetail(product) {
   const mainImageContainer = document.getElementById("mainMerchImageContainer");
@@ -797,9 +798,6 @@ function showMerchList() {
   document.getElementById("merchList").style.display = "flex";
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  updateCartNotificationBadge();
-});
 
 //________________________________________________________________________________________________//
 //-------------------------------------- CARRITO DE COMPRAS --------------------------------------//
@@ -913,6 +911,12 @@ function removeFromCart(index) {
   cart.splice(index, 1);
   updateCart();
 }
+
+function handleBackFromCart() {
+  closeWindow('shoppingCart');
+  openWindow('merch');
+}
+
 
 function addToCart() {
   const size = document.getElementById("size").value;
@@ -1034,21 +1038,54 @@ window.addEventListener("load", precargarFondos);
 //_______________________________________ENVIAR CORREOS___________________________________________//
 //________________________________________________________________________________________________//
 
-
 function enviarCorreo(destino) {
+  if (window.event) window.event.preventDefault();
+
+  const form = document.querySelector("form.retro-form");
+
+  // ✅ Validación nativa del navegador (HTML5)
+  if (!form.checkValidity()) {
+    form.reportValidity(); // Esto activa los mensajes como "Introduce un email válido"
+    return;
+  }
+
   const correo = document.getElementById('correo').value;
   const asunto = document.getElementById('asunto').value;
   const mensaje = document.getElementById('mensaje').value;
 
-  if (!correo || !asunto || !mensaje) {
-    alert("Please fill all fields.");
-    return;
-  }
-
   let destinatario = "";
-  if (destino === 'merci') destinatario = "awge@example.com";
-  if (destino === 'support') destinatario = "support@example.com";
+  if (destino === 'awge') destinatario = "ncarosanchezz@gmail.com";
+  if (destino === 'support') destinatario = "merci.creativecollect@gmail.com";
 
-  const mailto = `mailto:${destinatario}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent('From: ' + correo + '' + mensaje)}`;
-  window.location.href = mailto;
+  const templateParams = {
+    from_email: correo,
+    to_email: destinatario,
+    subject: asunto,
+    message: mensaje
+  };
+
+  emailjs.send('service_z0j54pu', 'template_xk11bu9', templateParams)
+    .then(function(response) {
+       mostrarMensaje("Mensaje enviado correctamente!", true);
+       form.reset();
+    }, function(error) {
+       mostrarMensaje("Error al enviar mensaje.", false);
+       console.error('EmailJS Error:', error);
+    });
+}
+
+function mostrarMensaje(texto, exito = true) {
+  const contenedor = document.getElementById('mensaje-envio');
+  const contenido = document.getElementById('contenido-mensaje');
+  contenido.innerText = texto;
+
+  // Cambiar color de fondo según éxito o error
+  contenedor.style.backgroundColor = exito ? '#bcbcbc' : '#ffcccc';
+  contenedor.style.borderColor = exito ? '#444' : '#a00';
+
+  contenedor.style.display = 'flex';
+}
+
+function cerrarMensaje() {
+  document.getElementById('mensaje-envio').style.display = 'none';
 }

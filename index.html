@@ -4,14 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MERCI</title>
-  <script src="script2.js?v=2.1.1" defer></script>
-
+  <!--SCRIPT CORREOS-->
+  <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+  <!--SCRIPT.JS-->
+  <script src="script2.js?v=2.1.2" defer></script>
+  <!--SCRIPT SOUNDCLOUD-->
   <script src="https://w.soundcloud.com/player/api.js"></script>
-
+  <!--SCRIPT YOUTUBE-->
   <script src="https://www.youtube.com/iframe_api"></script>
-
-  <link rel="stylesheet" href="styles.css?v=2.1.1">
-
+  <!--STYLES.CSS-->
+  <link rel="stylesheet" href="styles.css?v=2.1.2">
   <link rel="icon" type="image/png" href="imagenes/mercimetalic.png">
 </head>
 <body >
@@ -119,6 +123,9 @@
         <span class="window-title">Merch</span>
     </div>
     <div class="mac-window-content">
+      <div class="merch-banner">
+    ENVÍO GRATIS EN PEDIDOS SOBRE $50.000
+  </div>
       <div class="cart-icon-container">
         <img src="imagenes/cart.png" alt="Cart Icon" loading="eager" class="cart-icon" onclick="openWindow('shoppingCart')" />
         <div id="cartNotificationBadge" class="cart-notification-badge hidden">0</div>
@@ -231,6 +238,7 @@
     <span class="window-title">Cart</span>
   </div>
   <div class="mac-window-content cart-dark-content">
+    <img src="imagenes/back.png" loading="eager" alt="Back Icon" class="cart-back-icon" onclick="handleBackFromCart()"  />
     <h2 class="cart-title">CART</h2>
     <div id="cartItems" class="cart-items-grid"></div>
     <div class="cart-checkout-section">
@@ -244,10 +252,9 @@
   </div>
 </div>
 
-<!--------------------------------------------- Ventana: SOUNDS ---------------------------------------------------->
+<!--------------------------------------------- Ventana: SOUNDS OF MERCI---------------------------------------------------->
 
 <div class="mac-window itunes-window" id="sets">
-
   <!-- Header -->
   <div class="mac-window-header itunes-header">
     <div class="window-buttons">
@@ -461,11 +468,20 @@
 </div>
 
 <!------------------------------------------------- Ventana: Contacto ----------------------------------------------------->
+
 <div class="genie-window" id="contact">
+
+<!-- Ventana de confirmación retro -->
+<div class="retro-contact" id="mensaje-envio">
+  <div class="retro-contact-header">
+    <button class="retro-close-button" onclick="cerrarMensaje()">X</button>
+  </div>
+  <div class="retro-contact-body" id="contenido-mensaje">
+  </div>
+</div>
 <div class="contact-header-bar">
   <div class="contact-title">CONTACT</div>
 </div>
-
 <!-- Formulario -->
 <form class="retro-form" onsubmit="event.preventDefault();">
     <label for="correo">EMAIL</label>
@@ -477,11 +493,18 @@
     <label for="mensaje">MESSAGE</label>
     <textarea id="mensaje" rows="5" required></textarea>
 
-    <div class="retro-buttons">
-      <button onclick="enviarCorreo('awge')">SEND TO<br>MERCI</button>
-      <button onclick="enviarCorreo('support')">SEND TO<br>ORDER SUPPORT</button>
-    </div>
-  </form>
-</div>
+      <div class="retro-buttons">
+        <button onclick="enviarCorreo('awge')">SEND TO<br>MERCI</button>
+        <button onclick="enviarCorreo('support')">SEND TO<br>ORDER SUPPORT</button>
+      </div>
+    </form>
+  </div>
+  <script type="text/javascript">
+   (function(){
+      emailjs.init({
+        publicKey: "TPNKdroUcffa2V9N7",
+      });
+   })();
+</script>
 </body>
 </html>

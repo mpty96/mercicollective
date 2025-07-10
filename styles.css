@@ -591,7 +591,6 @@ opacity: 1;
 }
 
 /*------------------------------------------ VENTANA GALERIA DE VIDEOS ----------------------------------------*/
-/* Ventana principal adaptada para Movies */
 .mac-window#gallery {
   width: 1200px;
   height: 600px;
@@ -875,18 +874,52 @@ opacity: 1;
 .retro-contact {
   position: fixed;
   left: 50%;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
   width: 500px;
-  height: auto;
   background: #bcbcbc;
   font-family: 'Courier New', monospace;
   color: #333;
-  padding: 0;
   border: 4px solid #444;
-  z-index: 10000; /* Asegura que esté al frente */
+  z-index: 10000;
   display: none;
   flex-direction: column;
-  top: 50% !important;
-  transform: translate(-50%, -50%) !important;
+}
+
+.retro-close-button {
+  background: none;
+  border: none;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 1px 9px;
+  cursor: pointer;
+  color: #222;
+}
+
+.retro-contact-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;       /* ✅ Centra verticalmente el botón */
+  padding: 4px 6px;
+  background: #999;
+  height: 22px;              /* ✅ Controla altura total del header */
+  border-bottom: 2px solid #333;
+}
+
+.retro-close-button:hover {
+  background-color: #777;
+  color: #fff;
+}
+
+.retro-contact-body {
+  text-align: center;
+  padding: 10px;
+  font-size: 25px;
+}
+
+#mensaje-envio button:hover {
+  background-color: #777;
+  color: #fff;
 }
 
 .contact-header-bar {
@@ -1232,6 +1265,27 @@ width: 700px;
   height: 600px;
 }
 
+/*Ocultar back icon en Desktop*/
+.cart-back-icon {
+  display: none;
+}
+
+.merch-banner {
+  position: absolute;
+  top: 35px; /* justo bajo el .mac-window-header (ajústalo si es necesario) */
+  left: 0;
+  width: 100%;
+  background-color: #ff0000;
+  color: #ffffff;
+  text-align: center;
+  font-weight: bold;
+  font-size: 15px;
+  padding: 1px 1px;
+  z-index: 12; /* encima del fondo pero debajo del modal o botones si fuera necesario */
+  box-sizing: border-box;
+  pointer-events: none; /* no bloquea clicks */
+}
+
 .merch-content-column {
   display: flex;
   flex-direction: column;
@@ -1264,16 +1318,13 @@ width: 700px;
   color: white;
 }
 
-/* Estilos para videos y GIFs - mantienen las mismas dimensiones */
-.merch-gif,
-.merch-video {
+.merch-gif {
   width: 100%;
   height: auto;
   border-radius: 10px;
   box-shadow: 0 0 8px rgba(255,255,255,0.2);
   object-fit: cover;
   cursor: pointer;
-  /* Mejoras para calidad de video */
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
   backface-visibility: hidden;
@@ -1286,7 +1337,7 @@ width: 700px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 40px;
+  gap: 10px;
   padding: 40px;
   min-height: 500px;
   height: 100%;
@@ -1302,11 +1353,10 @@ width: 700px;
 }
 
 /* Estilos para imágenes y videos en vista principal */
-.merch-main-view img,
-.merch-main-view video {
+.merch-main-view img {
   max-width: 280px;
   border-radius: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 30px;
   /* Mejoras para calidad de video */
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
@@ -1330,7 +1380,6 @@ width: 700px;
   gap: 10px;
 }
 
-/* Estilos para thumbnails - tanto imágenes como videos */
 .merch-thumbs img,
 .merch-thumbs video {
   width: 80px;
@@ -1345,6 +1394,13 @@ width: 700px;
   backface-visibility: hidden;
   transform: translateZ(0);
 }
+
+  .merch-main-view img[src*="tabla_blanca.png"],
+  .merch-main-view img[src*="tabla_negra.png"] {
+    width: 500px;
+    height: auto;
+    max-width: none;
+  }
 
 .merch-thumbs img:hover,
 .merch-thumbs video:hover {
@@ -1386,7 +1442,7 @@ width: 700px;
 
 .cart-icon {
   position: absolute;
-  top: 45px;
+  top: 65px;
   right: 20px;
   width: 30px;
   height: 30px;
@@ -1399,7 +1455,7 @@ width: 700px;
 
 .back-icon {
   position: absolute;
-  top: 45px;
+  top: 60px;
   width: 30px;
   left: 20px;
   height: 30px;
@@ -1413,8 +1469,8 @@ width: 700px;
 /* Badge de notificación del carrito */
 .cart-notification-badge {
   position: absolute;
-  right: 6px;
-  top: 32px;
+  right: 10px;
+  top: 60px;
   background-color: #ff4444;
   color: white;
   border-radius: 50%;
@@ -1635,7 +1691,7 @@ position: fixed;
 
   /* Desktop más compacto */
   .desktop {
-    padding: 45px 10px;
+    padding: 35px 10px;
     gap: 1px;
   }
 
@@ -1661,8 +1717,8 @@ position: fixed;
   }
 
   .dock-icon img {
-    width: 16vw;
-    height: 10vh;
+    width: 50px;
+    height: 50px;
   }
 
   /* Ventanas más adaptadas */
@@ -1819,9 +1875,25 @@ position: fixed;
     padding: 4px 8px;
   }
 
+  .retro-contact-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;       /* ✅ Centra verticalmente el botón */
+  padding: 4px 6px;
+  background: #999;
+  height: 22px;              /* ✅ Controla altura total del header */
+  border-bottom: 2px solid #333;
+}
+
   .contact-title {
     font-size: 17px;
   }
+
+  .retro-contact-body {
+  text-align: center;
+  padding: 1px;
+  font-size: 20px;
+}
 
   .retro-form {
     padding: 12px;
@@ -1842,6 +1914,26 @@ position: fixed;
     font-size: 10px;
   }
 
+  .retro-contact {
+    width: 80vw;
+    font-size: 13px;
+  }
+
+.retro-close-button {
+ font-weight: bold;
+ font-size: 16px;
+ padding: 1px 1px;
+ cursor: pointer;
+ color: #222;
+ line-height: 1;
+ height: 16px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ border: none;
+ background: none;
+}
+
   /* Íconos de cerrar más grandes para touch */
   #icon-close-contact,
   #icon-close-safari {
@@ -1856,9 +1948,25 @@ position: fixed;
     overflow: hidden;
   }
 
+  .merch-banner {
+  position: absolute;
+  top: 30px; /* justo bajo el .mac-window-header (ajústalo si es necesario) */
+  left: 0;
+  width: 100%;
+  background-color: #ff0000;
+  color: #ffffff;
+  text-align: center;
+  font-weight: bold;
+  font-size: 10px;
+  padding: 1px 1px;
+  z-index: 12; /* encima del fondo pero debajo del modal o botones si fuera necesario */
+  box-sizing: border-box;
+  pointer-events: none; /* no bloquea clicks */
+}
+
   .cart-icon {
     position: absolute;
-    top: 40px;
+    top: 9vh;
     right: 15px;
     cursor: pointer;
     z-index: 10;
@@ -1957,7 +2065,7 @@ position: fixed;
   /* Icono de back mejorado */
   .back-icon {
     position: absolute;
-    top: 1px;
+    top: 2vh;
     left: 1px;
     cursor: pointer;
     z-index: 10;
@@ -1968,6 +2076,23 @@ position: fixed;
     transform: scale(1.1);
   }
 
+  .cart-back-icon {
+    display: block;
+    position: absolute;
+    top: 35px;
+    left: 15px;
+    width: 30px;
+    height: auto;
+    cursor: pointer;
+    z-index: 20;
+    transition: transform 0.2s ease;
+    filter: brightness(0) invert(1);
+  }
+
+  .cart-back-icon:hover {
+    transform: scale(1.1);
+  }
+
   /* Vista principal del producto */
   .merch-main-view {
     display: flex;
@@ -1975,7 +2100,7 @@ position: fixed;
     align-items: center;
     text-align: center;
     padding-top: 0px;
-    gap: auto;
+    gap: 3px;
     flex: 1;
     order: 1;
     max-width: 70%;
@@ -1987,6 +2112,7 @@ position: fixed;
     width: 150px;
     height: auto;
     border-radius: 5px;
+    margin-bottom: -1px;
   }
 
   .merch-main-view h3 {
@@ -2061,7 +2187,7 @@ position: fixed;
     align-items: center;
     position: absolute;
     right: 0px;
-    top: 0;
+    top: 4vh;
   }
 
   .merch-thumbs img {
@@ -2152,17 +2278,17 @@ position: fixed;
 
   .cart-notification-badge {
   position: absolute;
-  top: 30px;
-  right: 8px;
+  top: 8vh;
+  right: 2vw;
   background: #ff4444;
   color: white;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
+  border-radius: 60%;
+  width: 5vw;
+  height: 3vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: bold;
   z-index: 11;
   }
@@ -2226,10 +2352,9 @@ position: fixed;
   }
 
 /*============================================== SOUNDS =========================================*/ 
-.mac-window.itunes-window {
-  width: 90vw;
-  height: 90vh;
 
+#sets .mac-window-content {
+  padding: 0 !important;
 }
 
 .itunes-main-content {
@@ -2238,54 +2363,39 @@ position: fixed;
 
 .itunes-sidebar {
   border-right: none;
-  border-bottom: 1px solid #999;
+  width: 30vw;
 }
 
 .itunes-top-controls {
-  justify-content: space-between;
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 .itunes-search-browse {
-  flex-direction: row;
-  align-items: center;
-  gap: 8px;
+  display: none;
 }
 
 .itunes-time-volume {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-  width: auto;
-}
-
-.itunes-time-volume::before {
-  margin-right: 5px;
-  font-size: 18px;
-  margin-bottom: 0;
-  content: "🔊";
-}
-
-#volumeControl {
-  width: 120px;
-  height: 8px;
+  display: none;
 }
 
 .itunes-visualizer {
+  display: flex;
+  justify-content: center; /* centrado horizontal */
+  align-items: center;     /* centrado vertical */
   width: 100%;
-  max-width: 100%;
-  overflow: hidden;
+  padding: 10px 0;
 }
 
 .itunes-visualizer canvas {
-  width: 100% !important;
+  width: 50vw !important;
+  max-width: none;
   height: auto !important;
   display: block;
 }
 
-body {
-  font-size: 10px;
-}
   
 
 /*============================================== SOCIAL MEDIA =================================*/
@@ -2558,9 +2668,11 @@ body {
 /* Lista de videos */
 .video-title-list {
   background: #ffffff;
-  overflow-y: auto;
   flex: 1;
-  min-height: 0; /* Importante para que funcione el scroll */
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .video-list-header, .video-row {
@@ -2570,6 +2682,44 @@ body {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+.video-list-header {
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  background: inherit;
+  z-index: 10;
+}
+
+.video-list-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Personalizar scrollbar para que se vea más como macOS */
+.video-list-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.video-list-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.video-list-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.video-list-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.video-row.selected {
+  background: #4080ff !important;
+  color: white !important;
 }
 
 .header-cell, .row-cell {
