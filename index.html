@@ -9,13 +9,13 @@
         src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
 </script>
   <!--SCRIPT.JS-->
-  <script src="script2.js?v=2.1.3" defer></script>
+  <script src="script2.js?v=2.1.4" defer></script>
   <!--SCRIPT SOUNDCLOUD-->
   <script src="https://w.soundcloud.com/player/api.js"></script>
   <!--SCRIPT YOUTUBE-->
   <script src="https://www.youtube.com/iframe_api"></script>
   <!--STYLES.CSS-->
-  <link rel="stylesheet" href="styles.css?v=2.1.3">
+  <link rel="stylesheet" href="styles.css?v=2.1.4">
   <link rel="icon" type="image/png" href="imagenes/mercimetalic.png">
 </head>
 <body >
@@ -85,7 +85,6 @@
       <p>Usuarios</p>
       <p>activos</p>
     </div>
-
   </main>
 
   <div class="disk" id="icon-close-contact" onclick="closeWindow('contact')">
@@ -116,6 +115,9 @@
 <!--------------------------------------- Ventanas emergentes ---------------------------------------->
 <!---------------------------------------------------------------------------------------------------->
 
+
+<!-------------------------------------- Ventana Usuarios Activos ---------------------------------------->
+
 <div class="mac-window" id="activeUsers">
   <div class="mac-window-header">
     <div class="window-buttons">
@@ -126,10 +128,9 @@
     <div class="window-title">Usuarios Activos</div>
   </div>
   <div class="mac-window-content" id="activeUsersContent">
-    <ul id="userList" style="list-style: none; padding-left: 0;"></ul>
+    <ul id="userList"></ul>
   </div>
 </div>
-
 
 <!----------------------------------------- Ventana Merch -------------------------------------------->
 
@@ -526,5 +527,63 @@
       });
    })();
 </script>
+  
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, onValue, set, remove, onDisconnect } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAXgNKx6ZXwmJMqE0Cnm25IkB138GCcnBA",
+    authDomain: "usuarios-activos-merci.firebaseapp.com",
+    databaseURL: "https://usuarios-activos-merci-default-rtdb.firebaseio.com",
+    projectId: "usuarios-activos-merci",
+    storageBucket: "usuarios-activos-merci.firebasestorage.app",
+    messagingSenderId: "393254423567",
+    appId: "1:393254423567:web:bceafb77f28a91f97b277a"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  let currentUsername = '';
+
+  function registerUser(username) {
+    currentUsername = username;
+    const userRef = ref(db, 'activeUsers/' + username);
+
+    // Agrega el usuario a Firebase
+    set(userRef, true);
+
+    // Borra el usuario si cierra la pestaña
+    onDisconnect(userRef).remove();
+
+    console.log(`[+] Usuario registrado en Firebase: ${username}`);
+  }
+
+  function updateUserList() {
+    const userList = document.getElementById('userList');
+    const usersRef = ref(db, 'activeUsers');
+
+    onValue(usersRef, (snapshot) => {
+      const users = snapshot.val();
+      userList.innerHTML = '';
+
+      if (users) {
+        Object.keys(users).forEach(username => {
+          const li = document.createElement('li');
+          li.innerHTML = `<img src="imagenes/online_user.png" style="width:16px; margin-right:6px;">${username}`;
+          userList.appendChild(li);
+        });
+      }
+    });
+  }
+
+  // Llama esto al cargar la página
+  updateUserList();
+
+  // Exportar para usar en login()
+  window.registerUser = registerUser;
+</script>
+
 </body>
 </html>
