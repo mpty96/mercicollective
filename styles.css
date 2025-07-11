@@ -556,7 +556,6 @@ opacity: 1;
     background: #c4c4c4;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    border: 1px solid #e0e0e0;
     min-width: 280px;
     max-width: 350px;
     height: 600px;
@@ -565,7 +564,6 @@ opacity: 1;
   #activeUsersContent {
     padding: 0;
     background: #c4c4c4;
-    max-height: 400px;
     overflow-y: auto;
   }
 
