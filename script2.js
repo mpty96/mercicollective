@@ -1,6 +1,6 @@
-//_________________________________________________________________________________________________________//
+//=========================================================================================================//
 //----------------------------------- INICIO DE SESIÓN Y PANTALLA DE CARGA --------------------------------//
-//_________________________________________________________________________________________________________//
+//=========================================================================================================//
 
 window.addEventListener('load', () => {
   const loadingScreen = document.getElementById('loadingScreen');
@@ -92,10 +92,9 @@ function togglePassword() {
   }
 }
 
-
-//________________________________________________________________________________________________//
+//================================================================================================//
 //---------------------------------- INICIALIZACIÓN GLOBAL ---------------------------------------//
-//________________________________________________________________________________________________//
+//================================================================================================//
 
 window.addEventListener('DOMContentLoaded', () => {
   audioPlayer?.();
@@ -197,10 +196,8 @@ function updateTopBarDateTimeWeather() {
 
 const slowVideos = document.querySelectorAll('.slow-video');
   slowVideos.forEach(video => {
-    video.playbackRate = 0.5; // Reduce la velocidad a la mitad
+    video.playbackRate = 0.5; 
   });
-
-  // Opción adicional: permitir click para abrir detalles
   slowVideos.forEach(video => {
     video.addEventListener('click', () => {
       const data = JSON.parse(video.dataset.product);
@@ -211,10 +208,9 @@ const slowVideos = document.querySelectorAll('.slow-video');
 setInterval(updateTopBarDateTimeWeather, 60000);
 updateTopBarDateTimeWeather();
 
-
-//________________________________________________________________________________________________//
+//================================================================================================//
 //------------------------------------- MANEJO DE VENTANAS ---------------------------------------//
-//________________________________________________________________________________________________//
+//================================================================================================//
 
 const openWindowsOnMobile = new Set();
 
@@ -241,9 +237,6 @@ function openWindow(id) {
   openWindowsOnMobile.forEach(openId => {
     if (openId !== id) closeWindow(openId);
   });
-
-    
-    // Asegurar que la ventana esté correctamente posicionada
     el.style.position = 'fixed';
     el.style.left = '50%';
     el.style.top = '50%';
@@ -256,12 +249,8 @@ function openWindow(id) {
     if (id === 'contact') {
       document.getElementById('icon-close-contact').style.display = 'flex';
     }
-    
-    // Añadir al set y forzar el reflow antes de la animación
     openWindowsOnMobile.add(id);
-    el.offsetHeight; // Forzar reflow
-    
-    // Aplicar clase show para la animación
+    el.offsetHeight; 
     setTimeout(() => {
       el.classList.add('show');
       bringToFront(el);
@@ -270,7 +259,7 @@ function openWindow(id) {
     return;
   }
 
-  // Resto del código para desktop se mantiene igual...
+  // CODIGO PARA VERSIÖN PC
   if (id === 'contact') {
     const icon = document.getElementById('icon-contact');
     const rect = icon.getBoundingClientRect();
@@ -319,7 +308,7 @@ function openWindow(id) {
   }
 }
 
-// También actualiza la función closeWindow para móviles
+// Función closeWindow para móviles
 function closeWindow(id) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -335,13 +324,10 @@ function closeWindow(id) {
       el.style.display = 'none';
       el.style.visibility = 'hidden';
       el.style.opacity = '0';
-      // Remover del set DESPUÉS de que termine la animación
       openWindowsOnMobile.delete(id);
     }, 300);
     return;
   }
-
-  // Resto del código para desktop se mantiene igual...
   if (id === 'contact') {
     const icon = document.getElementById('icon-contact');
     const rect = icon.getBoundingClientRect();
@@ -367,7 +353,7 @@ function closeWindow(id) {
   }
 }
 
-// Función adicional para debugear en móviles
+// Función para debugear en móviles
 function debugMobileWindow(id) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -452,9 +438,9 @@ document.querySelectorAll('.mac-window').forEach(win => {
   });
 });
 
-//________________________________________________________________________________________________//
+//=================================================================================================//
 //------------------------------------------- COVERFLOW -------------------------------------------//
-//________________________________________________________________________________________________//
+//=================================================================================================//
 
 function refreshVideoData() {
   const updatedVideos = getVideosFromHTML();
@@ -466,18 +452,13 @@ let currentVideoIndex = 0;
 let currentVirtualIndex = 0;
 
 function updateTrackInfo() {
-  // Obtener el video actual
   const currentVideo = videos[currentVideoIndex];
   
   if (!currentVideo) return;
-  
-  // Actualizar información en el header de iTunes si existe
   const titleElement = document.querySelector('.window-title');
   if (titleElement) {
     titleElement.textContent = `${currentVideo.title} - ${currentVideo.artist}`;
   }
-  
-  // Actualizar información en algún elemento de info del track (si existe)
   const trackInfoElement = document.querySelector('.track-info');
   if (trackInfoElement) {
     trackInfoElement.innerHTML = `
@@ -498,7 +479,7 @@ function updateTrackInfo() {
     footer.textContent = `${currentPosition} of ${totalItems} items - ${currentVideo.title} by ${currentVideo.artist}`;
   }
   
-  // Log para debug (opcional)
+  // Log para debug
   console.log('Track actualizado:', currentVideo.title, 'por', currentVideo.artist);
 }
 
@@ -521,7 +502,6 @@ function getCircularIndex(index) {
   const total = document.querySelectorAll('#coverflowTrack .coverflow-item').length;
   return ((index % total) + total) % total;
 }
-
 
 function updateCoverflow() {
   const track = document.getElementById('coverflowTrack');
@@ -583,11 +563,9 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') moveCoverflow(1);
 });
 
-
 function initializeCoverflow() {
   updateCoverflow();
 }
-
 
 function setupGalleryVolumeControl() {
   const slider = document.getElementById("galleryVolumeControl");
@@ -603,15 +581,12 @@ function setupGalleryVolumeControl() {
           player.setVolume(volume);
         }
       } catch (e) {
-        // Silenciosamente ignora el error
       }
     });
   });
 }
 
-
-
-// === 🎥 YouTube API: cargar si no está ===
+// === YouTube API ===
 let ytPlayers = [];
 let ytAPIReady = false;
 
@@ -620,9 +595,9 @@ function initializeYouTubePlayers() {
   const iframes = document.querySelectorAll('#coverflowTrack iframe');
 
   ytPlayers = [];
-  let playersReady = 0; // AÑADIR CONTADOR
+  let playersReady = 0; 
   iframes.forEach((iframe, index) => {
-    console.log(`🎬 Procesando iframe ${index}:`, iframe);
+    console.log(`Procesando iframe ${index}:`, iframe);
     
     const src = iframe.src;
     const videoId = src.match(/embed\/([^?]+)/)?.[1];
@@ -640,10 +615,8 @@ function initializeYouTubePlayers() {
       events: {
         onReady: event => {
           ytPlayers[index] = event.target;
-          playersReady++; // INCREMENTAR CONTADOR
+          playersReady++;
           console.log(`✅ Player ${index} listo:`, videoId);
-          
-          // CUANDO TODOS LOS PLAYERS ESTÉN LISTOS, CONFIGURAR VOLUMEN
           if (playersReady === iframes.length) {
             setupGalleryVolumeControl();
           }
@@ -653,11 +626,10 @@ function initializeYouTubePlayers() {
   });
 }
 
-// === 🧠 Cargar API solo una vez ===
 window.onYouTubeIframeAPIReady = () => {
   ytAPIReady = true;
   initializeYouTubePlayers();
-  waitForYouTubeAPIAndSetupVolume(); // <- aquí
+  waitForYouTubeAPIAndSetupVolume(); 
 };
 
 function isGalleryVisible() {
@@ -665,10 +637,9 @@ function isGalleryVisible() {
   return gallery && gallery.classList.contains("show") && getComputedStyle(gallery).display !== "none";
 }
 
-
-//________________________________________________________________________________________________//
+//================================================================================================//
 //------------------------------------- SOUNDCLOUD Y VOLUMEN -------------------------------------//
-//________________________________________________________________________________________________//
+//================================================================================================//
 
 function audioPlayer() {
   if (document.body.classList.contains('apple-lockdown')) return;
@@ -732,10 +703,10 @@ function audioPlayer() {
   }
 }
 
-
-//________________________________________________________________________________________________//
+//================================================================================================//
 //---------------------------------------------- MERCH -------------------------------------------//
-//________________________________________________________________________________________________//
+//================================================================================================//
+
 function openMerchDetail(product) {
   const mainImageContainer = document.getElementById("mainMerchImageContainer");
   const title = document.getElementById("merchTitle");
@@ -745,7 +716,7 @@ function openMerchDetail(product) {
   // Limpiar contenedor principal
   mainImageContainer.innerHTML = "";
   
-  // Crear elemento imagen principal
+  // Elemento imagen principal
   const mainImage = document.createElement("img");
   mainImage.id = "mainMerchImage";
   mainImage.src = "imagenes/" + product.main;
@@ -772,8 +743,6 @@ function openMerchDetail(product) {
 
 function changeMainImage(src) {
   const mainImageContainer = document.getElementById("mainMerchImageContainer");
-  
-  // Limpiar contenedor
   mainImageContainer.innerHTML = "";
   
   // Crear nuevo elemento imagen
@@ -800,10 +769,10 @@ function showMerchList() {
   document.getElementById("merchList").style.display = "flex";
 }
 
-
-//________________________________________________________________________________________________//
+//================================================================================================//
 //-------------------------------------- CARRITO DE COMPRAS --------------------------------------//
-//________________________________________________________________________________________________//
+//================================================================================================//
+
 let cart = [];
 
 function getShopifyProductID(title, size) {
@@ -919,7 +888,6 @@ function handleBackFromCart() {
   openWindow('merch');
 }
 
-
 function addToCart() {
   const size = document.getElementById("size").value;
   if (!size) {
@@ -948,7 +916,8 @@ document.querySelector("#merchDetail button")?.addEventListener("click", addToCa
 
 //===========================================================================================//
 //-------------------------------------- SOCIAL MEDIA ---------------------------------------//
-//==========================================================================================//
+//===========================================================================================//
+
 function openSocialWindow() {
   const social = document.getElementById("socialWindow");
   document.querySelector('.dock').style.display = 'none';
@@ -991,8 +960,6 @@ function openSocialWindow() {
     clones.push(clone);
   });
 }
-
-  // Mostrar ventana
   social.style.display = 'flex';
   setTimeout(() => social.classList.add('show'), 10);
   document.getElementById('icon-close-safari').style.display = 'flex';
@@ -1017,11 +984,8 @@ function closeSocialWindow() {
 }
 
 function precargarFondos() {
-  // Precargar fondo de la ventana
   const fondoSocial = new Image();
   fondoSocial.src = "imagenes/socialmedia.webp";
-
-  // Precargar íconos sociales en formato GIF
   const iconosGif = [
     "imagenes/cd_yt.gif",
     "imagenes/cd_ig.gif",
@@ -1036,18 +1000,18 @@ function precargarFondos() {
 
 window.addEventListener("load", precargarFondos);
 
-//________________________________________________________________________________________________//
-//_______________________________________ENVIAR CORREOS___________________________________________//
-//________________________________________________________________________________________________//
+//================================================================================================//
+//-------------------------------------- ENVIAR CORREOS ------------------------------------------//
+//================================================================================================//
 
 function enviarCorreo(destino) {
   if (window.event) window.event.preventDefault();
 
   const form = document.querySelector("form.retro-form");
 
-  // ✅ Validación nativa del navegador (HTML5)
+  // Validación nativa del navegador (HTML5)
   if (!form.checkValidity()) {
-    form.reportValidity(); // Esto activa los mensajes como "Introduce un email válido"
+    form.reportValidity(); 
     return;
   }
 

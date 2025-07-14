@@ -9,13 +9,13 @@
         src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
 </script>
   <!--SCRIPT.JS-->
-  <script src="script2.js?v=2.1.9" defer></script>
+  <script src="script2.js?v=2.2.1" defer></script>
   <!--SCRIPT SOUNDCLOUD-->
   <script src="https://w.soundcloud.com/player/api.js"></script>
   <!--SCRIPT YOUTUBE-->
   <script src="https://www.youtube.com/iframe_api"></script>
   <!--STYLES.CSS-->
-  <link rel="stylesheet" href="styles.css?v=2.1.9">
+  <link rel="stylesheet" href="styles.css?v=2.2.1">
   <link rel="icon" type="image/png" href="imagenes/mercimetalic.png">
 </head>
 <body >
@@ -26,8 +26,10 @@
     </div>
   </div>
 
+<!------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------- BARRA SUPERIOR ------------------------------------------->
+<!------------------------------------------------------------------------------------------------------->
 
-<!-------------------------------------------- Barra superior ------------------------------------------->
 <div class="top-bar">
   <div class="top-bar-left">
     <img src="imagenes/mercimetalic.png" alt="Apple Logo" class="apple-icon" />
@@ -72,7 +74,10 @@
   </div>
 </div>
 
-  <!----------------------------------------- Escritorio ------------------------------------------>
+<!------------------------------------------------------------------------------------------------------->
+  <!----------------------------------------- ESCRITORIO -------------------------------------------->
+<!------------------------------------------------------------------------------------------------------->
+
   <main class="desktop" id="desktop">
     
     <div class="disk" id="icon-contact" onclick="openWindow('contact')">
@@ -92,7 +97,10 @@
   <img src="imagenes/hddmerci.png" alt="Cerrar Contacto" />
 </div>
 
-<!----------------------------------------- Dock inferior ---------------------------------------->
+<!------------------------------------------------------------------------------------------------------->
+    <!----------------------------------------- Dock inferior ---------------------------------------->
+<!------------------------------------------------------------------------------------------------------->
+
 <div class="dock-wrapper">
   <div class="dock-background"></div>
 
@@ -112,12 +120,11 @@
   </nav>
 </div>
 
-<!---------------------------------------------------------------------------------------------------->
-<!--------------------------------------- Ventanas emergentes ---------------------------------------->
-<!---------------------------------------------------------------------------------------------------->
+<!------------------------------------------------------------------------------------------------------->
+<!--------------------------------------- VENTANAS EMERGENTES ---------------------------------------->
+<!------------------------------------------------------------------------------------------------------->
 
-
-<!-------------------------------------- Ventana Usuarios Activos ---------------------------------------->
+<!----------------------------------------------- VENTANA: USUARIOS ACTIVOS -------------------------------------------------->
 
 <div class="mac-window" id="activeUsers">
   <div class="mac-window-header">
@@ -134,7 +141,7 @@
   </div>
 </div>
 
-<!----------------------------------------- Ventana Merch -------------------------------------------->
+<!------------------------------------------------------ VENTANA: MERCH ------------------------------------------------------>
 
 <div class="mac-window dark" id="merch">
     <div class="mac-window-header">
@@ -158,6 +165,7 @@
             <!-- Polera 1 -->
             <div class="merch-item">
                 <h3>FREE LOHAN WHITE TEE</h3>
+                <div class="merch-image-wrapper">
                 <img 
                     class="merch-gif" 
                     src="imagenes/freelohan_blanca1.gif"
@@ -167,6 +175,8 @@
                         price: '$26.990 CLP', 
                         main: 'freelohan_blanca1.gif', 
                         thumbnails: ['freelohan_blanca1.gif', 'freelohan_blanca_frente.png', 'freelohan_blanca_espalda.png', 'freelohan_blanca_tabla.png'] })">
+                        <span class="sold-out-badge">SOLD OUT</span>
+                        </div>
                 <h4>$26.990 CLP</h4>
                 <button onclick="openMerchDetail({ 
                     title: 'FREE LOHAN WHITE TEE', 
@@ -179,6 +189,7 @@
             <!-- Polera 2 -->
             <div class="merch-item">
                 <h3>FREE LOHAN BLACK TEE</h3>
+                <div class="merch-image-wrapper">
                 <img 
                     class="merch-gif" 
                     src="imagenes/freelohan_negra.gif"
@@ -187,9 +198,9 @@
                         title: 'FREE LOHAN BLACK TEE', 
                         price: '$26.990 CLP', 
                         main: 'freelohan_negra.gif', 
-                        thumbnails: ['freelohan_negra.gif', 'freelohan_negra_frente.png', 'freelohan_negra_espalda.png', 'freelohan_negra_tabla.png'] 
-                    })"
-                >
+                        thumbnails: ['freelohan_negra.gif', 'freelohan_negra_frente.png', 'freelohan_negra_espalda.png', 'freelohan_negra_tabla.png']})">
+                        <span class="sold-out-badge">SOLD OUT</span>
+                        </div>
                 <h4>$26.990 CLP</h4>
                 <button onclick="openMerchDetail({ 
                     title: 'FREE LOHAN BLACK TEE', 
@@ -204,9 +215,7 @@
         <div class="merch-detail-container" id="merchDetail" style="display:none;">
             <img src="imagenes/back.png" loading="eager" alt="Back Icon" class="back-icon" onclick="handleRedButton('merchDetail')" />
             <div class="merch-main-view">
-                <div id="mainMerchImageContainer">
-                    <!-- El contenido se inserta dinámicamente -->
-                </div>
+                <div id="mainMerchImageContainer"></div>
                 <h3 id="merchTitle">Titulo</h3>
                 <h4 id="merchPrice">Precio</h4>
                 <div class="size-selector">
@@ -218,18 +227,16 @@
                         <option value="XL">XL</option>
                     </select>
                 </div>
-                <button>BUY</button>
+                <button disabled style="opacity: 0.9; cursor: not-allowed;">BUY</button>
             </div>
             <div class="merch-thumbs" id="merchThumbs" loading="eager">
-                <!-- Se insertan dinámicamente -->
             </div>
         </div>
     </div>
   </div>
 </div>
 
-
-<!------------------------------------------- Ventana Social Media --------------------------------------------->
+<!------------------------------------------------------- VENTANA: SOCIAL MEDIA ---------------------------------------------------------------->
 
 <div class="fullscreen-window" id="socialWindow">
   <div class="social-icons">
@@ -249,7 +256,7 @@
   <img src="imagenes/hddmerci.png" loading="eager" alt="Cerrar Safari" />
 </div>
 
-<!------------------------------------------ Ventana del carrito de compras ------------------------------------->
+<!--------------------------------------------------------- VENTANA: CARRITO DE COMPRAS ------------------------------------------------------------>
 
 <div class="mac-window dark" id="shoppingCart" style="display:none;">
   <div class="mac-window-header">
@@ -275,10 +282,9 @@
   </div>
 </div>
 
-<!--------------------------------------------- Ventana: SOUNDS OF MERCI---------------------------------------------------->
+<!------------------------------------------------------------- VENTANA: SOUNDS OF MERCI------------------------------------------------------------->
 
 <div class="mac-window itunes-window" id="sets">
-  <!-- Header -->
   <div class="mac-window-header itunes-header">
     <div class="window-buttons">
       <span class="btn red" onclick="closeWindow('sets')">X</span>
@@ -290,8 +296,6 @@
 
   <!-- Contenido de la ventana -->
   <div class="mac-window-content itunes-content">
-
-    <!-- Controles superiores -->
     <div class="itunes-top-controls">
       <div class="itunes-visualizer">
         <div class="itunes-time-volume">
@@ -300,8 +304,7 @@
             <canvas id="visualizerCanvas" width="150" height="40"></canvas>
       </div>
     </div>
-
-    <!-- Contenido principal: sidebar + reproductores -->
+    <!-- Contenido principal: -->
     <div class="itunes-main-content">
 
       <!-- Sidebar izquierdo -->
@@ -329,16 +332,14 @@
           </iframe>
         </div>
       </div>
-
     </div>
-
     <!-- Audio oculto -->
     <audio id="audioPlayer" preload="metadata"></audio>
   </div>
 </div>
 
 
-<!----------------------------------------------- Ventana: MOVIES ----------------------------------------------->
+<!------------------------------------------------------------------- VENTANA: MOVIES --------------------------------------------------------------------->
 
 <div class="mac-window" id="gallery">
   <div class="mac-window-header">
@@ -349,7 +350,6 @@
     </div>
     <span class="window-title">Movies</span>
   </div>
-
   <!-- Barra de controles de iTunes -->
   <div class="itunes-controls">
   <!-- IZQUIERDA: Volumen -->
@@ -358,12 +358,10 @@
       <input type="range" id="galleryVolumeControl" min="0" max="100" value="100">
     </div>
   </div>
-
   <!-- CENTRO: Icono -->
   <div class="itunes-controls-center">
     <img src="imagenes/mercimetalic.png" id="mercimetalic">
   </div>
-
   <!-- DERECHA: Search -->
   <div class="itunes-controls-right">
     <input type="text" class="search-box" placeholder="Search">
@@ -372,7 +370,6 @@
 
   <!-- Layout principal -->
   <div class="itunes-main">
-
     <!-- Contenido principal -->
     <div class="itunes-content">
       <!-- Cover Flow -->
@@ -469,8 +466,7 @@
   </div>
 </div>
 
-
-<!------------------------------------------------ Ventana: Sobre Nosotros ----------------------------------------------->
+<!-------------------------------------------------------------------- VENTANA: ABOUT US ---------------------------------------------------------------------->
 <div class="mac-window" id="about">
   <div class="mac-window-header">
     <div class="window-buttons">
@@ -490,11 +486,9 @@
   </div>
 </div>
 
-<!------------------------------------------------- Ventana: Contacto ----------------------------------------------------->
+<!--------------------------------------------------------------------- VENTANA: CONTACTO ----------------------------------------------------------------------->
 
 <div class="genie-window" id="contact">
-
-<!-- Ventana de confirmación retro -->
 <div class="retro-contact" id="mensaje-envio">
   <div class="retro-contact-header">
     <button class="retro-close-button" onclick="cerrarMensaje()">X</button>
@@ -522,6 +516,7 @@
       </div>
     </form>
   </div>
+  <!-- EMAIL JS -->
   <script type="text/javascript">
    (function(){
       emailjs.init({
@@ -531,8 +526,7 @@
 </script>
   
 
-
-<!--------------------------------------------- SCRIPT USUARIOS ACTIVOS ----------------------------------->
+<!-------------------------------------------------------------------- SCRIPT USUARIOS ACTIVOS -------------------------------------------------------------------->
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getDatabase, ref, onValue, set, remove, onDisconnect } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";

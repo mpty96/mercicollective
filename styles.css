@@ -1,3 +1,7 @@
+/*============================================================================================================*/
+/*============================================ CONTENIDO GENERAL==============================================*/
+/*============================================================================================================*/
+
 * {
   margin: 0;
   padding: 0;
@@ -61,7 +65,7 @@ body.loaded {
 
 #loadingBarContainer {
   width: 60%;
-  max-width: 400px; /* Limitar ancho máximo */
+  max-width: 400px;
   height: 8px;
   background: #333;
   border-radius: 10px;
@@ -119,7 +123,10 @@ body.loaded {
   width: 60px;
 }
 
+/*============================================================================================================*/
 /*============================================== Contenedor general del Dock =================================*/
+/*============================================================================================================*/
+
 .dock-wrapper {
   position: fixed;
   bottom: 0;
@@ -133,7 +140,6 @@ body.loaded {
   pointer-events: none;
 }
 
-/* Fondo tipo plataforma */
 .dock-background {
   width: 100%;
   height: 70px;
@@ -145,7 +151,6 @@ body.loaded {
   pointer-events: none;
 }
 
-/* Dock en sí mismo */
 .dock {
   display: flex;
   gap: 15px;
@@ -155,7 +160,6 @@ body.loaded {
   pointer-events: auto;
 }
 
-/* Cada ícono */
 .dock-icon {
   position: relative;
   display: flex;
@@ -163,14 +167,11 @@ body.loaded {
   justify-content: center;
 }
 
-/* Imagen de ícono */
 .dock-icon img {
   width: 80px;
   transition: transform 0.3s ease;
 }
 
-
-/* Efecto lupa */
 .dock-icon:hover img {
   transform: scale(1.5);
 }
@@ -197,7 +198,9 @@ body.loaded {
   transform: translateX(-50%) translateY(-14px);
 }
 
-/*------------------------VENTANA GENERAL--------------------*/
+/*============================================================================================================*/
+/*============================================= VENTANA GENERAL ==============================================*/
+/*============================================================================================================*/
 
 .mac-window {
   position: fixed;
@@ -266,7 +269,7 @@ body.loaded {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 50vw; /* o 60vw según espacio */
+  max-width: 50vw;
 }
 
 .top-bar-left {
@@ -297,7 +300,10 @@ body.loaded {
   left: 50% !important;
 }
 
-/*========================================== VENTANA INICIO DE SESIÖN ======================================*/
+/*=====================================================================================================================*/
+/*============================================= VENTANA INICIO DE SESIÖN ==============================================*/
+/*=====================================================================================================================*/
+
 .apple-icon {
   height: 16px;
   width: 16px;
@@ -388,7 +394,7 @@ opacity: 1;
 
 .password-container {
   position: relative;
-  display: none; /*SIN CONTRASEÑA POR MIENTRAS*/
+  display: none; /*OCULTAR INPUT DE CONTRASEÑA POR MIENTRAS*/
   width: 80%;
   margin-bottom: 15px;
 }
@@ -514,8 +520,10 @@ opacity: 1;
   line-height: 1.4;
 }
 
+/*=====================================================================================================================*/
+/*============================================= VENTANA USUARIOS EN LINEA =============================================*/
+/*=====================================================================================================================*/
 
-/*=============================================== VENTANA USUARIOS EN LINEA ======================================*/
 #onlineTitle {
     font-weight: 600;
     color: #4a90e2;
@@ -587,8 +595,8 @@ opacity: 1;
 
   #userCountBadge {
   position: absolute;
-  right: 5px;  /* Ajustado para estar sobre el icono */
-  top: 5px;    /* Ajustado para estar en la esquina superior derecha del icono */
+  right: 5px; 
+  top: 5px;    
   background-color: #ff4444;
   color: white;
   border-radius: 50%;
@@ -605,12 +613,10 @@ opacity: 1;
   border: 1px solid white;
 }
 
-/* Ocultar el badge cuando no hay items */
 #userCountBadge.hidden {
   display: none;
 }
 
-/* Animación cuando se actualiza el badge */
 #userCountBadge.updated {
   animation: badgePulse 0.4s ease-in-out;
 }
@@ -622,7 +628,6 @@ opacity: 1;
   font-size: 10px;
 }
   
-
   @keyframes badgePulse {
   0% {
     transform: scale(1);
@@ -637,8 +642,9 @@ opacity: 1;
   }
 }
 
-
-/*------------------------------- VENTANA ABOUT US --------------------*/
+/*=====================================================================================================================*/
+/*==================================================== VENTANA ABOUT US ===============================================*/
+/*=====================================================================================================================*/
 
 #about.mac-window {
   width: 400px;
@@ -669,7 +675,10 @@ opacity: 1;
 }
 
 
-/*----------------------------------- Botones de ventana --------------------------------*/
+/*=====================================================================================================================*/
+/*================================================== BOTONES DE VENTANA ===============================================*/
+/*=====================================================================================================================*/
+
 .window-buttons {
   display: flex;
   gap: 6px;
@@ -720,8 +729,10 @@ opacity: 1;
   color: #000000;
 }
 
+/*=====================================================================================================================*/
+/*==================================================== VENTANA MOVIES =================================================*/
+/*=====================================================================================================================*/
 
-/*------------------------------------------ VENTANA GALERIA DE VIDEOS ----------------------------------------*/
 .mac-window#gallery {
   width: 1200px;
   height: 600px;
@@ -989,8 +1000,10 @@ opacity: 1;
   color: #666;
 }
 
+/*=====================================================================================================================*/
+/*==================================================== VENTANA CONTACTO ===============================================*/
+/*=====================================================================================================================*/
 
-/*========================================= VENTANA CONTACTO ======================================*/
 .retro-contact {
   position: fixed;
   left: 50%;
@@ -1121,8 +1134,10 @@ opacity: 1;
   text-align: center;
 }
 
+/*=====================================================================================================================*/
+/*================================================== VENTANA SOCIAL MEDIA =============================================*/
+/*=====================================================================================================================*/
 
-/*=========================================== SOCIAL MEDIA =========================================*/
 .fullscreen-window {
   position: fixed;
   top: 0;
@@ -1173,8 +1188,9 @@ opacity: 1;
   transform: scale(1.2);
 }
 
-
-/* ========================================== SOUNDS ============================================ */
+/*=====================================================================================================================*/
+/*================================================== VENTANA SOUNDS OF MERCI ==========================================*/
+/*=====================================================================================================================*/
 
 #sets {
   width: 700px;
@@ -1202,8 +1218,6 @@ opacity: 1;
   position: relative;
 }
 
-
-/* Título centrado */
 .window-title {
   font-size: 13px;
   font-weight: bold;
@@ -1214,7 +1228,6 @@ opacity: 1;
   user-select: text;
 }
 
-/* Contenido principal */
 .itunes-content {
   display: flex;
   flex: 1;
@@ -1223,7 +1236,6 @@ opacity: 1;
   flex-direction: column;
 }
 
-/* Sidebar */
 .itunes-sidebar {
   width: 140px;
   background: linear-gradient(to bottom, #d3d3d3, #bababa);
@@ -1282,14 +1294,12 @@ opacity: 1;
   user-select: none;
 }
 
-/* Área principal */
 .itunes-main-content {
   display: flex;
   flex: 1;
   height: calc(100% - 100px); 
 }
 
-/* Volumen y visualizador */
 .itunes-time-volume {
   display: flex;
   align-items: center;
@@ -1298,7 +1308,6 @@ opacity: 1;
   padding-left: 30px;
 }
 
-/* Icono volumen */
 .itunes-time-volume::before {
   content: "🔊";
   font-size: 18px;
@@ -1372,7 +1381,10 @@ opacity: 1;
   margin-top: -1px;
 }
 
-/*============================================ CARRITO DE COMPRAS ==========================================*/
+/*=====================================================================================================================*/
+/*======================================================= VENTANA MERCH ===============================================*/
+/*=====================================================================================================================*/
+
 #merch{
 width: 700px;
   height: 600px;
@@ -1429,6 +1441,11 @@ width: 700px;
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
+.merch-image-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
 .merch-item {
   display: flex;
   flex-direction: column;
@@ -1452,7 +1469,21 @@ width: 700px;
   will-change: transform;
 }
 
-/* Contenedor de detalles centrado */
+/* LETRERO SOLD OUT */
+.sold-out-badge {
+  position: absolute;
+  bottom: 20px;
+  left: 8px;
+  background-color: #e60000;
+  color: #fff;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 3px 6px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
 .merch-detail-container {
   display: flex;
   justify-content: center;
@@ -1583,7 +1614,6 @@ width: 700px;
   z-index: 10;
 }
 
-/* Badge de notificación del carrito */
 .cart-notification-badge {
   position: absolute;
   right: 10px;
@@ -1614,7 +1644,6 @@ width: 700px;
   animation: badgePulse 0.4s ease-in-out;
 }
 
-/* Animación de pulso */
 @keyframes badgePulse {
   0% {
     transform: scale(1);
@@ -1628,7 +1657,6 @@ width: 700px;
   }
 }
 
-/* Para números mayores a 99 */
 .cart-notification-badge.large-number {
   width: 22px;
   height: 18px;
@@ -1741,11 +1769,12 @@ width: 700px;
   color: black;
 }
 
+/*=====================================================================================================================*/
+/*=====================================================================================================================*/
+/*=================================================== DISEÑO RESPONSIVE ===============================================*/
+/*=====================================================================================================================*/
+/*=====================================================================================================================*/
 
-
-/*==========================================================================================================*/
-/*============================================== DISEÑO RESPONSIVE =========================================*/
-/*==========================================================================================================*/
 
 @media screen and (max-width: 468px) { 
   .mac-window {
@@ -1865,7 +1894,10 @@ position: fixed;
     font-size: 11px;
   }
 
-  /* ------------------------------------------------------- INICIO DE SESIÖN ------------------------------------------- */
+  /* -------------------------------------------------------------------------------------------------------------- */
+  /* ------------------------------------------------- INICIO DE SESIÖN ------------------------------------------- */
+  /* -------------------------------------------------------------------------------------------------------------- */
+
   .apple-menu {
     width: 90vw;
     max-width: 280px;
@@ -1892,7 +1924,7 @@ position: fixed;
   padding: 12px 16px;
   border: 2px solid #e1e5e9;
   border-radius: 8px;
-  font-size: 16px; /* Tamaño base para evitar zoom en móviles */
+  font-size: 16px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   transition: border-color 0.3s ease;
   box-sizing: border-box;
@@ -1904,14 +1936,13 @@ position: fixed;
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
 }
 
-/* Contenedor para el input de contraseña */
 .password-container {
   position: relative;
   width: 100%;
 }
 
 .password-container .login-input {
-  padding-right: 50px; /* Espacio para el botón del ojo */
+  padding-right: 50px; 
 }
 
 .password-toggle {
@@ -1931,7 +1962,6 @@ position: fixed;
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-/* Estilos para el icono del ojo */
 .eye-icon {
   position: relative;
   width: 20px;
@@ -1974,7 +2004,6 @@ position: fixed;
   transition: opacity 0.2s ease;
 }
 
-/* Clase para cuando la contraseña está oculta */
 .password-hidden .eye-pupil {
   opacity: 0;
 }
@@ -1983,8 +2012,10 @@ position: fixed;
   opacity: 1;
 }
 
+  /* --------------------------------------------------------------------------------------------------------------- */
+  /* ------------------------------------------------- USUARIOS EN LINEA ------------------------------------------- */
+  /* --------------------------------------------------------------------------------------------------------------- */
 
-/*====================================== USUARIOS ACTIVOS =====================================*/
 #onlineTitle {
   font-weight: 600;
   color: #4a90e2;
@@ -2026,7 +2057,6 @@ ul.messenger-style img {
   object-fit: cover;
 }
 
-/* Estilos para la ventana principal */
 #activeUsers {
   background: #ffffff;
   border-radius: 6px;
@@ -2042,7 +2072,10 @@ ul.messenger-style img {
 }
 
 
-/*========================================= CONTACTO ====================================*/
+  /* -------------------------------------------------------------------------------------------------------------- */
+  /* ---------------------------------------------------- CONTACTO ------------------------------------------------ */
+  /* -------------------------------------------------------------------------------------------------------------- */
+
   .genie-window {
   width: 90vw;
   max-width: 700px;
@@ -2061,10 +2094,10 @@ ul.messenger-style img {
   .retro-contact-header {
   display: flex;
   justify-content: flex-start;
-  align-items: center;       /* ✅ Centra verticalmente el botón */
+  align-items: center;
   padding: 4px 6px;
   background: #999;
-  height: 22px;              /* ✅ Controla altura total del header */
+  height: 22px;
   border-bottom: 2px solid #333;
 }
 
@@ -2116,8 +2149,6 @@ ul.messenger-style img {
  border: none;
  background: none;
 }
-
-  /* Íconos de cerrar más grandes para touch */
   #icon-close-contact,
   #icon-close-safari {
     width: 50px;
@@ -2125,7 +2156,10 @@ ul.messenger-style img {
     left: 10px;
   }
 
-/*=============================================== SHOP OPTIMIZADO =============================================*/
+  /* -------------------------------------------------------------------------------------------------------------- */
+  /* ------------------------------------------------------- MERCH ------------------------------------------------ */
+  /* -------------------------------------------------------------------------------------------------------------- */
+
   /*Evitar scroll*/
   #merch .mac-window-content {
     overflow: hidden;
@@ -2160,18 +2194,16 @@ ul.messenger-style img {
     transform: scale(1.1);
   }
 
-  /* Lista de productos - layout optimizado */
   .merch-list {
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
     padding: 5px;
-    overflow: hidden; /* evita scroll vertical */
+    overflow: hidden; 
     margin-top: -50px;
     padding-top: 0 !important;
   }
 
-  /* Items de productos */
   .merch-item {
     flex: 0 1 45%;
     max-width: 45%;
@@ -2179,6 +2211,20 @@ ul.messenger-style img {
     margin: 0;
     
   }
+
+  .sold-out-badge {
+  position: absolute;
+  bottom: 20px;
+  left: 8px;
+  background-color: #e60000;
+  color: #fff;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 3px 6px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  pointer-events: none;
+}
 
   .merch-item h3 {
     font-size: 18px;
@@ -2209,7 +2255,6 @@ ul.messenger-style img {
     color: #ffffff;
   }
 
-
   /* Botones optimizados para touch */
   .merch-item button {
     padding: 12px 24px;
@@ -2231,7 +2276,14 @@ ul.messenger-style img {
     color: black;
   }
 
-  /* Vista de detalles del producto */
+  /* BOTÖN DE COMPRA INHABILITADO */
+  #merchDetail button{
+    text-decoration: line-through;
+    background: rgb(94, 94, 94);
+    color: black;
+
+  }
+
   .merch-detail-container {
     display: flex;
     flex-direction: row;
@@ -2311,7 +2363,6 @@ ul.messenger-style img {
     margin: 0;
   }
 
-  /* Selector de talla */
   .size-selector {
     display: flex;
     flex-direction: column;
@@ -2354,11 +2405,10 @@ ul.messenger-style img {
   }
 
   .merch-main-view button:hover {
-    background: white;
-    color: black;
+    background: rgb(68, 68, 68);
+    color: rgb(255, 255, 255);
   }
 
-  /* Thumbnails optimizados */
   .merch-thumbs {
     display: flex;
     flex-direction: column;
@@ -2498,7 +2548,6 @@ ul.messenger-style img {
     color: white;
   }
 
-  /* Sección de checkout */
   .cart-checkout-section {
     border-top: 1px solid rgba(255, 255, 255, 0.2);
     padding-top: 10px;
@@ -2533,7 +2582,9 @@ ul.messenger-style img {
     transform: translateY(-2px);
   }
 
-/*============================================== SOUNDS =========================================*/ 
+  /* -------------------------------------------------------------------------------------------------------------- */
+  /* ------------------------------------------------- SOUNDS OF MERCI -------------------------------------------- */
+  /* -------------------------------------------------------------------------------------------------------------- */
 
 #sets .mac-window-content {
   padding: 0 !important;
@@ -2565,8 +2616,8 @@ ul.messenger-style img {
 
 .itunes-visualizer {
   display: flex;
-  justify-content: center; /* centrado horizontal */
-  align-items: center;     /* centrado vertical */
+  justify-content: center; 
+  align-items: center;    
   width: 100%;
   padding: 10px 0;
 }
@@ -2578,9 +2629,10 @@ ul.messenger-style img {
   display: block;
 }
 
-  
+  /* -------------------------------------------------------------------------------------------------------------- */
+  /* -------------------------------------------------- SOCIAL MEDIA ---------------------------------------------- */
+  /* -------------------------------------------------------------------------------------------------------------- */
 
-/*============================================== SOCIAL MEDIA =================================*/
 #socialWindow {
   opacity: 0 !important;
   transition: opacity 0.2s ease-in-out !important;
@@ -2604,7 +2656,7 @@ ul.messenger-style img {
 }
 
 .social-icons img {
-  width: 200px;               /* Tamaño fijo más fácil de controlar */
+  width: 200px;               
   height: auto;
   object-fit: contain;
   cursor: pointer;
@@ -2613,8 +2665,10 @@ ul.messenger-style img {
   margin-right: -35px;
 }
 
+  /* -------------------------------------------------------------------------------------------------------------- */
+  /* --------------------------------------------------- ABOUT US ------------------------------------------------- */
+  /* -------------------------------------------------------------------------------------------------------------- */
 
-/*=========================================== ABOUT US ======================================*/
   .about-layout {
     flex-direction: column;
     text-align: center;
@@ -2635,7 +2689,9 @@ ul.messenger-style img {
     font-size: 20px;
   }
 
-  /*============================================= MOVIES =================================*/
+  /* -------------------------------------------------------------------------------------------------------------- */
+  /* ----------------------------------------------------- MOVIES ------------------------------------------------- */
+  /* -------------------------------------------------------------------------------------------------------------- */
 
 .itunes-main {
   flex-direction: column;
@@ -2776,7 +2832,6 @@ ul.messenger-style img {
   filter: brightness(0.6);
 }
 
-/* BOTONES DE NAVEGACIÓN */
 .coverflow-nav {
   width: 45px;
   height: 45px;
@@ -2815,12 +2870,11 @@ ul.messenger-style img {
   right: 5px;
 }
 
-/* Lista de videos */
 .video-title-list {
   background: #ffffff;
   overflow-y: auto;
   flex: 1;
-  min-height: 0; /* Importante para que funcione el scroll */
+  min-height: 0; 
 }
 
 .video-list-header, .video-row {
@@ -2859,7 +2913,6 @@ ul.messenger-style img {
   flex: 1.5;
 }
 
-/* FOOTER */
 .itunes-footer {
   font-size: 10px;
   text-align: center;
@@ -2945,6 +2998,7 @@ ul.messenger-style img {
 
 
 /*============================================== Tablets en orientación portrait ==============================*/
+
 @media screen and (min-width: 481px) and (max-width: 768px) {
   
   .mac-window {
@@ -2989,6 +3043,7 @@ ul.messenger-style img {
 }
 
 /*====================================================== Landscape móviles =========================================*/
+
 @media screen and (max-height: 500px) and (orientation: landscape) {
   
   .mac-window {
@@ -3030,6 +3085,7 @@ ul.messenger-style img {
 }
 
 /*]================================================= Mejoras de usabilidad táctil ==========================================*/
+
 @media (hover: none) and (pointer: coarse) {
   
   /* Elementos táctiles más grandes */
@@ -3065,7 +3121,7 @@ ul.messenger-style img {
 
   /* Botones más grandes */
   button {
-    min-height: 44px; /* Estándar iOS */
+    min-height: 44px;
     padding: 10px 15px;
   }
 
@@ -3079,7 +3135,7 @@ ul.messenger-style img {
   /* Inputs más grandes */
   input, textarea, select {
     min-height: 44px;
-    font-size: 16px; /* Previene zoom en iOS */
+    font-size: 16px;
   }
 
   /* Scroll suave */
