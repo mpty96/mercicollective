@@ -1441,6 +1441,7 @@ width: 700px;
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
+
 .merch-image-wrapper {
   position: relative;
   display: inline-block;
@@ -1469,7 +1470,7 @@ width: 700px;
   will-change: transform;
 }
 
-/* LETRERO SOLD OUT */
+/* LETRERO SOLD OUT 
 .sold-out-badge {
   position: absolute;
   bottom: 20px;
@@ -1483,6 +1484,7 @@ width: 700px;
   text-transform: uppercase;
   pointer-events: none;
 }
+  */
 
 .merch-detail-container {
   display: flex;
@@ -2212,6 +2214,7 @@ ul.messenger-style img {
     
   }
 
+  /* SOLD OUT HOOVER
   .sold-out-badge {
   position: absolute;
   bottom: 20px;
@@ -2225,7 +2228,7 @@ ul.messenger-style img {
   text-transform: uppercase;
   pointer-events: none;
 }
-
+*/
   .merch-item h3 {
     font-size: 18px;
     font-weight: 600;
