@@ -1543,7 +1543,9 @@ width: 700px;
 }
 
   .merch-main-view img[src*="tabla_blanca.png"],
-  .merch-main-view img[src*="tabla_negra.png"] {
+  .merch-main-view img[src*="tabla_negra.png"],
+  .merch-main-view img[src*="fa_blanca_tabla.jpg"],
+  .merch-main-view img[src*="fa_negra_tabla.jpg"] {
     width: 500px;
     height: auto;
     max-width: none;
@@ -2447,6 +2449,13 @@ ul.messenger-style img {
 
   .merch-main-view img[src*="freelohan_blanca_tabla.png"],
   .merch-main-view img[src*="freelohan_negra_tabla.png"] {
+    width: 72vw;
+    height: auto;
+    max-width: none;
+  }
+
+  .merch-main-view img[src*="fa_blanca_tabla.jpg"],
+  .merch-main-view img[src*="fa_negra_tabla.jpg"]{
     width: 73vw;
     height: auto;
     max-width: none;

@@ -902,12 +902,15 @@ function updateCart() {
     } else if (item.main) {
       gifSrc = item.main;
     }
+
+    // CAMBIO AQUÍ: usar sizeInfo en el innerHTML
+    const sizeInfo = item.hasSize ? ` - SIZE ${item.size}` : '';
     
     cartItem.innerHTML = `
       <button class="remove-btn" onclick="removeFromCart(${index})">x</button>
       <img src="imagenes/${gifSrc}" alt="${item.title}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;">
       <div class="cart-item-text">
-        <p>${item.title} - SIZE ${item.size}</p>
+        <p>${item.title}${sizeInfo}</p>
       </div>
       <div>${item.quantity}</div>
       <div>${formatCLP(itemTotal)}</div>
@@ -932,19 +935,35 @@ function handleBackFromCart() {
 }
 
 function addToCart() {
-  const size = document.getElementById("size").value;
-  if (!size) {
+  const sizeSelector = document.getElementById("size");
+  
+  // Solo obtener talla si el producto requiere talla
+  const size = window.selectedProduct.hasSize && sizeSelector ? sizeSelector.value : null;
+  
+  // Solo validar talla si el producto requiere talla
+  if (window.selectedProduct.hasSize && !size) {
     alert("Por favor selecciona una talla.");
     return;
   }
   
   const newItem = {
     ...window.selectedProduct,
-    size,
     quantity: 1
   };
   
-  const existingIndex = cart.findIndex(item => item.title === newItem.title && item.size === newItem.size);
+  // Solo añadir la propiedad size si el producto tiene talla
+  if (window.selectedProduct.hasSize) {
+    newItem.size = size;
+  }
+  
+  const existingIndex = cart.findIndex(item => {
+    if (item.hasSize) {
+      return item.title === newItem.title && item.size === newItem.size;
+    } else {
+      return item.title === newItem.title;
+    }
+  });
+  
   if (existingIndex !== -1) {
     cart[existingIndex].quantity += 1;
   } else {
