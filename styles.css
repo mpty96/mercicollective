@@ -394,15 +394,14 @@ opacity: 1;
 
 .password-container {
   position: relative;
-  display: none; /*OCULTAR INPUT DE CONTRASEÑA POR MIENTRAS*/
-  width: 80%;
-  margin-bottom: 15px;
+  width: 100%;
+  /* PARA OCULTAR DISPLAY:NONE */
+  margin-bottom: 5px;
+  margin: 0 auto 5px auto;
 }
 
 .password-container .login-input {
-  width: 100%;
   padding: 6px;
-  padding-right: 35px;
   margin-bottom: 0;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -415,7 +414,7 @@ opacity: 1;
 
 .password-toggle {
   position: absolute;
-  right: 8px;
+  right: 40px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
@@ -1784,7 +1783,7 @@ width: 700px;
 
 
 
-@media screen and (max-width: 468px) { 
+@media screen and (max-width: 768px) { 
   .mac-window {
   display: none;
   width: 90vw !important;     
@@ -2168,10 +2167,6 @@ ul.messenger-style img {
   /* ------------------------------------------------------- MERCH ------------------------------------------------ */
   /* -------------------------------------------------------------------------------------------------------------- */
 
-  /*Evitar scroll*/
-  #merch .mac-window-content {
-    overflow: hidden;
-  }
 
   .merch-banner {
   position: absolute;
@@ -2191,8 +2186,10 @@ ul.messenger-style img {
 
   .cart-icon {
     position: absolute;
-    top: 9vh;
-    right: 15px;
+    top: 8vh;
+    right: 10px;
+    width: 9vw;
+    height: 5vh;
     cursor: pointer;
     z-index: 10;
     transition: transform 0.2s ease;
@@ -2207,8 +2204,7 @@ ul.messenger-style img {
     justify-content: center;
     gap: 20px;
     padding: 5px;
-    overflow: hidden; 
-    margin-top: -50px;
+    margin-top: 30px;
     padding-top: 0 !important;
   }
 
@@ -2285,25 +2281,32 @@ ul.messenger-style img {
     color: black;
   }
 
-  /* BOTÖN DE COMPRA INHABILITADO */
+  /* BOTÖN DE COMPRA INHABILITADO 
   #merchDetail button{
     text-decoration: line-through;
     background: rgb(94, 94, 94);
     color: black;
-
   }
+  */
+
+  #merchDetail {
+    overflow: hidden !important;
+    height: 100vh;
+    max-height: 100vh;
+}
 
   .merch-detail-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
-    padding: 20px;
+    padding: 40px;
     gap: 20px;
-    overflow: hidden;
+    overflow: hidden !important;
     height: 100vh;
     box-sizing: border-box;
     position: relative;
+    max-height: 100vh;
   }
 
   .back-icon {
@@ -2348,6 +2351,7 @@ ul.messenger-style img {
     order: 1;
     max-width: 70%;
     margin-left: 30px;
+    
   }
 
   .merch-main-view img {
@@ -2520,10 +2524,10 @@ ul.messenger-style img {
   .cart-notification-badge {
   position: absolute;
   top: 8vh;
-  right: 2vw;
+  right: 1vw;
   background: #ff4444;
   color: white;
-  border-radius: 60%;
+  border-radius: 50%;
   width: 5vw;
   height: 3vh;
   display: flex;

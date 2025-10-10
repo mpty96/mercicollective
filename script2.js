@@ -27,7 +27,7 @@ function login() {
   const message = document.getElementById('message');
   
   // Contraseña
-  const correctPassword = ""; //<----- Contraseña deseada entre comillas
+  const correctPassword = "Jordan2025."; //<----- Contraseña deseada entre comillas
 
   // Validar que se ingrese nombre de usuario
   if (!username.trim()) {
@@ -38,7 +38,7 @@ function login() {
     return;
   }
 
-  /* DESACTIVAR TEMPORALMENTE CONTRASEÑA
+  /* DESACTIVAR TEMPORALMENTE CONTRASEÑA */
   if (!password.trim()) {
     if (message) {
       message.textContent = "Por favor ingresa la contraseña.";
@@ -55,7 +55,7 @@ function login() {
     }
     return;
   }
-  */
+
 
   if (message) {
     message.textContent = "Iniciando sesión...";
@@ -711,6 +711,8 @@ function openMerchDetail(product) {
   const title = document.getElementById("merchTitle");
   const price = document.getElementById("merchPrice");
   const thumbs = document.getElementById("merchThumbs");
+  const merchDetail = document.getElementById("merchDetail");
+  const merchWindow = document.getElementById("merch");
 
   const sizeSelector = document.querySelector(".size-selector");
   sizeSelector.style.display = product.hasSize ? "block" : "none";
@@ -738,7 +740,18 @@ function openMerchDetail(product) {
   });
 
   document.getElementById("merchList").style.display = "none";
-  document.getElementById("merchDetail").style.display = "flex";
+  merchDetail.style.display = "flex";
+  
+  // BLOQUEAR SCROLL solo en móviles
+  if (window.innerWidth <= 768) {
+    const windowContent = merchWindow.querySelector('.mac-window-content');
+    if (windowContent) {
+      windowContent.scrollTop = 0; // AÑADE ESTO: Resetear scroll al inicio
+      windowContent.style.overflow = "hidden";
+    }
+    merchDetail.style.overflow = "hidden";
+    merchDetail.style.height = "100%";
+  }
 
   window.selectedProduct = product;
 }
@@ -767,8 +780,20 @@ function handleRedButton() {
 }
 
 function showMerchList() {
-  document.getElementById("merchDetail").style.display = "none";
+  const merchDetail = document.getElementById("merchDetail");
+  const merchWindow = document.getElementById("merch");
+  
+  merchDetail.style.display = "none";
   document.getElementById("merchList").style.display = "flex";
+  
+  // RESTAURAR SCROLL solo en móviles
+  if (window.innerWidth <= 768) {
+    const windowContent = merchWindow.querySelector('.mac-window-content');
+    if (windowContent) {
+      windowContent.style.overflow = "auto";
+    }
+    merchDetail.style.overflow = "";
+  }
 }
 
 //================================================================================================//
