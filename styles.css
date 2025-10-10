@@ -1403,17 +1403,15 @@ width: 700px;
   }
 
 .merch-banner {
-  position: absolute;
-  top: 35px; 
-  left: 0;
-  width: 100%;
+  position: relative;
   background-color: #ff0000;
+  top: -5px;
   color: #ffffff;
   text-align: center;
   font-weight: bold;
   font-size: 15px;
   padding: 1px 1px;
-  z-index: 12; 
+  z-index: 1; 
   box-sizing: border-box;
   pointer-events: none;
 }
@@ -1424,7 +1422,7 @@ width: 700px;
   align-items: center;
   gap: 12px;
   text-align: center;
-  padding: 20px;
+  padding: 1px;
   color: white;
 }
 
@@ -1432,8 +1430,8 @@ width: 700px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 40px;
-  padding: 40px;
+  gap: 50px;
+  padding: 60px;
   flex-wrap: wrap;
   text-align: center;
   min-height: 500px;
@@ -1592,8 +1590,8 @@ width: 700px;
 
 .cart-icon {
   position: absolute;
-  top: 65px;
-  right: 20px;
+  top: 80px;
+  right: 50px;
   width: 30px;
   height: 30px;
   cursor: pointer;
@@ -1618,8 +1616,8 @@ width: 700px;
 
 .cart-notification-badge {
   position: absolute;
-  right: 10px;
-  top: 60px;
+  right: 35px;
+  top: 72px;
   background-color: #ff4444;
   color: white;
   border-radius: 50%;
@@ -1771,11 +1769,19 @@ width: 700px;
   color: black;
 }
 
+
+
+
+
 /*=====================================================================================================================*/
 /*=====================================================================================================================*/
 /*=================================================== DISEÑO RESPONSIVE ===============================================*/
 /*=====================================================================================================================*/
 /*=====================================================================================================================*/
+
+
+
+
 
 
 @media screen and (max-width: 468px) { 

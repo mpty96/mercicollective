@@ -26,8 +26,8 @@ function login() {
   const password = document.getElementById('password').value;
   const message = document.getElementById('message');
   
-  // Contraseña predeterminada
-  const correctPassword = ""; // Contraseña deseada
+  // Contraseña
+  const correctPassword = ""; //<----- Contraseña deseada entre comillas
 
   // Validar que se ingrese nombre de usuario
   if (!username.trim()) {
@@ -38,7 +38,6 @@ function login() {
     return;
   }
 
-  // Validar que se ingrese contraseña
   /* DESACTIVAR TEMPORALMENTE CONTRASEÑA
   if (!password.trim()) {
     if (message) {
@@ -57,7 +56,7 @@ function login() {
     return;
   }
   */
-  // Si llegamos aquí, todo está correcto
+
   if (message) {
     message.textContent = "Iniciando sesión...";
     message.style.color = "green";
@@ -713,6 +712,9 @@ function openMerchDetail(product) {
   const price = document.getElementById("merchPrice");
   const thumbs = document.getElementById("merchThumbs");
 
+  const sizeSelector = document.querySelector(".size-selector");
+  sizeSelector.style.display = product.hasSize ? "block" : "none";
+
   // Limpiar contenedor principal
   mainImageContainer.innerHTML = "";
   
@@ -781,16 +783,32 @@ function getShopifyProductID(title, size) {
       S: "46381412647165",
       M: "46381412679933",
       L: "46381412712701",
-      XL: "46381412745469"
-    },
+      XL: "46381412745469"},
+
     "FREE LOHAN BLACK TEE": {
       S: "46381471990013",
       M: "46381472022781",
       L: "46381472055549",
-      XL: "46381472088317"
-    }
+      XL: "46381472088317"},
+
+    "FA WHITE TEE": {
+      S: "46709795487997",
+      M: "46709795520765",
+      L: "46709795553533",
+      XL: "46709795586301"},
+
+    "FA BLACK TEE": {
+      S: "46709797912829",
+      M: "46709797945597",
+      L: "46709797978365",
+      XL: "46709798011133"},
+
+    "CD BBJUANKI": "46709799158013"
   };
-  return variants[title]?.[size] || null;
+
+return typeof variants[title] === "object"
+    ? variants[title]?.[size] || null
+    : variants[title] || null;
 }
 
 function formatCLP(value) {

@@ -9,13 +9,13 @@
         src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
 </script>
   <!--SCRIPT.JS-->
-  <script src="script2.js?v=2.2.3" defer></script>
+  <script src="script2.js?v=2.2.4" defer></script>
   <!--SCRIPT SOUNDCLOUD-->
   <script src="https://w.soundcloud.com/player/api.js"></script>
   <!--SCRIPT YOUTUBE-->
   <script src="https://www.youtube.com/iframe_api"></script>
   <!--STYLES.CSS-->
-  <link rel="stylesheet" href="styles.css?v=2.2.3">
+  <link rel="stylesheet" href="styles.css?v=2.2.4">
   <link rel="icon" type="image/png" href="imagenes/mercimetalic.png">
 </head>
 <body >
@@ -162,7 +162,7 @@
 
         <!-- Vista Lista de Productos -->
         <div class="merch-list" id="merchList">
-            <!-- Polera 1 -->
+            <!------------------------ Polera 1 ------------------->
             <div class="merch-item">
                 <h3>FREE LOHAN WHITE TEE</h3>
                 <div class="merch-image-wrapper">
@@ -174,7 +174,8 @@
                         title: 'FREE LOHAN WHITE TEE', 
                         price: '$26.990 CLP', 
                         main: 'freelohan_blanca1.gif', 
-                        thumbnails: ['freelohan_blanca1.gif', 'freelohan_blanca_frente.png', 'freelohan_blanca_espalda.png', 'freelohan_blanca_tabla.png'] })">
+                        thumbnails: ['freelohan_blanca1.gif', 'freelohan_blanca_frente.png', 'freelohan_blanca_espalda.png', 'freelohan_blanca_tabla.png'],
+                        hasSize: true })">
                         <!-- AGREGAR SOLD OUT -->
                         <span class="sold-out-badge"></span>
                         </div>
@@ -183,11 +184,11 @@
                     title: 'FREE LOHAN WHITE TEE', 
                     price: '$26.990 CLP', 
                     main: 'freelohan_blanca1.gif', 
-                    thumbnails: ['freelohan_blanca1.gif', 'freelohan_blanca_frente.png', 'freelohan_blanca_espalda.png', 'freelohan_blanca_tabla.png'] 
-                })">BUY</button>
+                    thumbnails: ['freelohan_blanca1.gif', 'freelohan_blanca_frente.png', 'freelohan_blanca_espalda.png', 'freelohan_blanca_tabla.png'],
+                    hasSize: true })">BUY</button>
             </div>
             
-            <!-- Polera 2 -->
+            <!-------------------------- Polera 2 ----------------------->
             <div class="merch-item">
                 <h3>FREE LOHAN BLACK TEE</h3>
                 <div class="merch-image-wrapper">
@@ -199,7 +200,8 @@
                         title: 'FREE LOHAN BLACK TEE', 
                         price: '$26.990 CLP', 
                         main: 'freelohan_negra.gif', 
-                        thumbnails: ['freelohan_negra.gif', 'freelohan_negra_frente.png', 'freelohan_negra_espalda.png', 'freelohan_negra_tabla.png']})">
+                        thumbnails: ['freelohan_negra.gif', 'freelohan_negra_frente.png', 'freelohan_negra_espalda.png', 'freelohan_negra_tabla.png'],
+                        hasSize: true })">
                         <!-- AGREGAR SOLD OUT -->
                         <span class="sold-out-badge"></span>
                         </div>
@@ -208,10 +210,88 @@
                     title: 'FREE LOHAN BLACK TEE', 
                     price: '$26.990 CLP', 
                     main: 'freelohan_negra.gif', 
-                    thumbnails: ['freelohan_negra.gif', 'freelohan_negra_frente.png', 'freelohan_negra_espalda.png', 'freelohan_negra_tabla.png'] 
-                })">BUY</button>
+                    thumbnails: ['freelohan_negra.gif', 'freelohan_negra_frente.png', 'freelohan_negra_espalda.png', 'freelohan_negra_tabla.png'],
+                    hasSize: true })">BUY</button>
             </div>
-        </div>
+
+          <!--------------------- Polera 3 ------------------->
+              <div class="merch-item">
+                  <h3>FA BLACK TEE</h3>
+                  <div class="merch-image-wrapper">
+                  <img 
+                      class="merch-gif" 
+                      src="imagenes/fa_negra.gif"
+                      alt="FA BLACK TEE"
+                      onclick="openMerchDetail({ 
+                          title: 'FA BLACK TEE', 
+                          price: '$23.990 CLP', 
+                          main: 'fa_negra.gif', 
+                          thumbnails: ['fa_negra.gif', 'fa_negra_frente.png', 'fa_negra_espalda.png', 'freelohan_negra_tabla.png'],
+                          hasSize: true })">
+                          <!-- AGREGAR SOLD OUT -->
+                          <span class="sold-out-badge"></span>
+                          </div>
+                  <h4>$23.990 CLP</h4>
+                  <button onclick="openMerchDetail({ 
+                      title: 'FA BLACK TEE', 
+                      price: '$23.990 CLP', 
+                      main: 'fa_negra.gif', 
+                      thumbnails: ['fa_negra.gif', 'fa_negra_frente.png', 'fa_negra_espalda.png', 'freelohan_negra_tabla.png'], 
+                      hasSize: true })">BUY</button>
+              </div>
+
+              <!------------------------- Polera 4 ---------------------->
+              <div class="merch-item">
+                  <h3>FA WHITE TEE</h3>
+                  <div class="merch-image-wrapper">
+                  <img 
+                      class="merch-gif" 
+                      src="imagenes/fa_blanca.gif"
+                      alt="FA WHITE TEE"
+                      onclick="openMerchDetail({ 
+                          title: 'FA WHITE TEE', 
+                          price: '$23.990 CLP', 
+                          main: 'fa_blanca.gif', 
+                          thumbnails: ['fa_blanca.gif', 'fa_blanca_frente.png', 'fa_blanca_espalda.png', 'freelohan_negra_tabla.png'],
+                          hasSize: true })">
+                          <!-- AGREGAR SOLD OUT -->
+                          <span class="sold-out-badge"></span>
+                          </div>
+                  <h4>$23.990 CLP</h4>
+                  <button onclick="openMerchDetail({ 
+                      title: 'FA WHITE TEE', 
+                      price: '$23.990 CLP', 
+                      main: 'fa_blanca.gif', 
+                      thumbnails: ['fa_blanca.gif', 'fa_blanca_frente.png', 'fa_blanca_espalda.png', 'freelohan_negra_tabla.png'], 
+                      hasSize: true })">BUY</button>
+              </div>
+
+              <!--------------------------- ITEM "CD" ---------------------->
+              <div class="merch-item">
+                  <h3>CD “BBJUANKI”</h3>
+                  <div class="merch-image-wrapper">
+                  <img 
+                      class="merch-gif" 
+                      src="imagenes/CD.gif"
+                      alt="CD BBJUANKI"
+                      onclick="openMerchDetail({ 
+                          title: 'CD BBJUANKI', 
+                          price: '$15.000 CLP', 
+                          main: 'CD.gif', 
+                          thumbnails: ['CD.gif', 'CD_adelante.png', 'CD_atras.png'],
+                          hasSize: false })">
+                          <!-- AGREGAR SOLD OUT -->
+                          <span class="sold-out-badge"></span>
+                          </div>
+                  <h4>$15.000 CLP</h4>
+                  <button onclick="openMerchDetail({ 
+                      title: 'CD BBJUANKI', 
+                      price: '$15.000 CLP', 
+                      main: 'CD.gif', 
+                      thumbnails: ['CD.gif', 'CD_adelante.png', 'CD_atras.png'],
+                      hasSize: false })">BUY</button>
+              </div>
+          </div>
         
         <!-- Vista Detalles del Producto -->
         <div class="merch-detail-container" id="merchDetail" style="display:none;">
@@ -230,8 +310,7 @@
                     </select>
                 </div>
                 <button>BUY</button>
-                <!-- Añadir despues de <button para quitar el botón de buy-->
-                <!-- disabled style="opacity: 0.9; cursor: not-allowed;" -->    
+                <!-- Añadir despues de <button para quitar el botón de buy=> disabled style="opacity: 0.9; cursor: not-allowed;" -->    
             </div>
             <div class="merch-thumbs" id="merchThumbs" loading="eager">
             </div>
