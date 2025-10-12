@@ -395,7 +395,7 @@ opacity: 1;
 .password-container {
   position: relative;
   width: 100%;
-  /* PARA OCULTAR DISPLAY:NONE */
+display: none;
   margin-bottom: 5px;
   margin: 0 auto 5px auto;
 }
