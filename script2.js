@@ -716,7 +716,22 @@ function openMerchDetail(product) {
   const merchWindow = document.getElementById("merch");
 
   const sizeSelector = document.querySelector(".size-selector");
+  const sizeSelect = document.getElementById("size");
+  
+  // Mostrar u ocultar selector de tallas
   sizeSelector.style.display = product.hasSize ? "block" : "none";
+  
+  // Llenar opciones de talla según el producto
+  if (product.hasSize) {
+    sizeSelect.innerHTML = "";
+    const sizes = product.sizes || ["S", "M", "L", "XL"]; // Tallas por defecto
+    sizes.forEach(size => {
+      const option = document.createElement("option");
+      option.value = size;
+      option.textContent = size;
+      sizeSelect.appendChild(option);
+    });
+  }
 
   // Limpiar contenedor principal
   mainImageContainer.innerHTML = "";
@@ -747,7 +762,7 @@ function openMerchDetail(product) {
   if (window.innerWidth <= 768) {
     const windowContent = merchWindow.querySelector('.mac-window-content');
     if (windowContent) {
-      windowContent.scrollTop = 0; // AÑADE ESTO: Resetear scroll al inicio
+      windowContent.scrollTop = 0;
       windowContent.style.overflow = "hidden";
     }
     merchDetail.style.overflow = "hidden";
@@ -809,30 +824,36 @@ function getShopifyProductID(title, size) {
       S: "46381412647165",
       M: "46381412679933",
       L: "46381412712701",
-      XL: "46381412745469"},
+      XL: "46381412745469"
+    },
 
     "FREE LOHAN BLACK TEE": {
       S: "46381471990013",
       M: "46381472022781",
       L: "46381472055549",
-      XL: "46381472088317"},
+      XL: "46381472088317"
+    },
 
     "FA WHITE TEE": {
       S: "46709795487997",
       M: "46709795520765",
       L: "46709795553533",
-      XL: "46709795586301"},
+      "7/8": "46721852932349",  
+      "9/10": "46721852899581"  
+    },
 
     "FA BLACK TEE": {
       S: "46709797912829",
       M: "46709797945597",
       L: "46709797978365",
-      XL: "46709798011133"},
+      "7/8": "46721850802429",  
+      "9/10": "46721850835197"  
+    },
 
     "CD BBJUANKI": "46709799158013"
   };
 
-return typeof variants[title] === "object"
+  return typeof variants[title] === "object"
     ? variants[title]?.[size] || null
     : variants[title] || null;
 }

@@ -9,13 +9,13 @@
         src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
 </script>
   <!--SCRIPT.JS-->
-  <script src="script2.js?v=2.2.8" defer></script>
+  <script src="script2.js?v=2.2.9" defer></script>
   <!--SCRIPT SOUNDCLOUD-->
   <script src="https://w.soundcloud.com/player/api.js"></script>
   <!--SCRIPT YOUTUBE-->
   <script src="https://www.youtube.com/iframe_api"></script>
   <!--STYLES.CSS-->
-  <link rel="stylesheet" href="styles.css?v=2.2.8">
+  <link rel="stylesheet" href="styles.css?v=2.2.9">
   <link rel="icon" type="image/png" href="imagenes/mercimetalic.png">
 </head>
 <body >
@@ -216,55 +216,57 @@
 
           <!--------------------- Polera 3 ------------------->
               <div class="merch-item">
-                  <h3>FA BLACK TEE</h3>
-                  <div class="merch-image-wrapper">
-                  <img 
-                      class="merch-gif" 
-                      src="imagenes/fa_negra.gif"
-                      alt="FA BLACK TEE"
-                      onclick="openMerchDetail({ 
-                          title: 'FA BLACK TEE', 
-                          price: '$23.990 CLP', 
-                          main: 'fa_negra.gif', 
-                          thumbnails: ['fa_negra.gif', 'fa_negra_frente.png', 'fa_negra_espalda.png', 'fa_negra_tabla.jpg'],
-                          hasSize: true })">
-                          <!-- AGREGAR SOLD OUT -->
-                          <span class="sold-out-badge"></span>
-                          </div>
-                  <h4>$23.990 CLP</h4>
-                  <button onclick="openMerchDetail({ 
+              <h3>FA BLACK TEE</h3>
+              <div class="merch-image-wrapper">
+              <img 
+                  class="merch-gif" 
+                  src="imagenes/fa_negra.gif"
+                  alt="FA BLACK TEE"
+                  onclick="openMerchDetail({ 
                       title: 'FA BLACK TEE', 
                       price: '$23.990 CLP', 
                       main: 'fa_negra.gif', 
-                      thumbnails: ['fa_negra.gif', 'fa_negra_frente.png', 'fa_negra_espalda.png', 'fa_negra_tabla.jpg'], 
-                      hasSize: true })">BUY</button>
+                      thumbnails: ['fa_negra.gif', 'fa_negra_frente.png', 'fa_negra_espalda.png', 'fa_negra_tabla.jpg'],
+                      hasSize: true,
+                      sizes: ['S', 'M', 'L', '7/8', '9/10'] })">
+                  <span class="sold-out-badge"></span>
               </div>
+              <h4>$23.990 CLP</h4>
+              <button onclick="openMerchDetail({ 
+                  title: 'FA BLACK TEE', 
+                  price: '$23.990 CLP', 
+                  main: 'fa_negra.gif', 
+                  thumbnails: ['fa_negra.gif', 'fa_negra_frente.png', 'fa_negra_espalda.png', 'fa_negra_tabla.jpg'], 
+                  hasSize: true,
+                  sizes: ['S', 'M', 'L', '7/8', '9/10'] })">BUY</button>
+          </div>
 
               <!------------------------- Polera 4 ---------------------->
               <div class="merch-item">
-                  <h3>FA WHITE TEE</h3>
-                  <div class="merch-image-wrapper">
-                  <img 
-                      class="merch-gif" 
-                      src="imagenes/fa_blanca.gif"
-                      alt="FA WHITE TEE"
-                      onclick="openMerchDetail({ 
-                          title: 'FA WHITE TEE', 
-                          price: '$23.990 CLP', 
-                          main: 'fa_blanca.gif', 
-                          thumbnails: ['fa_blanca.gif', 'fa_blanca_frente.png', 'fa_blanca_espalda.png', 'fa_blanca_tabla.jpg'],
-                          hasSize: true })">
-                          <!-- AGREGAR SOLD OUT -->
-                          <span class="sold-out-badge"></span>
-                          </div>
-                  <h4>$23.990 CLP</h4>
-                  <button onclick="openMerchDetail({ 
+              <h3>FA WHITE TEE</h3>
+              <div class="merch-image-wrapper">
+              <img 
+                  class="merch-gif" 
+                  src="imagenes/fa_blanca.gif"
+                  alt="FA WHITE TEE"
+                  onclick="openMerchDetail({ 
                       title: 'FA WHITE TEE', 
                       price: '$23.990 CLP', 
                       main: 'fa_blanca.gif', 
-                      thumbnails: ['fa_blanca.gif', 'fa_blanca_frente.png', 'fa_blanca_espalda.png', 'fa_blanca_tabla.jpg'], 
-                      hasSize: true })">BUY</button>
+                      thumbnails: ['fa_blanca.gif', 'fa_blanca_frente.png', 'fa_blanca_espalda.png', 'fa_blanca_tabla.jpg'],
+                      hasSize: true,
+                      sizes: ['S', 'M', 'L', '7/8', '9/10'] })">
+                  <span class="sold-out-badge"></span>
               </div>
+              <h4>$23.990 CLP</h4>
+              <button onclick="openMerchDetail({ 
+                  title: 'FA WHITE TEE', 
+                  price: '$23.990 CLP', 
+                  main: 'fa_blanca.gif', 
+                  thumbnails: ['fa_blanca.gif', 'fa_blanca_frente.png', 'fa_blanca_espalda.png', 'fa_blanca_tabla.jpg'], 
+                  hasSize: true,
+                  sizes: ['S', 'M', 'L', '7/8', '9/10'] })">BUY</button>
+          </div>
 
               <!--------------------------- ITEM "CD" ---------------------->
               <div class="merch-item">
@@ -293,7 +295,7 @@
               </div>
           </div>
         
-        <!-- Vista Detalles del Producto -->
+        <!--------------------------------- Vista Detalles del Producto ------------------------------>
         <div class="merch-detail-container" id="merchDetail" style="display:none;">
             <img src="imagenes/back.png" loading="eager" alt="Back Icon" class="back-icon" onclick="handleRedButton('merchDetail')" />
             <div class="merch-main-view">
