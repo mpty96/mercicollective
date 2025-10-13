@@ -9,13 +9,13 @@
         src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
 </script>
   <!--SCRIPT.JS-->
-  <script src="script2.js?v=2.2.9" defer></script>
+  <script src="script2.js?v=2.3.0" defer></script>
   <!--SCRIPT SOUNDCLOUD-->
   <script src="https://w.soundcloud.com/player/api.js"></script>
   <!--SCRIPT YOUTUBE-->
   <script src="https://www.youtube.com/iframe_api"></script>
   <!--STYLES.CSS-->
-  <link rel="stylesheet" href="styles.css?v=2.2.9">
+  <link rel="stylesheet" href="styles.css?v=2.3.0">
   <link rel="icon" type="image/png" href="imagenes/mercimetalic.png">
 </head>
 <body >
@@ -296,27 +296,23 @@
           </div>
         
         <!--------------------------------- Vista Detalles del Producto ------------------------------>
-        <div class="merch-detail-container" id="merchDetail" style="display:none;">
-            <img src="imagenes/back.png" loading="eager" alt="Back Icon" class="back-icon" onclick="handleRedButton('merchDetail')" />
-            <div class="merch-main-view">
-                <div id="mainMerchImageContainer"></div>
-                <h3 id="merchTitle">Titulo</h3>
-                <h4 id="merchPrice">Precio</h4>
-                <div class="size-selector">
-                    <label for="size">Talla:</label>
-                    <select id="size">
-                        <option value="S">S</option>
-                        <option value="M">M</option>
-                        <option value="L">L</option>
-                        <option value="XL">XL</option>
-                    </select>
-                </div>
-                <button>BUY</button>
-                <!-- Añadir despues de <button para quitar el botón de buy=> disabled style="opacity: 0.9; cursor: not-allowed;" -->    
-            </div>
-            <div class="merch-thumbs" id="merchThumbs" loading="eager">
-            </div>
-        </div>
+      <div class="merch-detail-container" id="merchDetail" style="display:none;">
+          <img src="imagenes/back.png" loading="eager" alt="Back Icon" class="back-icon" onclick="handleRedButton('merchDetail')" />
+          <div class="merch-main-view">
+              <div id="mainMerchImageContainer"></div>
+              <h3 id="merchTitle">Titulo</h3>
+              <h4 id="merchPrice">Precio</h4>
+              <div class="size-selector">
+                  <label for="size">Talla:</label>
+                  <select id="size">
+                      <!-- Las opciones se llenarán dinámicamente con JavaScript -->
+                  </select>
+              </div>
+              <button>BUY</button>
+          </div>
+          <div class="merch-thumbs" id="merchThumbs" loading="eager">
+          </div>
+      </div>
     </div>
   </div>
 </div>
