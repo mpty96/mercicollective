@@ -714,6 +714,7 @@ function openMerchDetail(product) {
   const thumbs = document.getElementById("merchThumbs");
   const merchDetail = document.getElementById("merchDetail");
   const merchWindow = document.getElementById("merch");
+  const buyButton = document.querySelector("#merchDetail button");
 
   const sizeSelector = document.querySelector(".size-selector");
   const sizeSelect = document.getElementById("size");
@@ -724,13 +725,26 @@ function openMerchDetail(product) {
   // Llenar opciones de talla según el producto
   if (product.hasSize) {
     sizeSelect.innerHTML = "";
-    const sizes = product.sizes || ["S", "M", "L", "XL"]; // Tallas por defecto
+    const sizes = product.sizes || ["S", "M", "L", "XL"];
     sizes.forEach(size => {
       const option = document.createElement("option");
       option.value = size;
       option.textContent = size;
       sizeSelect.appendChild(option);
     });
+  }
+
+  // Inhabilitar botón si el producto no está disponible
+  if (product.available === false) {
+    buyButton.disabled = true;
+    buyButton.style.opacity = "0.5";
+    buyButton.style.cursor = "not-allowed";
+    buyButton.style.textDecoration = "line-through";
+  } else {
+    buyButton.disabled = false;
+    buyButton.style.opacity = "1";
+    buyButton.style.cursor = "pointer";
+    buyButton.style.textDecoration = "none";
   }
 
   // Limpiar contenedor principal
