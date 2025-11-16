@@ -2530,8 +2530,8 @@ ul.messenger-style img {
     max-width: none;
   }
 
-  .merch-main-view img[src*="fa_blanca_tabla.jpg"],
-  .merch-main-view img[src*="fa_negra_tabla.jpg"]{
+  .merch-main-view img[src*="fa_white_tabla.jpg"],
+  .merch-main-view img[src*="fa_black_tabla.jpg"]{
     width: 73vw;
     height: auto;
     max-width: none;
