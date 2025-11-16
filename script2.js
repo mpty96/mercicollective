@@ -38,7 +38,7 @@ function login() {
     return;
   }
 
-  /* DESACTIVAR TEMPORALMENTE CONTRASEÑA 
+  /* DESACTIVAR TEMPORALMENTE CONTRASEÑA */
   if (!password.trim()) {
     if (message) {
       message.textContent = "Por favor ingresa la contraseña.";
@@ -55,7 +55,7 @@ function login() {
     }
     return;
   }
-*/
+/* hasta aqui */
 
 
   if (message) {
@@ -718,14 +718,17 @@ function openMerchDetail(product) {
 
   const sizeSelector = document.querySelector(".size-selector");
   const sizeSelect = document.getElementById("size");
+
+  const windowContent = merchWindow.querySelector('.mac-window-content');
+  if (windowContent) {
+    windowContent.scrollTop = 0;
+  }
   
-  // Mostrar u ocultar selector de tallas
   sizeSelector.style.display = product.hasSize ? "block" : "none";
   
-  // Llenar opciones de talla según el producto
   if (product.hasSize) {
     sizeSelect.innerHTML = "";
-    const sizes = product.sizes || ["S", "M", "L", "XL"];
+    const sizes = product.sizes || ["S", "M", "L"];
     sizes.forEach(size => {
       const option = document.createElement("option");
       option.value = size;
@@ -734,7 +737,6 @@ function openMerchDetail(product) {
     });
   }
 
-  // Inhabilitar botón si el producto no está disponible
   if (product.available === false) {
     buyButton.disabled = true;
     buyButton.style.opacity = "0.5";
@@ -747,10 +749,8 @@ function openMerchDetail(product) {
     buyButton.style.textDecoration = "none";
   }
 
-  // Limpiar contenedor principal
   mainImageContainer.innerHTML = "";
   
-  // Elemento imagen principal
   const mainImage = document.createElement("img");
   mainImage.id = "mainMerchImage";
   mainImage.src = "imagenes/" + product.main;
@@ -770,9 +770,9 @@ function openMerchDetail(product) {
   });
 
   document.getElementById("merchList").style.display = "none";
+  document.getElementById("merchListBBJuanki").style.display = "none";
   merchDetail.style.display = "flex";
   
-  // BLOQUEAR SCROLL solo en móviles
   if (window.innerWidth <= 768) {
     const windowContent = merchWindow.querySelector('.mac-window-content');
     if (windowContent) {
@@ -790,7 +790,6 @@ function changeMainImage(src) {
   const mainImageContainer = document.getElementById("mainMerchImageContainer");
   mainImageContainer.innerHTML = "";
   
-  // Crear nuevo elemento imagen
   const imgElement = document.createElement("img");
   imgElement.id = "mainMerchImage";
   imgElement.src = "imagenes/" + src;
@@ -799,22 +798,18 @@ function changeMainImage(src) {
   mainImageContainer.appendChild(imgElement);
 }
 
-function handleRedButton() {
-  const detailView = document.getElementById("merchDetail");
-  const isDetailVisible = window.getComputedStyle(detailView).display !== "none";
-  if (isDetailVisible) {
-    showMerchList();
-  } else {
-    closeWindow('merch');
-  }
-}
-
-function showMerchList() {
+function handleBackFromDetail() {
   const merchDetail = document.getElementById("merchDetail");
   const merchWindow = document.getElementById("merch");
   
   merchDetail.style.display = "none";
-  document.getElementById("merchList").style.display = "flex";
+  
+  // Si el producto viene de BBJuanki, volver a esa lista
+  if (window.selectedProduct && window.selectedProduct.fromBBJ) {
+    document.getElementById("merchListBBJuanki").style.display = "flex";
+  } else {
+    document.getElementById("merchList").style.display = "flex";
+  }
   
   // RESTAURAR SCROLL solo en móviles
   if (window.innerWidth <= 768) {
@@ -825,6 +820,57 @@ function showMerchList() {
     merchDetail.style.overflow = "";
   }
 }
+
+function handleRedButton() {
+  const detailView = document.getElementById("merchDetail");
+  const bbjView = document.getElementById("merchListBBJuanki");
+  const policyView = document.getElementById("merchPolicy");
+  
+  const isDetailVisible = window.getComputedStyle(detailView).display !== "none";
+  const isBBJVisible = window.getComputedStyle(bbjView).display !== "none";
+  const isPolicyVisible = window.getComputedStyle(policyView).display !== "none";
+  
+  if (isDetailVisible) {
+    handleBackFromDetail();
+  } else if (isBBJVisible) {
+    backToMainMerch();
+  } else if (isPolicyVisible) {
+    closePolicyView();
+  } else {
+    closeWindow('merch');
+  }
+}
+
+function showMerchList() {
+  document.getElementById("merchDetail").style.display = "none";
+  document.getElementById("merchList").style.display = "flex";
+
+  const windowContent = merchWindow.querySelector('.mac-window-content');
+  if (windowContent) {
+    windowContent.scrollTop = 0;
+  }
+}
+
+function showBBJuankiCollection() {
+  const merchWindow = document.getElementById("merch");
+  const windowContent = merchWindow.querySelector('.mac-window-content');
+  
+  if (windowContent) {
+    windowContent.scrollTop = 0;
+  }
+  
+  document.getElementById("merchList").style.display = "none";
+  document.getElementById("merchDetail").style.display = "none";
+  document.getElementById("merchPolicy").style.display = "none";
+  document.getElementById("merchListBBJuanki").style.display = "flex";
+}
+
+function backToMainMerch() {
+  document.getElementById("merchListBBJuanki").style.display = "none";
+  document.getElementById("merchDetail").style.display = "none";
+  document.getElementById("merchList").style.display = "flex";
+}
+
 
 //================================================================================================//
 //-------------------------------------- CARRITO DE COMPRAS --------------------------------------//
@@ -837,34 +883,35 @@ function getShopifyProductID(title, size) {
     "FREE LOHAN WHITE TEE": {
       S: "46381412647165",
       M: "46381412679933",
-      L: "46381412712701",
-      XL: "46381412745469"
+      L: "46381412712701"
     },
 
     "FREE LOHAN BLACK TEE": {
       S: "46381471990013",
       M: "46381472022781",
-      L: "46381472055549",
-      XL: "46381472088317"
+      L: "46381472055549"
     },
 
-    "FA WHITE TEE": {
-      S: "46709795487997",
-      M: "46709795520765",
-      L: "46709795553533",
-      "baby tee 7/8": "46721852932349",  
-      "baby tee 9/10": "46721852899581"  
+    "MERCI POLO SHIRT": {
+      S: "46872843256061",
+      M: "46872843288829",
+      L: "46872843321597"
     },
 
-    "FA BLACK TEE": {
-      S: "46709797912829",
-      M: "46709797945597",
-      L: "46709797978365",
-      "baby tee 7/8": "46721850802429",  
-      "baby tee 9/10": "46721850835197"  
+    "FA SWAG WHITE TEE": {
+      S: "46872776769789",
+      M: "46872776802557",
+      L: "46872776835325" 
     },
 
-    "CD BBJUANKI": "46709799158013"
+    "FA SWAG BLACK TEE": {
+      S: "46872773558525",
+      M: "46872773591293",
+      L: "46872773624061" 
+    },
+
+    "Sticker #FA SWAG Blanco": "46873246171389",
+    "Sticker #FA SWAG Negro": "46864147218685"
   };
 
   return typeof variants[title] === "object"
@@ -929,7 +976,6 @@ function updateCart() {
     const cartItem = document.createElement("div");
     cartItem.classList.add("cart-item");
     
-    // Determinar gif basado en el título del producto
     let gifSrc = '';
     if (item.title.includes('White')) {
       gifSrc = 'freelohan_blanca.gif';
@@ -939,7 +985,6 @@ function updateCart() {
       gifSrc = item.main;
     }
 
-    // CAMBIO AQUÍ: usar sizeInfo en el innerHTML
     const sizeInfo = item.hasSize ? ` - SIZE ${item.size}` : '';
     
     cartItem.innerHTML = `
@@ -972,11 +1017,8 @@ function handleBackFromCart() {
 
 function addToCart() {
   const sizeSelector = document.getElementById("size");
-  
-  // Solo obtener talla si el producto requiere talla
   const size = window.selectedProduct.hasSize && sizeSelector ? sizeSelector.value : null;
   
-  // Solo validar talla si el producto requiere talla
   if (window.selectedProduct.hasSize && !size) {
     alert("Por favor selecciona una talla.");
     return;
@@ -987,7 +1029,6 @@ function addToCart() {
     quantity: 1
   };
   
-  // Solo añadir la propiedad size si el producto tiene talla
   if (window.selectedProduct.hasSize) {
     newItem.size = size;
   }
@@ -1011,6 +1052,92 @@ function addToCart() {
 }
 
 document.querySelector("#merchDetail button")?.addEventListener("click", addToCart);
+
+
+//================================================================================================//
+//-------------------------------------- POLÍTICAS DE MERCH --------------------------------------//
+//================================================================================================//
+
+const policies = {
+  shipping: {
+    title: "Políticas de Envío",
+    content: `
+      <p>• Los envíos de regiones y zonas rurales de la Región Metropolitana son realizados por Starken.</p>
+      <p>• Habrán zonas rurales a las cuales Starken sólo llega a SUCURSAL.</p>
+      <p>• Los pedidos tienen un plazo de entrega entre 5 a 10 días hábiles luego de efectuar la compra.</p>
+      <br>
+      <p><strong>LOS ENVIOS POR CYBER DAY TIENEN UNA EXTENSIÓN EN SU PLAZO DE ENTREGA POR ALTA DEMANDA, HASTA 14 DÍAS HÁBILES.</strong></p>
+      <br>
+      <p>Enviamos un correo cuando es preparado el pedido:</p> 
+      <p>• Serás notificado con el correo y número de seguimiento cuando el pedido sea despachado desde la sucursal de origen.</p>
+      <p>• En caso de daño, extravío, siniestro de su pedido o entrega en malas condiciones, 
+      Merci hará todas las gestiones pertinentes al caso. Por favor contactar con nosotros vía mail o Instagram para poder ayudarte con tu situación.</p>
+    `
+  },
+  returns: {
+    title: "Cambios y Devoluciones",
+    content: `
+      <p>• Tienes un plazo de 10 días hábiles a partir de la fecha de recepción del producto para hacer válido el cambio, 
+      ya sea por talla u otra prenda, siempre y cuando esté sin uso, con su respectiva etiqueta.</p>
+      <br>
+      <p>• Todas las compras desde su recepción tienen 2 meses de garantía presentando fallas de fabrica.</p>
+      <br>
+      <p>• Tienes la opción de no pagar el envío de tu cambio y realizarlo de manera presencial en nuestra oficina de Santiago (Tienda Archived), previa coordinación por mensajes. 
+      Puedes comunicarte a través de nuestra red social instagram o via mail merci.creativecollect@gmail.com</p>
+      <br>
+      <p>• No realizamos reembolsos de dinero a menos que presente falla de fábrica y esté dentro del plazo legal 2 meses. 
+      Este reembolso demora hasta 10 días hábiles en efectuarse desde que se devuelve el producto.</p>
+    `
+  }
+};
+
+function showPolicy(type) {
+  const policyContainer = document.getElementById("merchPolicy");
+  const merchList = document.getElementById("merchList");
+  const merchListBBJ = document.getElementById("merchListBBJuanki");
+  const merchDetail = document.getElementById("merchDetail");
+  const policyTitle = document.getElementById("policyTitle");
+  const policyText = document.getElementById("policyText");
+  
+  policyTitle.textContent = policies[type].title;
+  policyText.innerHTML = policies[type].content;
+  
+  merchList.style.display = "none";
+  merchListBBJ.style.display = "none";
+  merchDetail.style.display = "none";
+  policyContainer.style.display = "flex";
+}
+
+function closePolicyView() {
+  const policyContainer = document.getElementById("merchPolicy");
+  const merchList = document.getElementById("merchList");
+  
+  policyContainer.style.display = "none";
+  merchList.style.display = "flex";
+}
+
+function showPolicyBBJ(type) {
+  const policyContainer = document.getElementById("merchPolicy");
+  const merchList = document.getElementById("merchListBBJuanki");
+  const merchDetail = document.getElementById("merchDetailBBJuanki");
+  const policyTitle = document.getElementById("policyTitle");
+  const policyText = document.getElementById("policyText");
+  
+  policyTitle.textContent = policies[type].title;
+  policyText.innerHTML = policies[type].content;
+  
+  merchList.style.display = "none";
+  merchDetail.style.display = "none";
+  policyContainer.style.display = "flex";
+}
+
+function closePolicyViewBBJ() {
+  const policyContainer = document.getElementById("merchPolicy");
+  const merchList = document.getElementById("merchListBBJuanki");
+  
+  policyContainer.style.display = "none";
+  merchList.style.display = "flex";
+}
 
 //===========================================================================================//
 //-------------------------------------- SOCIAL MEDIA ---------------------------------------//

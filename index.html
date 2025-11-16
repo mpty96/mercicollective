@@ -9,13 +9,13 @@
         src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
 </script>
   <!--SCRIPT.JS-->
-  <script src="script2.js?v=2.3.3" defer></script>
+  <script src="script2.js?v=2.3.4" defer></script>
   <!--SCRIPT SOUNDCLOUD-->
   <script src="https://w.soundcloud.com/player/api.js"></script>
   <!--SCRIPT YOUTUBE-->
   <script src="https://www.youtube.com/iframe_api"></script>
   <!--STYLES.CSS-->
-  <link rel="stylesheet" href="styles.css?v=2.3.3">
+  <link rel="stylesheet" href="styles.css?v=2.3.4">
   <link rel="icon" type="image/png" href="imagenes/mercimetalic.png">
 </head>
 <body >
@@ -50,7 +50,7 @@
   <div class="apple-window-body">
     <img src="imagenes/mercimetalic.png" alt="Apple Logo" class="login-logo" />
     <h1>Merci WebOS</h1>
-    <p class="version">Version 1.2.1</p>
+    <p class="version">Version 1.3.0</p>
 
     <!-- Input de usuario -->
     <input type="text" id="username" placeholder="Nombre de usuario" class="login-input" />
@@ -151,7 +151,7 @@
             <span class="btn green"></span>
         </div>
         <span class="window-title">Merch</span>
-    </div>
+      </div>
     <div class="mac-window-content">
       <div class="merch-banner">
     ENVÍO GRATIS EN PEDIDOS SOBRE $50.000
@@ -160,9 +160,9 @@
         <img src="imagenes/cart.png" alt="Cart Icon" loading="eager" class="cart-icon" onclick="openWindow('shoppingCart')" />
         <div id="cartNotificationBadge" class="cart-notification-badge hidden">0</div>
 
-        <!-- Vista Lista de Productos -->
+        <!-------------------------------------- Vista Lista de Productos Principal ------------------------------>
         <div class="merch-list" id="merchList">
-            <!------------------------ Polera 1 ------------------->
+            <!------------------------ FREE LOHAN WHITE TEE ------------------->
             <div class="merch-item">
                 <h3>FREE LOHAN WHITE TEE</h3>
                 <div class="merch-image-wrapper">
@@ -176,8 +176,6 @@
                         main: 'freelohan_blanca1.gif', 
                         thumbnails: ['freelohan_blanca1.gif', 'freelohan_blanca_frente.png', 'freelohan_blanca_espalda.png', 'freelohan_blanca_tabla.png'],
                         hasSize: true })">
-                        <!-- AGREGAR SOLD OUT -->
-                        <!--<span class="sold-out-badge"></span>-->
                         </div>
                 <h4>$26.990 CLP</h4>
                 <button onclick="openMerchDetail({ 
@@ -188,7 +186,7 @@
                     hasSize: true })">BUY</button>
             </div>
             
-            <!-------------------------- Polera 2 ----------------------->
+            <!-------------------------- FREE LOHAN BLACK TEE ----------------------->
             <div class="merch-item">
                 <h3>FREE LOHAN BLACK TEE</h3>
                 <div class="merch-image-wrapper">
@@ -202,8 +200,6 @@
                         main: 'freelohan_negra.gif', 
                         thumbnails: ['freelohan_negra.gif', 'freelohan_negra_frente.png', 'freelohan_negra_espalda.png', 'freelohan_negra_tabla.png'],
                         hasSize: true })">
-                        <!-- AGREGAR SOLD OUT -->
-                        <!--<span class="sold-out-badge"></span>-->
                         </div>
                 <h4>$26.990 CLP</h4>
                 <button onclick="openMerchDetail({ 
@@ -214,109 +210,203 @@
                     hasSize: true })">BUY</button>
             </div>
 
-          <!--------------------- Polera 3 ------------------->
+            <!-------------------------- MERCI POLO SHIRT -------------------------->
             <div class="merch-item">
-                <h3>FA BLACK TEE</h3>
+                <h3>MERCI POLO SHIRT</h3>
                 <div class="merch-image-wrapper">
                 <img 
                     class="merch-gif" 
-                    src="imagenes/fa_negra.gif"
-                    alt="FA BLACK TEE"
+                    src="imagenes/merci_polo_shirt.gif"
+                    alt="MERCI POLO SHIRT"
                     onclick="openMerchDetail({ 
-                        title: 'FA BLACK TEE', 
-                        price: '$23.990 CLP', 
-                        main: 'fa_negra.gif', 
-                        thumbnails: ['fa_negra.gif', 'fa_negra_frente.png', 'fa_negra_espalda.png', 'fa_negra_tabla.jpg'],
-                        hasSize: true,
-                        sizes: ['S', 'M', 'L', 'baby tee 7/8', 'baby tee 9/10'],
-                        available: false })">
-                    <span class="sold-out-badge">SOLD OUT</span>
-                </div>
-                <h4>$23.990 CLP</h4>
+                        title: 'MERCI POLO SHIRT', 
+                        price: '$32.990 CLP', 
+                        main: 'merci_polo_shirt.gif', 
+                        thumbnails: ['merci_polo_shirt.gif', 'merci_polo_delante.png', 'merci_polo_atras.png'],
+                        hasSize: true })">
+                        </div>
+                <h4>$32.990 CLP</h4>
                 <button onclick="openMerchDetail({ 
-                    title: 'FA BLACK TEE', 
-                    price: '$23.990 CLP', 
-                    main: 'fa_negra.gif', 
-                    thumbnails: ['fa_negra.gif', 'fa_negra_frente.png', 'fa_negra_espalda.png', 'fa_negra_tabla.jpg'], 
-                    hasSize: true,
-                    sizes: ['S', 'M', 'L', 'baby tee 7/8', 'baby tee 9/10'],
-                    available: false })">BUY</button>
+                    title: 'MERCI POLO SHIRT', 
+                    price: '$32.990 CLP', 
+                    main: 'merci_polo_shirt.gif', 
+                    thumbnails: ['merci_polo_shirt.gif', 'merci_polo_delante.png', 'merci_polo_atras.png'],
+                    hasSize: true })">BUY</button>
             </div>
 
-            <!------------------------- Polera 4 ---------------------->
+          <!------------------------- ITEM MERCI X BBJUANKI ------------------------->
             <div class="merch-item">
-                <h3>FA WHITE TEE</h3>
+                <h3>MERCI X BBJUANKI</h3>
                 <div class="merch-image-wrapper">
                 <img 
                     class="merch-gif" 
-                    src="imagenes/fa_blanca.gif"
-                    alt="FA WHITE TEE"
-                    onclick="openMerchDetail({ 
-                        title: 'FA WHITE TEE', 
-                        price: '$23.990 CLP', 
-                        main: 'fa_blanca.gif', 
-                        thumbnails: ['fa_blanca.gif', 'fa_blanca_frente.png', 'fa_blanca_espalda.png', 'fa_blanca_tabla.jpg'],
-                        hasSize: true,
-                        sizes: ['S', 'M', 'L', 'baby tee 7/8', 'baby tee 9/10'],
-                        available: false })">
-                    <span class="sold-out-badge">SOLD OUT</span>
+                    src="imagenes/merci_x_bbjuanki.gif"
+                    alt="MERCI X BBJUANKI"
+                    onclick="showBBJuankiCollection()">
                 </div>
-                <h4>$23.990 CLP</h4>
-                <button onclick="openMerchDetail({ 
-                    title: 'FA WHITE TEE', 
-                    price: '$23.990 CLP', 
-                    main: 'fa_blanca.gif', 
-                    thumbnails: ['fa_blanca.gif', 'fa_blanca_frente.png', 'fa_blanca_espalda.png', 'fa_blanca_tabla.jpg'], 
-                    hasSize: true,
-                    sizes: ['S', 'M', 'L', 'baby tee 7/8', 'baby tee 9/10'],
-                    available: false })">BUY</button>
-            </div>
-
-            <!--------------------------- ITEM "CD" ---------------------->
-            <div class="merch-item">
-                <h3>CD "BBJUANKI"</h3>
-                <div class="merch-image-wrapper">
-                <img 
-                    class="merch-gif" 
-                    src="imagenes/CD.gif"
-                    alt="CD BBJUANKI"
-                    onclick="openMerchDetail({ 
-                        title: 'CD BBJUANKI', 
-                        price: '$15.000 CLP', 
-                        main: 'CD.gif', 
-                        thumbnails: ['CD.gif', 'CD_adelante.png', 'CD_atras.png'],
-                        hasSize: false,
-                        available: false })">
-                    <span class="sold-out-badge">SOLD OUT</span>
-                </div>
-                <h4>$15.000 CLP</h4>
-                <button onclick="openMerchDetail({ 
-                    title: 'CD BBJUANKI', 
-                    price: '$15.000 CLP', 
-                    main: 'CD.gif', 
-                    thumbnails: ['CD.gif', 'CD_adelante.png', 'CD_atras.png'],
-                    hasSize: false,
-                    available: false })">BUY</button>
+                <h4>VER COLECCIÓN</h4>
+                <button onclick="showBBJuankiCollection()">VIEW</button>
             </div>
           </div>
         
+        <!--------------------------------------- Vista Lista de Productos BBJuanki ---------------------------------------->
+        <div class="merch-list" id="merchListBBJuanki" style="display:none;">
+            <img src="imagenes/back.png" loading="eager" alt="Back Icon" class="back-icon" onclick="backToMainMerch()" />
+            
+            <!------------------------ FA SWAG WHITE TEE ------------------->
+            <div class="merch-item">
+                <h3>FA SWAG WHITE TEE</h3>
+                <div class="merch-image-wrapper">
+                <img 
+                    class="merch-gif" 
+                    src="imagenes/polera_swag_blanca.gif"
+                    alt="FA SWAG WHITE TEE"
+                    onclick="openMerchDetail({ 
+                        title: 'FA SWAG WHITE TEE', 
+                        price: '$23.990 CLP', 
+                        main: 'polera_swag_blanca.gif', 
+                        thumbnails: ['polera_swag_blanca.gif', 'polera_blanca_frente.png', 'polera_blanca_atras.png', 'fa_white_tabla.jpg'],
+                        hasSize: true,
+                        sizes: ['S', 'M', 'L'],
+                        available: true,
+                        fromBBJ: true })">
+                    <!-- <span class="sold-out-badge">SOLD OUT</span> -->
+                </div>
+                <h4>$23.990 CLP</h4>
+                <button onclick="openMerchDetail({ 
+                    title: 'FA SWAG WHITE TEE', 
+                    price: '$23.990 CLP', 
+                    main: 'polera_swag_blanca.gif', 
+                    thumbnails: ['polera_swag_blanca.gif', 'polera_blanca_frente.png', 'polera_blanca_atras.png', 'fa_white_tabla.jpg'], 
+                    hasSize: true,
+                    sizes: ['S', 'M', 'L'],
+                    available: true,
+                    fromBBJ: true })">BUY</button>
+            </div>
+
+            <!------------------------- FA SWAG BLACK TEE ---------------------->
+            <div class="merch-item">
+                <h3>FA SWAG BLACK TEE</h3>
+                <div class="merch-image-wrapper">
+                <img 
+                    class="merch-gif" 
+                    src="imagenes/polera_swag_negra.gif"
+                    alt="FA SWAG BLACK TEE"
+                    onclick="openMerchDetail({ 
+                        title: 'FA SWAG BLACK TEE', 
+                        price: '$23.990 CLP', 
+                        main: 'polera_swag_negra.gif', 
+                        thumbnails: ['polera_swag_negra.gif', 'polera_negra_frente.png', 'polera_negra_atras.png', 'fa_black_tabla.jpg'],
+                        hasSize: true,
+                        sizes: ['S', 'M', 'L'],
+                        available: true,
+                        fromBBJ: true })">
+                    <!-- <span class="sold-out-badge">SOLD OUT</span> -->
+                </div>
+                <h4>$23.990 CLP</h4>
+                <button onclick="openMerchDetail({ 
+                    title: 'FA SWAG BLACK TEE', 
+                    price: '$23.990 CLP', 
+                    main: 'polera_swag_negra.gif', 
+                    thumbnails: ['polera_swag_negra.gif', 'polera_negra_frente.png', 'polera_negra_atras.png', 'fa_black_tabla.jpg'], 
+                    hasSize: true,
+                    sizes: ['S', 'M', 'L'],
+                    available: true,
+                    fromBBJ: true })">BUY</button>
+            </div>
+
+            <!--------------------------- Sticker #FA SWAG (BLANCO) ---------------------->
+            <div class="merch-item">
+                <h3>Sticker #FA SWAG Blanco</h3>
+                <div class="merch-image-wrapper">
+                <img 
+                    class="merch-gif" 
+                    src="imagenes/sticker_swag_blanco.gif"
+                    alt="Sticker #FA SWAG Blanco"
+                    onclick="openMerchDetail({ 
+                        title: 'Sticker #FA SWAG Blanco', 
+                        price: '$2.000 CLP', 
+                        main: 'sticker_swag_blanco.gif', 
+                        thumbnails: ['sticker_swag_blanco.gif', 'sticker_blanco_delante.png', 'sticker_blanco_atras.png'],
+                        hasSize: false,
+                        available: true,
+                        fromBBJ: true })">
+                   <!-- <span class="sold-out-badge">SOLD OUT</span> -->
+                </div>
+                <h4>$2.000 CLP</h4>
+                <button onclick="openMerchDetail({ 
+                    title: 'Sticker #FA SWAG Blanco', 
+                    price: '$2.000 CLP', 
+                    main: 'sticker_swag_blanco.gif', 
+                    thumbnails: ['sticker_swag_blanco.gif', 'sticker_blanco_delante.png', 'sticker_blanco_atras.png'],
+                    hasSize: false,
+                    available: true,
+                    fromBBJ: true })">BUY</button>
+            </div>
+            <!--------------------------- Sticker #FA SWAG (NEGRO) ---------------------->
+            <div class="merch-item">
+                <h3>Sticker #FA SWAG Negro</h3>
+                <div class="merch-image-wrapper">
+                <img 
+                    class="merch-gif" 
+                    src="imagenes/sticker_swag_negro.gif"
+                    alt="Sticker #FA SWAG Negro"
+                    onclick="openMerchDetail({ 
+                        title: 'Sticker #FA SWAG Negro', 
+                        price: '$2.000 CLP', 
+                        main: 'sticker_swag_negro.gif', 
+                        thumbnails: ['sticker_swag_negro.gif', 'sticker_negro_delante.png', 'sticker_negro_atras.png'],
+                        hasSize: false,
+                        available: true,
+                        fromBBJ: true })">
+                   <!-- <span class="sold-out-badge">SOLD OUT</span> -->
+                </div>
+                <h4>$2.000 CLP</h4>
+                <button onclick="openMerchDetail({ 
+                    title: 'Sticker #FA SWAG Negro', 
+                    price: '$2.000 CLP', 
+                    main: 'sticker_swag_negro.gif', 
+                    thumbnails: ['sticker_swag_negro.gif', 'sticker_negro_delante.png', 'sticker_negro_atras.png'],
+                    hasSize: false,
+                    available: true,
+                    fromBBJ: true })">BUY</button>
+            </div>
+        </div>
+        
         <!--------------------------------- Vista Detalles del Producto ------------------------------>
-      <div class="merch-detail-container" id="merchDetail" style="display:none;">
-          <img src="imagenes/back.png" loading="eager" alt="Back Icon" class="back-icon" onclick="handleRedButton('merchDetail')" />
-          <div class="merch-main-view">
-              <div id="mainMerchImageContainer"></div>
-              <h3 id="merchTitle">Titulo</h3>
-              <h4 id="merchPrice">Precio</h4>
-              <div class="size-selector">
-                  <label for="size">Talla:</label>
-                  <select id="size">
-                      <!-- Las opciones se llenarán dinámicamente con JavaScript -->
-                  </select>
-              </div>
-              <button>BUY</button>
-          </div>
-          <div class="merch-thumbs" id="merchThumbs" loading="eager">
-          </div>
+        <div class="merch-detail-container" id="merchDetail" style="display:none;">
+            <img src="imagenes/back.png" loading="eager" alt="Back Icon" class="back-icon" onclick="handleBackFromDetail()" />
+            <div class="merch-main-view">
+                <div id="mainMerchImageContainer"></div>
+                <h3 id="merchTitle">Titulo</h3>
+                <h4 id="merchPrice">Precio</h4>
+                <div class="size-selector">
+                    <label for="size">Talla:</label>
+                    <select id="size">
+                        <!-- Las opciones se llenarán dinámicamente con JavaScript -->
+                    </select>
+                </div>
+                <button>BUY</button>
+            </div>
+            <div class="merch-thumbs" id="merchThumbs" loading="eager">
+            </div>
+        </div>
+        
+        <!--------------------------------- Vista Políticas ------------------------------>
+        <div class="merch-policy-container" id="merchPolicy" style="display:none;">
+            <img src="imagenes/back.png" loading="eager" alt="Back Icon" class="back-icon" onclick="closePolicyView()" />
+            <div class="policy-content">
+              <h2 id="policyTitle"></h2>
+              <div id="policyText"></div>
+            </div>
+        </div>
+      
+      </div>
+      
+      <!-- Footer con políticas -->
+      <div class="merch-footer">
+        <span onclick="showPolicy('shipping')">Políticas de envío</span>
+        <span onclick="showPolicy('returns')">Cambios y devoluciones</span>
       </div>
     </div>
   </div>
