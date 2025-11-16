@@ -1106,6 +1106,9 @@ function showPolicy(type) {
   merchListBBJ.style.display = "none";
   merchDetail.style.display = "none";
   policyContainer.style.display = "flex";
+
+    // Reiniciar scroll
+   policyContainer.scrollTop = 0;
 }
 
 function closePolicyView() {
@@ -1114,6 +1117,8 @@ function closePolicyView() {
   
   policyContainer.style.display = "none";
   merchList.style.display = "flex";
+  
+  window.scrollTo(0, 0);
 }
 
 function showPolicyBBJ(type) {
@@ -1129,6 +1134,10 @@ function showPolicyBBJ(type) {
   merchList.style.display = "none";
   merchDetail.style.display = "none";
   policyContainer.style.display = "flex";
+
+  // Reiniciar scroll
+policyContainer.scrollTop = 0;
+
 }
 
 function closePolicyViewBBJ() {
@@ -1137,6 +1146,9 @@ function closePolicyViewBBJ() {
   
   policyContainer.style.display = "none";
   merchList.style.display = "flex";
+
+  // Opcional: reiniciar scroll al cerrar también
+  window.scrollTo(0, 0);
 }
 
 //===========================================================================================//
