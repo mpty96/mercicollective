@@ -904,6 +904,22 @@ function getShopifyProductID(title, size) {
       L: "46872776835325" 
     },
 
+    "FA WHITE TEE": {
+      S: "46709795487997",
+      M: "46872776802557",
+      L: "46872776835325",
+      "baby tee 7/8": "46721852932349",
+      "baby tee 9/10": "46721852899581"
+    },
+
+    "FA BLACK TEE": {
+      S: "46709797912829",
+      M: "46709795520765",
+      L: "46709795553533",
+      "baby tee 7/8": "46721850802429",
+      "baby tee 9/10": "46721850835197"
+    },
+
     "FA SWAG BLACK TEE": {
       S: "46872773558525",
       M: "46872773591293",
@@ -911,7 +927,8 @@ function getShopifyProductID(title, size) {
     },
 
     "Sticker #FA SWAG Blanco": "46873246171389",
-    "Sticker #FA SWAG Negro": "46864147218685"
+    "Sticker #FA SWAG Negro": "46864147218685",
+    "CD BBJUANKI": "46709799158013"
   };
 
   return typeof variants[title] === "object"

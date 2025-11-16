@@ -9,13 +9,13 @@
         src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
 </script>
   <!--SCRIPT.JS-->
-  <script src="script2.js?v=2.3.7" defer></script>
+  <script src="script2.js?v=2.3.8" defer></script>
   <!--SCRIPT SOUNDCLOUD-->
   <script src="https://w.soundcloud.com/player/api.js"></script>
   <!--SCRIPT YOUTUBE-->
   <script src="https://www.youtube.com/iframe_api"></script>
   <!--STYLES.CSS-->
-  <link rel="stylesheet" href="styles.css?v=2.3.7">
+  <link rel="stylesheet" href="styles.css?v=2.3.8">
   <link rel="icon" type="image/png" href="imagenes/mercimetalic.png">
 </head>
 <body >
@@ -223,7 +223,9 @@
                         price: '$32.990 CLP', 
                         main: 'merci_polo_shirt.gif', 
                         thumbnails: ['merci_polo_shirt.gif', 'merci_polo_delante.png', 'merci_polo_atras.png'],
-                        hasSize: true })">
+                        hasSize: true, 
+                        available: false})">
+                        <span class="sold-out-badge">SOON</span>
                         </div>
                 <h4>$32.990 CLP</h4>
                 <button onclick="openMerchDetail({ 
@@ -236,7 +238,7 @@
 
           <!------------------------- ITEM MERCI X BBJUANKI ------------------------->
             <div class="merch-item">
-                <h3>MERCI X BBJUANKI</h3>
+                <h3>MERCI X JUANKI</h3>
                 <div class="merch-image-wrapper">
                 <img 
                     class="merch-gif" 
@@ -263,7 +265,7 @@
                     alt="FA SWAG WHITE TEE"
                     onclick="openMerchDetail({ 
                         title: 'FA SWAG WHITE TEE', 
-                        price: '$23.990 CLP', 
+                        price: '$24.990 CLP', 
                         main: 'polera_swag_blanca.gif', 
                         thumbnails: ['polera_swag_blanca.gif', 'polera_blanca_frente.png', 'polera_blanca_atras.png', 'fa_white_tabla.jpg'],
                         hasSize: true,
@@ -272,10 +274,10 @@
                         fromBBJ: true })">
                     <!-- <span class="sold-out-badge">SOLD OUT</span> -->
                 </div>
-                <h4>$23.990 CLP</h4>
+                <h4>$24.990 CLP</h4>
                 <button onclick="openMerchDetail({ 
                     title: 'FA SWAG WHITE TEE', 
-                    price: '$23.990 CLP', 
+                    price: '$24.990 CLP', 
                     main: 'polera_swag_blanca.gif', 
                     thumbnails: ['polera_swag_blanca.gif', 'polera_blanca_frente.png', 'polera_blanca_atras.png', 'fa_white_tabla.jpg'], 
                     hasSize: true,
@@ -294,7 +296,7 @@
                     alt="FA SWAG BLACK TEE"
                     onclick="openMerchDetail({ 
                         title: 'FA SWAG BLACK TEE', 
-                        price: '$23.990 CLP', 
+                        price: '$24.990 CLP', 
                         main: 'polera_swag_negra.gif', 
                         thumbnails: ['polera_swag_negra.gif', 'polera_negra_frente.png', 'polera_negra_atras.png', 'fa_black_tabla.jpg'],
                         hasSize: true,
@@ -303,14 +305,76 @@
                         fromBBJ: true })">
                     <!-- <span class="sold-out-badge">SOLD OUT</span> -->
                 </div>
-                <h4>$23.990 CLP</h4>
+                <h4>$24.990 CLP</h4>
                 <button onclick="openMerchDetail({ 
                     title: 'FA SWAG BLACK TEE', 
-                    price: '$23.990 CLP', 
+                    price: '$24.990 CLP', 
                     main: 'polera_swag_negra.gif', 
                     thumbnails: ['polera_swag_negra.gif', 'polera_negra_frente.png', 'polera_negra_atras.png', 'fa_black_tabla.jpg'], 
                     hasSize: true,
                     sizes: ['S', 'M', 'L'],
+                    available: true,
+                    fromBBJ: true })">BUY</button>
+            </div>
+
+            <!------------------------- FA WHITE TEE ---------------------->
+            <div class="merch-item">
+                <h3>FA WHITE TEE</h3>
+                <div class="merch-image-wrapper">
+                <img 
+                    class="merch-gif" 
+                    src="imagenes/fa_blanca.gif"
+                    alt="FA WHITE TEE"
+                    onclick="openMerchDetail({ 
+                        title: 'FA WHITE TEE', 
+                        price: '$24.990 CLP', 
+                        main: 'fa_blanca.gif', 
+                        thumbnails: ['fa_blanca.gif', 'fa_blanca_frente.png', 'fa_blanca_espalda.png', 'fa_blanca_tabla.jpg'],
+                        hasSize: true,
+                        sizes: ['S', 'M', 'L', 'baby tee 7/8', 'baby tee 9/10'],
+                        available: true,
+                        fromBBJ: true })">
+                    <!-- <span class="sold-out-badge">SOLD OUT</span> -->
+                </div>
+                <h4>$24.990 CLP</h4>
+                <button onclick="openMerchDetail({ 
+                    title: 'FA WHITE TEE', 
+                    price: '$24.990 CLP', 
+                    main: 'fa_blanca.gif', 
+                    thumbnails: ['fa_blanca.gif', 'polera_negra_frente.png', 'polera_negra_atras.png', 'fa_black_tabla.jpg'], 
+                    hasSize: true,
+                    sizes: ['S', 'M', 'L', 'baby tee 7/8', 'baby tee 9/10'],
+                    available: true,
+                    fromBBJ: true })">BUY</button>
+            </div>
+
+            <!------------------------- FA BLACK TEE ---------------------->
+            <div class="merch-item">
+                <h3>FA BLACK TEE</h3>
+                <div class="merch-image-wrapper">
+                <img 
+                    class="merch-gif" 
+                    src="imagenes/fa_negra.gif"
+                    alt="FA BLACK TEE"
+                    onclick="openMerchDetail({ 
+                        title: 'FA BLACK TEE', 
+                        price: '$24.990 CLP', 
+                        main: 'fa_negra.gif', 
+                        thumbnails: ['fa_negra.gif', 'fa_negra_frente.png', 'fa_negra_espalda.png', 'fa_negra_tabla.jpg'],
+                        hasSize: true,
+                        sizes: ['S', 'M', 'L', 'baby tee 7/8', 'baby tee 9/10'],
+                        available: true,
+                        fromBBJ: true })">
+                    <!-- <span class="sold-out-badge">SOLD OUT</span> -->
+                </div>
+                <h4>$24.990 CLP</h4>
+                <button onclick="openMerchDetail({ 
+                    title: 'FA BLACK TEE', 
+                    price: '$24.990 CLP', 
+                    main: 'fa_negra.gif', 
+                    thumbnails: ['fa_negra.gif', 'fa_negra_frente.png', 'fa_negra_atras.png', 'fa_negra_tabla.jpg'], 
+                    hasSize: true,
+                    sizes: ['S', 'M', 'L', 'baby tee 7/8', 'baby tee 9/10'],
                     available: true,
                     fromBBJ: true })">BUY</button>
             </div>
@@ -343,6 +407,7 @@
                     available: true,
                     fromBBJ: true })">BUY</button>
             </div>
+
             <!--------------------------- Sticker #FA SWAG (NEGRO) ---------------------->
             <div class="merch-item">
                 <h3>Sticker #FA SWAG Negro</h3>
@@ -367,6 +432,35 @@
                     price: '$2.000 CLP', 
                     main: 'sticker_swag_negro.gif', 
                     thumbnails: ['sticker_swag_negro.gif', 'sticker_negro_delante.png', 'sticker_negro_atras.png'],
+                    hasSize: false,
+                    available: true,
+                    fromBBJ: true })">BUY</button>
+            </div>
+
+            <!--------------------------- CD "BBJUANKI" ---------------------->
+            <div class="merch-item">
+                <h3>CD "BBJUANKI"</h3>
+                <div class="merch-image-wrapper">
+                <img 
+                    class="merch-gif" 
+                    src="imagenes/CD.gif"
+                    alt="CD BBJUANKI"
+                    onclick="openMerchDetail({ 
+                        title: 'CD BBJUANKI', 
+                        price: '$15.000 CLP', 
+                        main: 'CD.gif', 
+                        thumbnails: ['CD.gif', 'cd_adelante.png', 'cd_atras.png'],
+                        hasSize: false,
+                        available: true,
+                        fromBBJ: true })">
+                   <!-- <span class="sold-out-badge">SOLD OUT</span> -->
+                </div>
+                <h4>$15.000 CLP</h4>
+                <button onclick="openMerchDetail({ 
+                    title: 'CD BBJUANKI', 
+                    price: '$15.000 CLP', 
+                    main: 'CD.gif', 
+                    thumbnails: ['CD.gif', 'cd_adelante.png', 'cd_atras.png'],
                     hasSize: false,
                     available: true,
                     fromBBJ: true })">BUY</button>

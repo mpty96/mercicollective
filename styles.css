@@ -1482,7 +1482,7 @@ width: 700px;
   will-change: transform;
 }
 
-/* LETRERO SOLD OUT 
+/* LETRERO SOLD OUT */
 .sold-out-badge {
   position: absolute;
   bottom: 20px;
@@ -1496,7 +1496,6 @@ width: 700px;
   text-transform: uppercase;
   pointer-events: none;
 }
-  */
 
 
 .merch-detail-container {
@@ -1561,6 +1560,8 @@ width: 700px;
   .merch-main-view img[src*="tabla_blanca.png"],
   .merch-main-view img[src*="tabla_negra.png"],
   .merch-main-view img[src*="fa_white_tabla.jpg"],
+  .merch-main-view img[src*="fa_blanca_tabla.jpg"],
+  .merch-main-view img[src*="fa_negra_tabla.jpg"],
   .merch-main-view img[src*="fa_black_tabla.jpg"] {
     width: 500px;
     height: auto;
@@ -2620,7 +2621,9 @@ ul.messenger-style img {
   }
 
   .merch-main-view img[src*="fa_white_tabla.jpg"],
-  .merch-main-view img[src*="fa_black_tabla.jpg"]{
+  .merch-main-view img[src*="fa_black_tabla.jpg"],
+  .merch-main-view img[src*="fa_blanca_tabla.jpg"],
+  .merch-main-view img[src*="fa_negra_tabla.jpg"]{
     width: 73vw;
     height: auto;
     max-width: none;
