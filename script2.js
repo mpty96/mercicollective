@@ -883,13 +883,17 @@ function getShopifyProductID(title, size) {
     "FREE LOHAN WHITE TEE": {
       S: "46381412647165",
       M: "46381412679933",
-      L: "46381412712701"
+      L: "46381412712701",
+      "baby tee 7/8": "46914291368189",
+      "baby tee 9/10": "46914291400957"
     },
 
     "FREE LOHAN BLACK TEE": {
       S: "46381471990013",
       M: "46381472022781",
-      L: "46381472055549"
+      L: "46381472055549",
+      "baby tee 7/8": "46914290876669",
+      "baby tee 9/10": "46914290909437"
     },
 
     "MERCI POLO SHIRT": {
@@ -1096,12 +1100,9 @@ const policies = {
     content: `
       <p>• Tienes un plazo de 10 días hábiles a partir de la fecha de recepción del producto para hacer válido el cambio, 
       ya sea por talla u otra prenda, siempre y cuando esté sin uso, con su respectiva etiqueta.</p>
-      <br>
       <p>• Todas las compras desde su recepción tienen 2 meses de garantía presentando fallas de fabrica.</p>
-      <br>
       <p>• Tienes la opción de no pagar el envío de tu cambio y realizarlo de manera presencial en nuestra oficina de Santiago (Tienda Archived), previa coordinación por mensajes. 
       Puedes comunicarte a través de nuestra red social instagram o via mail merci.creativecollect@gmail.com</p>
-      <br>
       <p>• No realizamos reembolsos de dinero a menos que presente falla de fábrica y esté dentro del plazo legal 2 meses. 
       Este reembolso demora hasta 10 días hábiles en efectuarse desde que se devuelve el producto.</p>
     `
@@ -1115,6 +1116,7 @@ function showPolicy(type) {
   const merchDetail = document.getElementById("merchDetail");
   const policyTitle = document.getElementById("policyTitle");
   const policyText = document.getElementById("policyText");
+  const footer = document.querySelector(".merch-footer");
   
   policyTitle.textContent = policies[type].title;
   policyText.innerHTML = policies[type].content;
@@ -1123,19 +1125,22 @@ function showPolicy(type) {
   merchListBBJ.style.display = "none";
   merchDetail.style.display = "none";
   policyContainer.style.display = "flex";
-
-    // Reiniciar scroll
-   policyContainer.scrollTop = 0;
+  
+  // Ocultar footer y reiniciar scroll
+  if (footer) footer.style.display = "none";
+  policyContainer.scrollTop = 0;
 }
 
 function closePolicyView() {
   const policyContainer = document.getElementById("merchPolicy");
   const merchList = document.getElementById("merchList");
+  const footer = document.querySelector(".merch-footer");
   
   policyContainer.style.display = "none";
   merchList.style.display = "flex";
   
-  window.scrollTo(0, 0);
+  // Mostrar footer nuevamente
+  if (footer) footer.style.display = "flex";
 }
 
 function showPolicyBBJ(type) {
@@ -1144,6 +1149,7 @@ function showPolicyBBJ(type) {
   const merchDetail = document.getElementById("merchDetailBBJuanki");
   const policyTitle = document.getElementById("policyTitle");
   const policyText = document.getElementById("policyText");
+  const footer = document.querySelector(".merch-footer");
   
   policyTitle.textContent = policies[type].title;
   policyText.innerHTML = policies[type].content;
@@ -1151,21 +1157,22 @@ function showPolicyBBJ(type) {
   merchList.style.display = "none";
   merchDetail.style.display = "none";
   policyContainer.style.display = "flex";
-
-  // Reiniciar scroll
-policyContainer.scrollTop = 0;
-
+  
+  // Ocultar footer y reiniciar scroll
+  if (footer) footer.style.display = "none";
+  policyContainer.scrollTop = 0;
 }
 
 function closePolicyViewBBJ() {
   const policyContainer = document.getElementById("merchPolicy");
   const merchList = document.getElementById("merchListBBJuanki");
+  const footer = document.querySelector(".merch-footer");
   
   policyContainer.style.display = "none";
   merchList.style.display = "flex";
-
-  // Opcional: reiniciar scroll al cerrar también
-  window.scrollTo(0, 0);
+  
+  // Mostrar footer nuevamente
+  if (footer) footer.style.display = "flex";
 }
 
 //===========================================================================================//
