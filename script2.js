@@ -710,7 +710,7 @@ function audioPlayer() {
 function openMerchDetail(product) {
   const mainImageContainer = document.getElementById("mainMerchImageContainer");
   const title = document.getElementById("merchTitle");
-  const price = document.getElementById("merchPrice");
+  const priceElement = document.getElementById("merchPrice");
   const thumbs = document.getElementById("merchThumbs");
   const merchDetail = document.getElementById("merchDetail");
   const merchWindow = document.getElementById("merch");
@@ -758,7 +758,17 @@ function openMerchDetail(product) {
   mainImageContainer.appendChild(mainImage);
 
   title.textContent = product.title;
-  price.textContent = product.price;
+  
+  // Actualizar precio con descuento
+  if (product.oldPrice) {
+    priceElement.innerHTML = `
+      <span class="old-price">${product.oldPrice}</span>
+      <span class="new-price">${product.price}</span>
+    `;
+  } else {
+    priceElement.innerHTML = `<span class="new-price">${product.price}</span>`;
+  }
+  
   thumbs.innerHTML = "";
 
   product.thumbnails.forEach(img => {
@@ -804,14 +814,13 @@ function handleBackFromDetail() {
   
   merchDetail.style.display = "none";
   
-  // Si el producto viene de BBJuanki, volver a esa lista
   if (window.selectedProduct && window.selectedProduct.fromBBJ) {
     document.getElementById("merchListBBJuanki").style.display = "flex";
   } else {
     document.getElementById("merchList").style.display = "flex";
   }
   
-  // RESTAURAR SCROLL solo en móviles
+  // RESTAURAR SCROLL en celulares
   if (window.innerWidth <= 768) {
     const windowContent = merchWindow.querySelector('.mac-window-content');
     if (windowContent) {

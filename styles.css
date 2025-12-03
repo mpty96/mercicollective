@@ -1420,6 +1420,28 @@ width: 700px;
   pointer-events: none;
 }
 
+/*PRECIOS CON DESCUENTO*/
+
+.merch-item h4 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.old-price {
+    text-decoration: line-through;
+    opacity: 0.5;
+    color: #999;
+    font-size: 13px;
+    margin-right: 8px;
+}
+
+.new-price {
+    color: #ffffff;
+    font-weight: bold;
+}
+
 
 .merch-main-view button:disabled {
   opacity: 0.5;
@@ -1539,7 +1561,14 @@ width: 700px;
 }
 
 .merch-main-view h4 {
-  margin: 5px 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
 }
 
 .merch-thumbs {
@@ -1574,14 +1603,6 @@ width: 700px;
     max-width: none;
   }
 
-  .merch-main-view img[src*="polera_blanca_frente.png"],
-  .merch-main-view img[src*="polera_negra_frente.png"],
-  .merch-main-view img[src*="polera_blanca_atras.png"],
-  .merch-main-view img[src*="polera_negra_atras.png"] {
-    width: 500px;
-    height: auto;
-    max-width: none;
-  }
 
 .merch-thumbs img:hover,
 .merch-thumbs video:hover {
@@ -2278,6 +2299,26 @@ ul.messenger-style img {
   pointer-events: none; 
 }
 
+.merch-item h4 {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 2px;
+}
+
+.old-price {
+    text-decoration: line-through;
+    opacity: 0.5;
+    color: #999;
+    font-size: 12px;
+    margin-right: 8px;
+}
+
+.new-price {
+    color: #ffffff;
+    font-weight: bold;
+}
+
   .cart-icon {
     position: absolute;
     top: 50px;
@@ -2548,7 +2589,11 @@ ul.messenger-style img {
     font-weight: bold;
     color: #ffffff;
     margin: 0;
-  }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
 
   .size-selector {
     display: flex;
