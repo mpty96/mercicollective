@@ -1597,7 +1597,9 @@ width: 700px;
   .merch-main-view img[src*="fa_blanca_tabla.jpg"],
   .merch-main-view img[src*="fa_negra_tabla.jpg"],
   .merch-main-view img[src*="fa_black_tabla.jpg"],
-  .merch-main-view img[src*="tabla_merci_polo.png"] {
+  .merch-main-view img[src*="tabla_merci_polo.png"],
+  .merch-main-view img[src*="punk_black_tabla.jpeg"],
+  .merch-main-view img[src*="punk_white_tabla.jpeg"] {
     width: 500px;
     height: auto;
     max-width: none;
@@ -2675,7 +2677,9 @@ ul.messenger-style img {
   .merch-main-view img[src*="fa_black_tabla.jpg"],
   .merch-main-view img[src*="fa_blanca_tabla.jpg"],
   .merch-main-view img[src*="fa_negra_tabla.jpg"],
-  .merch-main-view img[src*="tabla_merci_polo.png"]{
+  .merch-main-view img[src*="tabla_merci_polo.png"],
+  .merch-main-view img[src*="punk_black_tabla.jpeg"],
+  .merch-main-view img[src*="punk_white_tabla.jpeg"]{
     width: 73vw;
     height: auto;
     max-width: none;
@@ -2685,7 +2689,7 @@ ul.messenger-style img {
   .merch-main-view img[src*="polera_negra_frente.png"],
   .merch-main-view img[src*="polera_blanca_atras.png"],
   .merch-main-view img[src*="polera_negra_atras.png"]{
-    width: 73vw;
+    width: 50vw;
     height: auto;
     max-width: none;
   }

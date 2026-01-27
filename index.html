@@ -9,13 +9,13 @@
         src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
 </script>
   <!--SCRIPT.JS-->
-  <script src="script2.js?v=2.4.9" defer></script>
+  <script src="script2.js?v=2.5.0" defer></script>
   <!--SCRIPT SOUNDCLOUD-->
   <script src="https://w.soundcloud.com/player/api.js"></script>
   <!--SCRIPT YOUTUBE-->
   <script src="https://www.youtube.com/iframe_api"></script>
   <!--STYLES.CSS-->
-  <link rel="stylesheet" href="styles.css?v=2.4.9">
+  <link rel="stylesheet" href="styles.css?v=2.5.0">
   <link rel="icon" type="image/png" href="imagenes/mercimetalic.png">
 </head>
 <body >
@@ -50,7 +50,7 @@
   <div class="apple-window-body">
     <img src="imagenes/mercimetalic.png" alt="Apple Logo" class="login-logo" />
     <h1>Merci WebOS</h1>
-    <p class="version">Version 1.4.0</p>
+    <p class="version">Version 1.5.9</p>
 
     <!-- Input de usuario -->
     <input type="text" id="username" placeholder="Nombre de usuario" class="login-input" />
@@ -163,6 +163,66 @@
 
         <!-------------------------------------- Vista Lista de Productos Principal ------------------------------>
         <div class="merch-list" id="merchList">
+
+
+          <!-------------------------- PUNK GOALS WHITE -------------------------->
+            <div class="merch-item">
+                <h3>PUNK GOALS WHITE</h3>
+                <div class="merch-image-wrapper">
+                <img 
+                    class="merch-gif" 
+                    src="imagenes/punk_white.gif"
+                    alt="PUNK GOALS WHITE"
+                    onclick="openMerchDetail({ 
+                        title: 'PUNK GOALS WHITE',
+                        price: '$26.990',  
+                        main: 'punk_white.gif', 
+                        thumbnails: ['punk_white.gif', 'punk_white_frente.png', 'punk_white_espalda.png', 'punk_white_tabla.jpeg'],
+                        hasSize: true,
+                        sizes: ['XS', 'S', 'M', 'L', 'XL', 'baby tee S', 'baby tee M'], 
+                        available: true})">
+                        <!-- <span class="sold-out-badge">SOON</span> -->
+                        </div>
+                <h4><span class="price">$26.990</span></h4>
+                <button onclick="openMerchDetail({ 
+                    title: 'PUNK GOALS WHITE', 
+                    price: '$26.990', 
+                    main: 'punk_white.gif', 
+                    thumbnails: ['punk_white.gif', 'punk_white_frente.png', 'punk_white_espalda.png', 'punk_white_tabla.jpeg'],
+                    hasSize: true,
+                    sizes: ['XS', 'S', 'M', 'L', 'XL', 'baby tee S', 'baby tee M'] })">BUY</button>
+            </div>
+
+
+          <!-------------------------- PUNK GOALS BLACK -------------------------->
+            <div class="merch-item">
+                <h3>PUNK GOALS BLACK</h3>
+                <div class="merch-image-wrapper">
+                <img 
+                    class="merch-gif" 
+                    src="imagenes/punk_black.gif"
+                    alt="PUNK GOALS BLACK"
+                    onclick="openMerchDetail({ 
+                        title: 'PUNK GOALS BLACK',
+                        price: '$26.990',  
+                        main: 'punk_black.gif', 
+                        thumbnails: ['punk_black.gif', 'punk_black_frente.png', 'punk_black_espalda.png', 'punk_black_tabla.jpeg'],
+                        hasSize: true,
+                        sizes: ['XS', 'S', 'M', 'L', 'XL', 'baby tee S', 'baby tee M'], 
+                        available: true})">
+                        <!-- <span class="sold-out-badge">SOON</span> -->
+                        </div>
+                <h4><span class="price">$26.990</span></h4>
+                <button onclick="openMerchDetail({ 
+                    title: 'PUNK GOALS BLACK', 
+                    price: '$26.990', 
+                    main: 'punk_black.gif', 
+                    thumbnails: ['punk_black.gif', 'punk_black_frente.png', 'punk_black_espalda.png', 'punk_black_tabla.jpeg'],
+                    hasSize: true,
+                    sizes: ['XS', 'S', 'M', 'L', 'XL', 'baby tee S', 'baby tee M'] })">BUY</button>
+            </div>
+
+
             <!------------------------ FREE LOHAN WHITE TEE ------------------->
             <div class="merch-item">
                 <h3>FREE LOHAN WHITE TEE</h3>
@@ -177,7 +237,7 @@
                         main: 'freelohan_blanca1.gif', 
                         thumbnails: ['freelohan_blanca1.gif', 'freelohan_blanca_frente.png', 'freelohan_blanca_espalda.png', 'freelohan_blanca_tabla.png'],
                         hasSize: true,
-                        sizes: ['S', 'M', 'L', 'baby tee 7/8', 'baby tee 9/10'] })">
+                        sizes: ['S', 'M', 'L', 'baby tee S', 'baby tee M'] })">
                         </div>
                 <h4><span class="price">$26.990</span></h4>
                 <button onclick="openMerchDetail({ 
@@ -186,7 +246,7 @@
                     main: 'freelohan_blanca1.gif', 
                     thumbnails: ['freelohan_blanca1.gif', 'freelohan_blanca_frente.png', 'freelohan_blanca_espalda.png', 'freelohan_blanca_tabla.png'],
                     hasSize: true,
-                    sizes: ['S', 'M', 'L', 'baby tee 7/8', 'baby tee 9/10'] })">BUY</button>
+                    sizes: ['S', 'M', 'L', 'baby tee S', 'baby tee M'] })">BUY</button>
             </div>
             
             <!-------------------------- FREE LOHAN BLACK TEE ----------------------->
@@ -203,7 +263,7 @@
                         main: 'freelohan_negra.gif', 
                         thumbnails: ['freelohan_negra.gif', 'freelohan_negra_frente.png', 'freelohan_negra_espalda.png', 'freelohan_negra_tabla.png'],
                         hasSize: true,
-                        sizes: ['S', 'M', 'L', 'baby tee 7/8', 'baby tee 9/10'] })">
+                        sizes: ['S', 'M', 'L', 'baby tee S', 'baby tee M'] })">
                         </div>
                 <h4><span class="price">$26.990</span>
                 <button onclick="openMerchDetail({ 
@@ -212,7 +272,7 @@
                     main: 'freelohan_negra.gif', 
                     thumbnails: ['freelohan_negra.gif', 'freelohan_negra_frente.png', 'freelohan_negra_espalda.png', 'freelohan_negra_tabla.png'],
                     hasSize: true,
-                    sizes: ['S', 'M', 'L', 'baby tee 7/8', 'baby tee 9/10'] })">BUY</button>
+                    sizes: ['S', 'M', 'L', 'baby tee S', 'baby tee M'] })">BUY</button>
             </div>
 
             <!-------------------------- MERCI POLO SHIRT -------------------------->
@@ -240,7 +300,7 @@
                     thumbnails: ['merci_polo_shirt.gif', 'merci_polo_delante.png', 'merci_polo_atras.png', 'tabla_merci_polo.png'],
                     hasSize: true })">BUY</button>
             </div>
-
+          
           <!------------------------- ITEM MERCI X BBJUANKI ------------------------->
             <div class="merch-item">
                 <h3>MERCI X JUANKI COLLAB</h3>
@@ -336,7 +396,7 @@
                 main: 'fa_blanca.gif', 
                 thumbnails: ['fa_blanca.gif', 'fa_blanca_frente.png', 'fa_blanca_espalda.png', 'fa_blanca_tabla.jpg'],
                 hasSize: true,
-                sizes: ['S', 'M', 'L', 'baby tee 7/8', 'baby tee 9/10'],
+                sizes: ['S', 'M', 'L', 'baby tee S', 'baby tee M'],
                 available: true,
                 fromBBJ: true })">
              <!-- <span class="sold-out-badge">SOON</span> --> 
@@ -348,7 +408,7 @@
             main: 'fa_blanca.gif', 
             thumbnails: ['fa_blanca.gif', 'polera_negra_frente.png', 'polera_negra_atras.png', 'fa_black_tabla.jpg'], 
             hasSize: true,
-            sizes: ['S', 'M', 'L', 'baby tee 7/8', 'baby tee 9/10'],
+            sizes: ['S', 'M', 'L', 'baby tee S', 'baby tee M'],
             available: true,
             fromBBJ: true })">BUY</button>
     </div>
@@ -367,7 +427,7 @@
                 main: 'fa_negra.gif', 
                 thumbnails: ['fa_negra.gif', 'fa_negra_frente.png', 'fa_negra_espalda.png', 'fa_negra_tabla.jpg'],
                 hasSize: true,
-                sizes: ['S', 'M', 'L', 'baby tee 7/8', 'baby tee 9/10'],
+                sizes: ['S', 'M', 'L', 'baby tee S', 'baby tee M'],
                 available: true,
                 fromBBJ: true })">
              <!-- <span class="sold-out-badge">SOON</span> --> 
@@ -379,7 +439,7 @@
             main: 'fa_negra.gif', 
             thumbnails: ['fa_negra.gif', 'fa_negra_frente.png', 'fa_negra_atras.png', 'fa_negra_tabla.jpg'], 
             hasSize: true,
-            sizes: ['S', 'M', 'L', 'baby tee 7/8', 'baby tee 9/10'],
+            sizes: ['S', 'M', 'L', 'baby tee S', 'baby tee M'],
             available: true,
             fromBBJ: true })">BUY</button>
     </div>
