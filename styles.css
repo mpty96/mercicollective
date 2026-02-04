@@ -1406,6 +1406,8 @@ width: 700px;
     max-width: none;
   }
 
+
+
 .merch-banner {
   position: relative;
   background-color: #ff0000;
@@ -2666,6 +2668,8 @@ ul.messenger-style img {
     transition: all 0.3s ease;
   }
 
+
+
   .merch-main-view img[src*="freelohan_blanca_tabla.png"],
   .merch-main-view img[src*="freelohan_negra_tabla.png"] {
     width: 72vw;
@@ -2683,6 +2687,10 @@ ul.messenger-style img {
     width: 73vw;
     height: auto;
     max-width: none;
+  }
+
+  .fa_blanca.gif{
+    width: 400px;
   }
 
   .merch-main-view img[src*="polera_blanca_frente.png"],
