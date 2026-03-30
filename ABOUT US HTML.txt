@@ -1,0 +1,24 @@
+<div class="disk" onclick="openWindow('about')">
+      <img src="imagenes/hdd.png" alt="About Us" />
+      <p>About Us</p>
+    </div>
+
+
+<div class="mac-window" id="about">
+  <div class="mac-window-header">
+    <div class="window-buttons">
+      <span class="btn red" onclick="closeWindow('about')">X</span>
+      <span class="btn yellow"></span>
+      <span class="btn green"></span>
+    </div>
+    <span class="window-title">Sobre Nosotros</span>
+  </div>
+  <div class="mac-window-content about-layout">
+    <div class="about-left">
+      <img src="imagenes/CEO.jpg" alt="CEO" class="ceo-image" />
+    </div>
+    <div class="about-right">
+      <h3>CEO: "wavy"</h3>
+    </div>
+  </div>
+</div>

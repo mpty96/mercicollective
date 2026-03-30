@@ -897,6 +897,10 @@ function getShopifyProductID(title, size) {
       "baby tee M": "46914291400957"
     },
 
+    "DESTROYED HAT": "47334427033853",
+    "ARABE WHITE HAT": "47334621937917",
+    "ARABE BLACK HAT": "47334625575165",
+
     "FREE LOHAN BLACK TEE": {
       S: "46381471990013",
       M: "46381472022781",

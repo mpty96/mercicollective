@@ -9,13 +9,13 @@
         src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
 </script>
   <!--SCRIPT.JS-->
-  <script src="script2.js?v=2.5.0" defer></script>
+  <script src="script2.js?v=2.5.1" defer></script>
   <!--SCRIPT SOUNDCLOUD-->
   <script src="https://w.soundcloud.com/player/api.js"></script>
   <!--SCRIPT YOUTUBE-->
   <script src="https://www.youtube.com/iframe_api"></script>
   <!--STYLES.CSS-->
-  <link rel="stylesheet" href="styles.css?v=2.5.0">
+  <link rel="stylesheet" href="styles.css?v=2.5.1">
   <link rel="icon" type="image/png" href="imagenes/mercimetalic.png">
 </head>
 <body >
@@ -50,7 +50,7 @@
   <div class="apple-window-body">
     <img src="imagenes/mercimetalic.png" alt="Apple Logo" class="login-logo" />
     <h1>Merci WebOS</h1>
-    <p class="version">Version 1.5.9</p>
+    <p class="version">Version 1.6.0</p>
 
     <!-- Input de usuario -->
     <input type="text" id="username" placeholder="Nombre de usuario" class="login-input" />
@@ -164,6 +164,86 @@
         <!-------------------------------------- Vista Lista de Productos Principal ------------------------------>
         <div class="merch-list" id="merchList">
 
+          <!-------------------------- DESTROYED HAT -------------------------->
+            <div class="merch-item">
+                <h3>DESTROYED HAT</h3>
+                <div class="merch-image-wrapper">
+                <img 
+                    class="merch-gif" 
+                    src="imagenes/destroyed_hat.gif"
+                    alt="DESTROYED HAT"
+                    onclick="openMerchDetail({ 
+                        title: 'DESTROYED HAT',
+                        price: '$23.800',  
+                        main: 'destroyed_hat.gif', 
+                        thumbnails: ['destroyed_hat.gif', 'destroyed_hat_frente.png', 'destroyed_hat_atras.png'],
+                        hasSize: false,
+                        available: true})">
+                        <!-- <span class="sold-out-badge">SOON</span> -->
+                        </div>
+                <h4><span class="old-price">$28.000</span><span class="new-price">$23.800</span></h4>
+                <button onclick="openMerchDetail({ 
+                    title: 'DESTROYED HAT', 
+                     
+                    price: '$23.800',
+                    main: 'destroyed_hat.gif', 
+                    thumbnails: ['destroyed_hat.gif', 'destroyed_hat_frente.png', 'destroyed_hat_atras.png'],
+                    hasSize: false,
+                     })">BUY</button>
+            </div>
+
+          <!-------------------------- ARABE WHITE HAT -------------------------->
+            <div class="merch-item">
+                <h3>ARABE WHITE HAT</h3>
+                <div class="merch-image-wrapper">
+                <img 
+                    class="merch-gif" 
+                    src="imagenes/hat_arabe_white.gif"
+                    alt="ARABE WHITE HAT"
+                    onclick="openMerchDetail({ 
+                        title: 'ARABE WHITE HAT',
+                        price: '$21.250',  
+                        main: 'hat_arabe_white.gif', 
+                        thumbnails: ['hat_arabe_white.gif', 'hat_arabe_white_frente.png', 'hat_arabe_white_atras.png'],
+                        hasSize: false,
+                        available: true})">
+                        <!-- <span class="sold-out-badge">SOON</span> -->
+                        </div>
+                <h4><span class="old-price">$25.000</span><span class="new-price">$21.250</span></h4>
+                <button onclick="openMerchDetail({ 
+                    title: 'ARABE WHITE HAT', 
+                    price: '$21.250', 
+                    main: 'hat_arabe_white.gif', 
+                    thumbnails: ['hat_arabe_white.gif', 'hat_arabe_white_frente.png', 'hat_arabe_white_atras.png'],
+                    hasSize: false })">BUY</button>
+            </div>
+            
+          <!-------------------------- ARABE BLACK HAT -------------------------->
+            <div class="merch-item">
+                <h3>ARABE BLACK HAT</h3>
+                <div class="merch-image-wrapper">
+                <img 
+                    class="merch-gif" 
+                    src="imagenes/hat_arabe_black.gif"
+                    alt="ARABE BLACK HAT"
+                    onclick="openMerchDetail({ 
+                        title: 'ARABE BLACK HAT',
+                        price: '$21.250',  
+                        main: 'hat_arabe_black.gif', 
+                        thumbnails: ['hat_arabe_black.gif', 'hat_arabe_black_frente.png', 'hat_arabe_black_atras.png'],
+                        hasSize: false,
+                        available: true})">
+                        <!-- <span class="sold-out-badge">SOON</span> -->
+                        </div>
+                <h4><span class="old-price">$25.000</span><span class="new-price">$21.250</span></h4>
+                <button onclick="openMerchDetail({ 
+                    title: 'ARABE BLACK HAT', 
+                    price: '$21.250', 
+                    main: 'hat_arabe_black.gif', 
+                    thumbnails: ['hat_arabe_black.gif', 'hat_arabe_black_frente.png', 'hat_arabe_black_atras.png'],
+                    hasSize: false })">BUY</button>
+            </div>
+
 
           <!-------------------------- PUNK GOALS WHITE -------------------------->
             <div class="merch-item">
@@ -175,7 +255,7 @@
                     alt="PUNK GOALS WHITE"
                     onclick="openMerchDetail({ 
                         title: 'PUNK GOALS WHITE',
-                        price: '$26.990',  
+                        price: '$22.941',  
                         main: 'punk_white.gif', 
                         thumbnails: ['punk_white.gif', 'punk_white_frente.png', 'punk_white_espalda.png', 'punk_white_tabla.jpeg'],
                         hasSize: true,
@@ -183,10 +263,10 @@
                         available: true})">
                         <!-- <span class="sold-out-badge">SOON</span> -->
                         </div>
-                <h4><span class="price">$26.990</span></h4>
+                <h4><span class="old-price">$26.990</span><span class="new-price">$22.941</span></h4>
                 <button onclick="openMerchDetail({ 
                     title: 'PUNK GOALS WHITE', 
-                    price: '$26.990', 
+                    price: '$22.941', 
                     main: 'punk_white.gif', 
                     thumbnails: ['punk_white.gif', 'punk_white_frente.png', 'punk_white_espalda.png', 'punk_white_tabla.jpeg'],
                     hasSize: true,
@@ -204,7 +284,7 @@
                     alt="PUNK GOALS BLACK"
                     onclick="openMerchDetail({ 
                         title: 'PUNK GOALS BLACK',
-                        price: '$26.990',  
+                        price: '$22.941',  
                         main: 'punk_black.gif', 
                         thumbnails: ['punk_black.gif', 'punk_black_frente.png', 'punk_black_espalda.png', 'punk_black_tabla.jpeg'],
                         hasSize: true,
@@ -212,10 +292,10 @@
                         available: true})">
                         <!-- <span class="sold-out-badge">SOON</span> -->
                         </div>
-                <h4><span class="price">$26.990</span></h4>
+                <h4><span class="old-price">$26.990</span><span class="new-price">$22.941</span></h4>
                 <button onclick="openMerchDetail({ 
                     title: 'PUNK GOALS BLACK', 
-                    price: '$26.990', 
+                    price: '$22.941', 
                     main: 'punk_black.gif', 
                     thumbnails: ['punk_black.gif', 'punk_black_frente.png', 'punk_black_espalda.png', 'punk_black_tabla.jpeg'],
                     hasSize: true,
@@ -233,16 +313,16 @@
                     alt="FREE LOHAN WHITE TEE"
                     onclick="openMerchDetail({ 
                         title: 'FREE LOHAN WHITE TEE',  
-                        price: '$26.990', 
+                        price: '$22.941', 
                         main: 'freelohan_blanca1.gif', 
                         thumbnails: ['freelohan_blanca1.gif', 'freelohan_blanca_frente.png', 'freelohan_blanca_espalda.png', 'freelohan_blanca_tabla.png'],
                         hasSize: true,
                         sizes: ['S', 'M', 'L', 'baby tee S', 'baby tee M'] })">
                         </div>
-                <h4><span class="price">$26.990</span></h4>
+                <h4><span class="old-price">$26.990</span><span class="new-price">$22.941</span></h4>
                 <button onclick="openMerchDetail({ 
                     title: 'FREE LOHAN WHITE TEE', 
-                    price: '$26.990', 
+                    price: '$22.941', 
                     main: 'freelohan_blanca1.gif', 
                     thumbnails: ['freelohan_blanca1.gif', 'freelohan_blanca_frente.png', 'freelohan_blanca_espalda.png', 'freelohan_blanca_tabla.png'],
                     hasSize: true,
@@ -259,16 +339,16 @@
                     alt="FREE LOHAN BLACK TEE"
                     onclick="openMerchDetail({ 
                         title: 'FREE LOHAN BLACK TEE',
-                        price: '$26.990', 
+                        price: '$22.941', 
                         main: 'freelohan_negra.gif', 
                         thumbnails: ['freelohan_negra.gif', 'freelohan_negra_frente.png', 'freelohan_negra_espalda.png', 'freelohan_negra_tabla.png'],
                         hasSize: true,
                         sizes: ['S', 'M', 'L', 'baby tee S', 'baby tee M'] })">
                         </div>
-                <h4><span class="price">$26.990</span>
+                <h4><span class="old-price">$26.990</span><span class="new-price">$22.941</span></h4>
                 <button onclick="openMerchDetail({ 
                     title: 'FREE LOHAN BLACK TEE', 
-                    price: '$26.990', 
+                    price: '$22.941', 
                     main: 'freelohan_negra.gif', 
                     thumbnails: ['freelohan_negra.gif', 'freelohan_negra_frente.png', 'freelohan_negra_espalda.png', 'freelohan_negra_tabla.png'],
                     hasSize: true,
@@ -285,17 +365,17 @@
                     alt="MERCI POLO SHIRT"
                     onclick="openMerchDetail({ 
                         title: 'MERCI POLO SHIRT',
-                        price: '$32.990',  
+                        price: '$28.041',  
                         main: 'merci_polo_shirt.gif', 
                         thumbnails: ['merci_polo_shirt.gif', 'merci_polo_delante.png', 'merci_polo_atras.png', 'tabla_merci_polo.png'],
                         hasSize: true, 
                         available: true})">
                         <!-- <span class="sold-out-badge">SOON</span> -->
                         </div>
-                <h4><span class="price">$32.990</span></h4>
+                <h4><span class="old-price">$32.990</span><span class="new-price">$28.041</span></h4>
                 <button onclick="openMerchDetail({ 
                     title: 'MERCI POLO SHIRT', 
-                    price: '$32.990', 
+                    price: '$28.041', 
                     main: 'merci_polo_shirt.gif', 
                     thumbnails: ['merci_polo_shirt.gif', 'merci_polo_delante.png', 'merci_polo_atras.png', 'tabla_merci_polo.png'],
                     hasSize: true })">BUY</button>
