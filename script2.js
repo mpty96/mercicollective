@@ -102,6 +102,7 @@ window.addEventListener('DOMContentLoaded', () => {
   initializeCoverflow?.();
   updateTopBarDateTimeWeather?.();
   updateCartNotificationBadge();
+  initializePrices();
 
   // Ocultar contraseña al escribir
   const passwordToggle = document.querySelector('.password-toggle');
@@ -796,6 +797,28 @@ function openMerchDetail(product) {
   window.selectedProduct = product;
 }
 
+function formatPrice(value) {
+  return '$' + Number(value).toLocaleString('es-CL');
+}
+
+function initializePrices() {
+  document.querySelectorAll('.price').forEach(el => {
+    const price = el.dataset.price;
+    const oldPrice = el.dataset.old;
+
+    if (oldPrice && oldPrice !== price) {
+      el.innerHTML = `
+        <span class="old-price">${formatPrice(oldPrice)}</span>
+        <span class="new-price">${formatPrice(price)}</span>
+      `;
+    } else {
+      el.innerHTML = `
+        <span class="price">${formatPrice(price)}</span>
+      `;
+    }
+  });
+}
+
 function changeMainImage(src) {
   const mainImageContainer = document.getElementById("mainMerchImageContainer");
   mainImageContainer.innerHTML = "";
@@ -815,9 +838,9 @@ function handleBackFromDetail() {
   merchDetail.style.display = "none";
   
   if (window.selectedProduct && window.selectedProduct.fromBBJ) {
-    document.getElementById("merchListBBJuanki").style.display = "flex";
+    document.getElementById("merchListBBJuanki").style.display = "";
   } else {
-    document.getElementById("merchList").style.display = "flex";
+    document.getElementById("merchList").style.display = "";
   }
   
   // RESTAURAR SCROLL en celulares
@@ -852,7 +875,7 @@ function handleRedButton() {
 
 function showMerchList() {
   document.getElementById("merchDetail").style.display = "none";
-  document.getElementById("merchList").style.display = "flex";
+  document.getElementById("merchList").style.display = "";
 
   const windowContent = merchWindow.querySelector('.mac-window-content');
   if (windowContent) {
@@ -871,13 +894,13 @@ function showBBJuankiCollection() {
   document.getElementById("merchList").style.display = "none";
   document.getElementById("merchDetail").style.display = "none";
   document.getElementById("merchPolicy").style.display = "none";
-  document.getElementById("merchListBBJuanki").style.display = "flex";
+  document.getElementById("merchListBBJuanki").style.display = "";
 }
 
 function backToMainMerch() {
   document.getElementById("merchListBBJuanki").style.display = "none";
   document.getElementById("merchDetail").style.display = "none";
-  document.getElementById("merchList").style.display = "flex";
+  document.getElementById("merchList").style.display = "";
 }
 
 
@@ -897,6 +920,7 @@ function getShopifyProductID(title, size) {
       "baby tee M": "46914291400957"
     },
 
+    "SHIT(A) CAP": "47412994769149",
     "DESTROYED HAT": "47334427033853",
     "ARABE WHITE HAT": "47334621937917",
     "ARABE BLACK HAT": "47334625575165",
@@ -1172,7 +1196,7 @@ function closePolicyView() {
   const footer = document.querySelector(".merch-footer");
   
   policyContainer.style.display = "none";
-  merchList.style.display = "flex";
+  merchList.style.display = "";
   
   // Mostrar footer nuevamente
   if (footer) footer.style.display = "flex";
@@ -1204,7 +1228,7 @@ function closePolicyViewBBJ() {
   const footer = document.querySelector(".merch-footer");
   
   policyContainer.style.display = "none";
-  merchList.style.display = "flex";
+  merchList.style.display = "";
   
   // Mostrar footer nuevamente
   if (footer) footer.style.display = "flex";

@@ -1445,6 +1445,7 @@ width: 700px;
 }
 
 
+
 .merch-main-view button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -1469,46 +1470,46 @@ width: 700px;
   color: white;
 }
 
+.merch-item button {
+  margin-top: auto;
+}
+
 .merch-list {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 50px;
-  padding: 60px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 25px;
+  row-gap: 40px; /* ← MÁS espacio vertical */
+  padding: 50px 1px 20px;
   text-align: center;
   min-height: 500px;
   height: 100%;
+  align-content: start;
   transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-
-.merch-image-wrapper {
-  position: relative;
-  display: inline-block;
 }
 
 .merch-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 240px;
-  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  gap: 8px;
   color: white;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.merch-image-wrapper {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .merch-gif {
   width: 100%;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 0 8px rgba(255,255,255,0.2);
-  object-fit: cover;
-  cursor: pointer;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-  backface-visibility: hidden;
-  transform: translateZ(0);
-  will-change: transform;
+  height: 140px; /* ajusta según tu diseño */
+  object-fit: contain;
 }
 
 /* LETRERO SOLD OUT */
@@ -1557,9 +1558,27 @@ width: 700px;
   will-change: transform;
 }
 
+.merch-item h3 {
+  font-size: 14px;
+  line-height: 1.2;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 2.4em; /* espacio para 2 líneas */
+  line-height: 1.2em;
+  display: flex;
+  align-items: flex-start; /* alinea arriba */
+}
+
 .merch-main-view h3 {
   margin: 0;
   font-size: 20px;
+}
+
+.merch-item h4 {
+  font-size: 13px;
 }
 
 .merch-main-view h4 {
@@ -1648,8 +1667,8 @@ width: 700px;
 
 .cart-icon {
   position: absolute;
-  top: 80px;
-  right: 50px;
+  top: 70px;
+  right: 30px;
   width: 30px;
   height: 30px;
   cursor: pointer;
@@ -1674,8 +1693,8 @@ width: 700px;
 
 .cart-notification-badge {
   position: absolute;
-  right: 35px;
-  top: 72px;
+  right: 20px;
+  top: 65px;
   background-color: #ff4444;
   color: white;
   border-radius: 50%;
@@ -1898,10 +1917,6 @@ width: 700px;
 /*=====================================================================================================================*/
 
 
-
-
-
-
 @media screen and (max-width: 768px) { 
   .mac-window {
   display: none;
@@ -1914,16 +1929,25 @@ body.apple-lockdown {
   height: 100vh;
 }
 
-  body {
+body {
   cursor: default;
   font-size: 10px;
+  width: 100%;
+  height: 100%;
+  min-height: 100svh;
+  position: relative;
   overflow: hidden;
-  height: 100vh;
-  width: 100vw;
-  position: fixed;
   overscroll-behavior: none;
-  touch-action: none;
-  }
+  -webkit-overflow-scrolling: auto;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: url('imagenes/background.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
 
   .top-bar {
 position: fixed;
@@ -1964,10 +1988,21 @@ position: fixed;
   }
 
   /* Desktop más compacto */
-  .desktop {
-    padding: 35px 10px;
-    gap: 1px;
-  }
+.desktop {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 50px 20px 20px 20px;
+  position: fixed;
+  top: 10px;
+  left: 0;
+  right: 0;
+  bottom: 90px;
+  height: auto;
+  overflow: hidden;
+  transition: opacity 0.6s ease;
+  box-sizing: border-box;
+}
 
   .disk {
     margin-bottom: 15px;
@@ -2338,22 +2373,22 @@ ul.messenger-style img {
     transform: scale(1.1);
   }
 
-  .merch-list {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    padding: 5px;
-    margin-top: 30px;
-    padding-top: 0 !important;
-  }
+.merch-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  padding: 10px;
+  margin-top: 40px;
+  padding-top: 0 !important;
+  align-content: start;
+}
 
-  .merch-item {
-    flex: 0 1 45%;
-    max-width: 45%;
-    padding: 10px;
-    margin: 0;
-    
-  }
+.merch-item {
+  width: 100%;
+  max-width: 100%;
+  padding: 10px;
+  margin: 0;
+}
 
   /* SOLD OUT HOOVER */
   .sold-out-badge {
@@ -2369,29 +2404,29 @@ ul.messenger-style img {
   text-transform: uppercase;
   pointer-events: none;
 }
+.merch-item h3 {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.15;
+  margin-bottom: 6px;
+  color: white;
+  min-height: 2.3em;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: center;
+}
 
-  .merch-item h3 {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 15px;
-    color: white;
-    line-height: 1.3;
-  }
-
-  .merch-gif {
-    width: 35vw;
-    height: auto;
-    margin-bottom: 10px;
-  }
+.merch-gif {
+  width: 180%;
+  max-width: none;
+  height: auto;
+}
 
   .merch-gif:hover {
     transform: scale(1.05);
   }
 
-  .merch-item h3 {
-    font-size: 13px;
-    margin-bottom: 8px;
-  }
 
   .merch-item h4 {
     font-size: 14px;
@@ -2400,20 +2435,12 @@ ul.messenger-style img {
   }
 
   /* Botones optimizados para touch */
-  .merch-item button {
-    padding: 12px 24px;
-    font-size: 14px;
-    font-weight: 600;
-    border: 2px solid white;
-    background: transparent;
-    color: white;
-    cursor: pointer;
-    border-radius: 6px;
-    min-height: 44px;
-    min-width: 100px;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-  }
+.merch-item button {
+  width: auto;
+  padding: 5px 10px; /* más chico */
+  font-size: 10px;
+  min-height: unset;
+}
 
   .merch-item button:hover {
     background: white;
@@ -2579,13 +2606,6 @@ ul.messenger-style img {
     height: auto;
     border-radius: 5px;
     margin-bottom: -1px;
-  }
-
-  .merch-main-view h3 {
-    font-size: 20px;
-    font-weight: 600;
-    color: rgb(255, 255, 255);
-    margin: 0;
   }
 
   .merch-main-view h4 {
@@ -3271,16 +3291,15 @@ ul.messenger-style img {
   }
 
   .merch-list {
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 30px;
-  }
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+}
 
-  .merch-item {
-    width: 200px;
-  }
-
+.merch-item {
+  width: 200px;
+}
   .social-icons {
     gap: 40px;
   }
@@ -3388,7 +3407,6 @@ ul.messenger-style img {
     padding: 10px 15px;
   }
 
-  .merch-item button,
   .checkout-btn,
   .retro-buttons button {
     min-height: 44px;
