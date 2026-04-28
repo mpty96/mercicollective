@@ -2388,6 +2388,7 @@ ul.messenger-style img {
   max-width: 100%;
   padding: 10px;
   margin: 0;
+  gap: 1px; 
 }
 
   /* SOLD OUT HOOVER */
@@ -2404,17 +2405,24 @@ ul.messenger-style img {
   text-transform: uppercase;
   pointer-events: none;
 }
+
 .merch-item h3 {
   font-size: 11px;
   font-weight: 600;
-  line-height: 1.15;
-  margin-bottom: 6px;
+  line-height: 1.1;
+  margin-bottom: 6x;
   color: white;
-  min-height: 2.3em;
-  display: flex;
+  min-height: 3.3em; /* 3 líneas */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+
+  overflow: hidden; /* 🔥 solo corta, sin puntos */
+
   align-items: flex-start;
   justify-content: center;
   text-align: center;
+  margin: 0; 
 }
 
 .merch-gif {
@@ -2432,6 +2440,7 @@ ul.messenger-style img {
     font-size: 14px;
     margin-bottom: 8px;
     color: #ffffff;
+     margin: 0;
   }
 
   /* Botones optimizados para touch */
