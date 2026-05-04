@@ -27,7 +27,7 @@ function login() {
   const message = document.getElementById('message');
   
   // Contraseña
-  const correctPassword = "Jordan2025."; //<----- Contraseña deseada entre comillas
+  const correctPassword = "LongLifeMerci."; //<----- Contraseña deseada entre comillas
 
   // Validar que se ingrese nombre de usuario
   if (!username.trim()) {
@@ -38,7 +38,7 @@ function login() {
     return;
   }
 
-  /* DESACTIVAR TEMPORALMENTE CONTRASEÑA
+  /* DESACTIVAR TEMPORALMENTE CONTRASEÑA*/
   if (!password.trim()) {
     if (message) {
       message.textContent = "Por favor ingresa la contraseña.";
@@ -55,7 +55,7 @@ function login() {
     }
     return;
   }
-*/
+
 
 
   if (message) {
