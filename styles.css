@@ -1419,6 +1419,10 @@ width: 700px;
   background: transparent;
 }
 
+.merch-description {
+  margin-top: 20px;
+}
+
 .merch-description p {
   border: none;        
   border-radius: 0;
@@ -2548,6 +2552,10 @@ ul.messenger-style img {
     max-height: none;
     padding-bottom: 20px;
   }
+
+  .merch-description {
+  margin-top: 40px;
+}
 
   .back-icon {
     position: absolute;
