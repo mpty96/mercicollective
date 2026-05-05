@@ -1405,6 +1405,28 @@ width: 700px;
     max-width: none;
   }
 
+.merch-description-label {
+  display: inline-block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #fff;
+
+  border: none;                 
+  border-bottom: 2px solid red; 
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.merch-description p {
+  border: none;        
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  font-size: 13px;
+  background: transparent;
+}
 
 
 .merch-banner {
@@ -2360,6 +2382,36 @@ ul.messenger-style img {
     font-weight: bold;
 }
 
+.merch-description {
+  margin-top: 10px;
+  max-width: 420px;
+  color: white;
+  text-align: left;
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.merch-description-label {
+  display: inline-block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #fff;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #ff0000;
+  border-radius: 0;
+  padding: 0;
+}
+
+.merch-description p {
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+}
+
   .cart-icon {
     position: absolute;
     top: 50px;
@@ -2470,10 +2522,12 @@ ul.messenger-style img {
   }
   */
 
-  #merchDetail {
-    overflow: hidden !important;
-    height: 100vh;
-    max-height: 100vh;
+#merchDetail {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  height: 100%;
+  max-height: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 
@@ -2482,13 +2536,17 @@ ul.messenger-style img {
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
-    padding: 40px;
+    padding: 85px 20px 80px 35px;
     gap: 20px;
     overflow: hidden !important;
-    height: 100vh;
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+    height: auto;
     box-sizing: border-box;
     position: relative;
-    max-height: 100vh;
+    min-height: auto; /* 👈 CLAVE */
+    max-height: none;
+    padding-bottom: 20px;
   }
 
   .back-icon {
@@ -2606,8 +2664,8 @@ ul.messenger-style img {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding-top: 0px;
-    gap: 3px;
+    padding-top: 1px;
+    gap: 8px;
     flex: 1;
     order: 1;
     max-width: 70%;

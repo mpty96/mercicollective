@@ -759,6 +759,26 @@ function openMerchDetail(product) {
   mainImageContainer.appendChild(mainImage);
 
   title.textContent = product.title;
+
+  let descriptionBox = document.getElementById("merchDescription");
+
+  if (!descriptionBox) {
+    descriptionBox = document.createElement("div");
+    descriptionBox.id = "merchDescription";
+    descriptionBox.className = "merch-description";
+    buyButton.insertAdjacentElement("afterend", descriptionBox); // 👈 AQUÍ el cambio clave
+  }
+
+  if (product.description) {
+    descriptionBox.innerHTML = `
+      <span class="merch-description-label">Descripción</span>
+      <p>${product.description.replace(/\n/g, "<br>")}</p>
+    `;
+    descriptionBox.style.display = "block";
+  } else {
+    descriptionBox.innerHTML = "";
+    descriptionBox.style.display = "none";
+  }
   
   // Actualizar precio con descuento
   if (product.oldPrice) {
@@ -788,7 +808,8 @@ function openMerchDetail(product) {
     const windowContent = merchWindow.querySelector('.mac-window-content');
     if (windowContent) {
       windowContent.scrollTop = 0;
-      windowContent.style.overflow = "hidden";
+      windowContent.style.overflowY = "auto";
+      windowContent.style.overflowX = "hidden";
     }
     merchDetail.style.overflow = "hidden";
     merchDetail.style.height = "100%";
