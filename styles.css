@@ -2405,24 +2405,28 @@ ul.messenger-style img {
   pointer-events: none;
 }
 
-.merch-item h3 {
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1.1;
-  margin-bottom: 6x;
-  color: white;
-  min-height: 3.3em; /* 3 líneas */
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+ .merch-item h3 {
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.1;
+    color: white;
+    width: 75px;
+    max-width: 70px;
+    margin: 0 0 6px 0;
+    min-height: 2.2em;
+    display: block;
+    text-align: center;
+    white-space: normal;
+    overflow: visible;
+    -webkit-line-clamp: unset;
+    -webkit-box-orient: unset;
+  }
 
-  overflow: hidden; /* 🔥 solo corta, sin puntos */
-
-  align-items: flex-start;
-  justify-content: center;
-  text-align: center;
-  margin: 0; 
-}
+  .merch-item h3 .line-1,
+  .merch-item h3 .line-2 {
+    display: block;
+    white-space: nowrap;
+  }
 
 .merch-gif {
   width: 180%;

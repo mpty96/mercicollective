@@ -912,6 +912,35 @@ let cart = [];
 
 function getShopifyProductID(title, size) {
   const variants = {
+
+    "SHIVA G0D TEE": {
+      S: "47493397446909",
+      M: "47493397479677",
+      L: "47493397512445",
+      XL: "47493397545213",
+    },
+
+    "MERCI <3 ME BLACK TEE": {
+      S: "47493391941885",
+      M: "47493391974653",
+      L: "47493392007421",
+      XL: "47493392040189",
+    },
+
+    "MERCI <3 ME GREEN TEE": {
+      S: "47493397119229",
+      M: "47493397151997",
+      L: "47493397184765",
+      XL: "47493397217533",
+    },
+
+    "MEMBER PASS CHAIN": "47491888382205",
+    "SHIT(A) CAP": "47412994769149",
+    "DESTROYED HAT": "47334427033853",
+    "ARABE WHITE HAT": "47334621937917",
+    "ARABE BLACK HAT": "47334625575165",
+
+
     "FREE LOHAN WHITE TEE": {
       S: "46381412647165",
       M: "46381412679933",
@@ -919,11 +948,6 @@ function getShopifyProductID(title, size) {
       "baby tee S": "46914291368189",
       "baby tee M": "46914291400957"
     },
-
-    "SHIT(A) CAP": "47412994769149",
-    "DESTROYED HAT": "47334427033853",
-    "ARABE WHITE HAT": "47334621937917",
-    "ARABE BLACK HAT": "47334625575165",
 
     "FREE LOHAN BLACK TEE": {
       S: "46381471990013",
