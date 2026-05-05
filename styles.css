@@ -1619,7 +1619,10 @@ width: 700px;
   .merch-main-view img[src*="fa_black_tabla.jpg"],
   .merch-main-view img[src*="tabla_merci_polo.png"],
   .merch-main-view img[src*="punk_black_tabla.jpeg"],
-  .merch-main-view img[src*="punk_white_tabla.jpeg"] {
+  .merch-main-view img[src*="punk_white_tabla.jpeg"],
+  .merch-main-view img[src*="mercilovesme_black_tabla.jpeg"],
+  .merch-main-view img[src*="mercilovesme_green_tabla.jpeg"],
+  .merch-main-view img[src*="shiva_god_tabla.jpeg"] {
     width: 500px;
     height: auto;
     max-width: none;
@@ -2704,6 +2707,14 @@ ul.messenger-style img {
 
   .merch-main-view img[src*="freelohan_blanca_tabla.png"],
   .merch-main-view img[src*="freelohan_negra_tabla.png"] {
+    width: 72vw;
+    height: auto;
+    max-width: none;
+  }
+
+  .merch-main-view img[src*="mercilovesme_black_tabla.jpeg"],
+  .merch-main-view img[src*="mercilovesme_green_tabla.jpeg"],
+  .merch-main-view img[src*="shiva_god_tabla.jpeg"] {
     width: 72vw;
     height: auto;
     max-width: none;

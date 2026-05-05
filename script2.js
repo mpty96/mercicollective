@@ -917,7 +917,6 @@ function getShopifyProductID(title, size) {
       S: "47493397446909",
       M: "47493397479677",
       L: "47493397512445",
-      XL: "47493397545213",
     },
 
     "MERCI <3 ME BLACK TEE": {
