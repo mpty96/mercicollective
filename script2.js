@@ -1191,6 +1191,7 @@ const policies = {
       <p>• Los pedidos tienen un plazo de entrega entre 5 a 10 días hábiles luego de efectuar la compra.</p>
       <br>
       <p><strong>LOS ENVIOS POR CYBER DAY TIENEN UNA EXTENSIÓN EN SU PLAZO DE ENTREGA POR ALTA DEMANDA, HASTA 14 DÍAS HÁBILES.</strong></p>
+      <p><strong>LOS PEDIDOS EN PRE-ORDER TIENEN UN PLAZO DE PRODUCCIÓN Y ENVÍO DE HASTA 14 DÍAS HÁBILES.</strong></p>
       <br>
       <p>Enviamos un correo cuando es preparado el pedido:</p> 
       <p>• Serás notificado con el correo y número de seguimiento cuando el pedido sea despachado desde la sucursal de origen.</p>
