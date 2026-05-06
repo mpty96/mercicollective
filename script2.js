@@ -38,7 +38,7 @@ function login() {
     return;
   }
 
-  /* DESACTIVAR TEMPORALMENTE CONTRASEÑA*/
+  /* DESACTIVAR TEMPORALMENTE CONTRASEÑA
   if (!password.trim()) {
     if (message) {
       message.textContent = "Por favor ingresa la contraseña.";
@@ -55,6 +55,8 @@ function login() {
     }
     return;
   }
+
+  */
 
 
 
