@@ -39,7 +39,7 @@ function login() {
   }
 
   /* contraseña--------------------------*/
-/*
+
   if (!password.trim()) {
     if (message) {
       message.textContent = "Por favor ingresa la contraseña.";
