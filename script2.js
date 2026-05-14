@@ -129,10 +129,12 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    /* precarga de imagenes de manera local
     document.querySelectorAll('#gallery img, #merch img').forEach(img => {
       const preload = new Image();
       preload.src = img.src;
     });
+      */
 
     const dummy = document.createElement('div');
     dummy.style.height = '1px';
@@ -711,6 +713,56 @@ function audioPlayer() {
 //---------------------------------------------- MERCH -------------------------------------------//
 //================================================================================================//
 
+const MERCI_ASSET_BASE = "https://res.cloudinary.com/ddyg0qocs/image/upload";
+
+const CLOUDINARY_GIFS = {
+  "shiva_god.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735534/shiva_god_gjdzi2.gif",
+  "mercilovesme_black.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735531/mercilovesme_black_rejusn.gif",
+  "mercilovesme_green.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735532/mercilovesme_green_angdov.gif",
+  "member_chain.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735531/member_chain_vw0v18.gif",
+  "hat_animal_print.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735531/hat_animal_print_ugkyye.gif",
+  "destroyed_hat.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735528/destroyed_hat_uve3te.gif",
+  "hat_arabe_white.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735531/hat_arabe_white_tzf1fu.gif",
+  "hat_arabe_black.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735530/hat_arabe_black_xwnx5i.gif",
+  "punk_white.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735533/punk_white_ymxwfi.gif",
+  "punk_black.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735533/punk_black_x5vr5v.gif",
+  "freelohan_blanca1.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735530/freelohan_blanca1_yhlolf.gif",
+  "freelohan_negra.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735530/freelohan_negra_hn1osi.gif",
+  "merci_polo_shirt.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735531/merci_polo_shirt_ofeicl.gif",
+  "merci_x_bbjuanki.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778738777/merci_x_bbjuanki_izoha4.gif",
+  "polera_swag_blanca1.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735532/polera_swag_blanca1_wtsx1u.gif",
+  "polera_swag_negra1.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735533/polera_swag_negra1_awzgyi.gif",
+  "fa_blanca.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735529/fa_blanca_tz6akv.gif",
+  "fa_negra.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735530/fa_negra_ucfcj3.gif",
+  "sticker_swag_blanco.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735534/sticker_swag_blanco_icv3cz.gif",
+  "sticker_swag_negro.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735534/sticker_swag_negro_up9lpg.gif",
+  "CD.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735472/CD_sqxldw.gif",
+};
+
+function getAssetUrl(fileName) {
+  if (!fileName) return "";
+
+  if (fileName.startsWith("http")) {
+    return fileName;
+  }
+
+  if (fileName.toLowerCase().endsWith(".gif")) {
+    const cloudinaryPath = CLOUDINARY_GIFS[fileName];
+
+    if (!cloudinaryPath) {
+      return `imagenes/${fileName}`;
+    }
+
+    if (cloudinaryPath.startsWith("http")) {
+      return cloudinaryPath;
+    }
+
+    return `${MERCI_ASSET_BASE}/${cloudinaryPath}`;
+  }
+
+  return `imagenes/${fileName}`;
+}
+
 function openMerchDetail(product) {
   const mainImageContainer = document.getElementById("mainMerchImageContainer");
   const title = document.getElementById("merchTitle");
@@ -757,7 +809,9 @@ function openMerchDetail(product) {
   
   const mainImage = document.createElement("img");
   mainImage.id = "mainMerchImage";
-  mainImage.src = "imagenes/" + product.main;
+  mainImage.src = getAssetUrl(product.main);
+  mainImage.loading = "lazy";
+  mainImage.decoding = "async";
   mainImage.alt = "Vista Principal";
   mainImageContainer.appendChild(mainImage);
 
@@ -797,7 +851,9 @@ function openMerchDetail(product) {
 
   product.thumbnails.forEach(img => {
     const thumb = document.createElement("img");
-    thumb.src = "imagenes/" + img;
+    thumb.src = getAssetUrl(img);
+    thumb.loading = "lazy";
+    thumb.decoding = "async";
     thumb.alt = "Thumb";
     thumb.onclick = () => changeMainImage(img);
     thumbs.appendChild(thumb);
@@ -849,7 +905,9 @@ function changeMainImage(src) {
   
   const imgElement = document.createElement("img");
   imgElement.id = "mainMerchImage";
-  imgElement.src = "imagenes/" + src;
+  imgElement.src = getAssetUrl(src);
+  imgElement.loading = "lazy";
+  imgElement.decoding = "async";
   imgElement.alt = "Vista Principal";
   
   mainImageContainer.appendChild(imgElement);
