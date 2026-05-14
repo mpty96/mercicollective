@@ -9,13 +9,13 @@
         src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
 </script>
   <!--SCRIPT.JS-->
-  <script src="script2.js?v=2.6.0" defer></script>
+  <script src="script2.js?v=2.6.4" defer></script>
   <!--SCRIPT SOUNDCLOUD-->
   <script src="https://w.soundcloud.com/player/api.js"></script>
   <!--SCRIPT YOUTUBE-->
   <script src="https://www.youtube.com/iframe_api"></script>
   <!--STYLES.CSS-->
-  <link rel="stylesheet" href="styles.css?v=2.6.0">
+  <link rel="stylesheet" href="styles.css?v=2.6.4">
   <link rel="icon" type="image/png" href="imagenes/mercimetalic.png">
 </head>
 <body >
@@ -33,7 +33,12 @@
 <div class="top-bar">
   <div class="top-bar-left">
     <img src="imagenes/mercimetalic.png" alt="Apple Logo" class="apple-icon" />
-    <span class="menu-item">File</span>
+    <div class="menu-item file-menu-wrapper" onclick="toggleAdminFileMenu(event)">
+      File
+      <div class="file-dropdown" id="fileDropdown">
+        <div onclick="openAdminLogin(event)">Iniciar sesión admin</div>
+      </div>
+    </div>
     <span class="menu-item">Edit</span>
     <span class="menu-item">View</span>
     <span class="menu-item">Go</span>
@@ -115,7 +120,7 @@
     <div class="dock-icon" data-title="Movies" onclick="openWindow('gallery')">
       <img src="imagenes/dvdplayer1.png" alt="Fotos" />
     </div>
-    <div class="dock-icon" data-title="Shop" onclick="openWindow('merch')">
+    <div class="dock-icon" data-title="Shop" onclick="openProtectedShop()">
       <img src="imagenes/shop1.png" alt="Merch" />
     </div>
   </nav>
@@ -126,7 +131,6 @@
 <!------------------------------------------------------------------------------------------------------->
 
 <!----------------------------------------------- VENTANA: USUARIOS ACTIVOS -------------------------------------------------->
-
 <div class="mac-window" id="activeUsers">
   <div class="mac-window-header">
     <div class="window-buttons">
@@ -142,8 +146,134 @@
   </div>
 </div>
 
-<!------------------------------------------------------ VENTANA: MERCH ------------------------------------------------------>
 
+<!----------------------------------------------- VENTANA: ADMIN LOGIN -------------------------------------------------->
+<div class="mac-window" id="adminLoginWindow">
+  <div class="mac-window-header">
+    <div class="window-buttons">
+      <span class="btn red" onclick="closeWindow('adminLoginWindow')">X</span>
+      <span class="btn yellow"></span>
+      <span class="btn green"></span>
+    </div>
+    <span class="window-title">Admin Login</span>
+  </div>
+
+  <div class="mac-window-content admin-login-content">
+    <h2>Panel Administrador</h2>
+
+    <input 
+      type="text" 
+      id="adminUsername" 
+      class="admin-input" 
+      placeholder="Usuario admin"
+    >
+
+    <input 
+      type="password" 
+      id="adminPassword" 
+      class="admin-input" 
+      placeholder="Contraseña admin"
+    >
+
+    <div id="adminLoginMessage"></div>
+
+    <button class="admin-btn" onclick="adminLogin()">Entrar</button>
+  </div>
+</div>
+
+
+<!----------------------------------------------- VENTANA: ADMIN PANEL -------------------------------------------------->
+<div class="mac-window" id="adminPanelWindow">
+  <div class="mac-window-header">
+    <div class="window-buttons">
+      <span class="btn red" onclick="closeWindow('adminPanelWindow')">X</span>
+      <span class="btn yellow"></span>
+      <span class="btn green"></span>
+    </div>
+    <span class="window-title">Admin Panel</span>
+  </div>
+
+  <div class="mac-window-content admin-panel-content">
+    <h2>Panel Administrador</h2>
+    <p class="admin-status">Sesión admin activa</p>
+
+    <div class="admin-panel-actions">
+      <button onclick="adminOpenCreateProduct()">Agregar producto</button>
+      <button onclick="adminOpenProductManager()">Editar / eliminar productos</button>
+      <button onclick="adminToggleShopPasswordPanel()">Contraseña Shop</button>
+      <button onclick="adminLogout()">Cerrar sesión admin</button>
+    </div>
+
+    <div id="adminPanelMessage"></div>
+      <div id="adminCreateProductForm" class="admin-create-product-form" style="display:none;">
+        
+      <h3>Agregar producto</h3>
+
+      <input id="adminProductTitle" class="admin-input" placeholder="Nombre del producto">
+      <input id="adminProductPrice" class="admin-input" placeholder="Precio Ej: $24.990">
+      <input id="adminProductGif" class="admin-input" placeholder="Link GIF Cloudinary">
+      <input id="adminProductImages" class="admin-input" placeholder="Links imágenes separados por coma">
+      <input id="adminProductSizes" class="admin-input" placeholder="Tallas separadas por coma Ej: S,M,L,XL">
+      <input 
+        id="adminProductVariantId" 
+        class="admin-input" 
+        placeholder="VariantId único Shopify si NO tiene talla"
+      >
+
+      <textarea 
+        id="adminProductVariantMap" 
+        class="admin-input" 
+        placeholder="VariantIds por talla. Ej: S:46872843256061, M:46872843288829, L:46872843321597"
+      ></textarea>
+
+      <select id="adminProductCollection" class="admin-input">
+        <option value="main">MERCI principal</option>
+        <option value="bbj">MERCI X JUANKI</option>
+      </select>
+
+      <label class="admin-checkbox-label">
+        <input type="checkbox" id="adminProductSoldOut">
+        Producto SOLD OUT
+      </label>
+
+      <textarea id="adminProductDescription" class="admin-input" placeholder="Descripción opcional"></textarea>
+
+      <button onclick="adminPreviewProduct()">Previsualizar producto</button>
+      <button onclick="adminSaveCurrentProduct()">Guardar producto definitivamente</button>
+    </div>
+
+    <div id="adminProductManager" class="admin-create-product-form" style="display:none;">
+      <h3>Editar / eliminar productos</h3>
+
+      <select id="adminManagerCollection" class="admin-input" onchange="adminRenderProductManager()">
+        <option value="main">MERCI principal</option>
+        <option value="bbj">MERCI X JUANKI</option>
+      </select>
+
+      <div id="adminProductManagerList"></div>
+    </div>
+
+    <div id="adminShopPasswordPanel" class="admin-create-product-form" style="display:none;">
+      <h3>Contraseña Shop</h3>
+
+      <label class="admin-checkbox-label">
+        <input type="checkbox" id="adminShopPasswordEnabled">
+        Activar contraseña para Shop
+      </label>
+
+      <input 
+        id="adminShopPasswordValue" 
+        class="admin-input" 
+        placeholder="Contraseña para abrir Shop"
+      >
+
+      <button onclick="adminSaveShopPasswordConfig()">Guardar configuración</button>
+    </div>
+  </div>
+</div>
+
+
+<!------------------------------------------------------ VENTANA: MERCH ------------------------------------------------------>
 <div class="mac-window dark" id="merch">
     <div class="mac-window-header">
         <div class="window-buttons">
@@ -154,6 +284,22 @@
         <span class="window-title">Merch</span>
       </div>
     <div class="mac-window-content">
+      <div id="shopPasswordOverlay" class="shop-password-overlay" style="display:none;">
+        <h2>Contraseña:</h2>
+
+        <input 
+          type="password" 
+          id="shopPasswordInput" 
+          class="shop-password-input"
+          placeholder="Ingresa contraseña"
+        >
+
+        <button onclick="submitShopPassword()">Ingresar</button>
+
+        <p id="shopPasswordMessage"></p>
+      </div>
+
+    <div id="shopContentWrapper">
       <div class="merch-banner">
     ENVÍO GRATIS EN PEDIDOS SOBRE $80.000
   </div>
@@ -161,620 +307,14 @@
         <img src="imagenes/cart.png" alt="Cart Icon" loading="eager" class="cart-icon" onclick="openWindow('shoppingCart')" />
         <div id="cartNotificationBadge" class="cart-notification-badge hidden">0</div>
 
-        <!-------------------------------------- Vista Lista de Productos Principal ------------------------------>
-        <div class="merch-list" id="merchList">
 
-<!-------------------------- SHIVA G0D TEE -------------------------->
-<div class="merch-item">
 
-    <h3>SHIVA G0D<br> TEE</h3>
-    <div class="merch-image-wrapper">
-        <img 
-            class="merch-gif" 
-            src="https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735534/shiva_god_gjdzi2.gif"
-            alt="SHIVA G0D TEE"
-            loading="lazy"
-            decoding="async"
-            onclick="openMerchDetail({ 
-                title: 'SHIVA G0D TEE',
-                price: '$44.990',
-                main: 'shiva_god.gif',
-                thumbnails: [
-                    'shiva_god.gif',
-                    'shiva_god_frente.png',
-                    'shiva_god_espalda.png',
-                    'shiva_god_tabla.jpeg'
-                ],
-                hasSize: true,
-                sizes: ['S', 'M', 'L', 'XL'],
-                available: true
-            })">
-    </div>
-    <h4><span class="price">$44.990</span></h4>
-    <button onclick="openMerchDetail({ 
-        title: 'SHIVA G0D TEE',
-        price: '$44.990',
-        main: 'shiva_god.gif',
-        thumbnails: [
-            'shiva_god.gif',
-            'shiva_god_frente.png',
-            'shiva_god_espalda.png',
-            'shiva_god_tabla.jpeg'
-        ],
-        hasSize: true,
-        sizes: ['S', 'M', 'L', 'XL'],
-        available: true
-    })">
-        BUY
-    </button>
-</div>
+<!-------------------------------------- Vista Lista de Productos Principal ------------------------------>
+<div class="merch-list" id="merchList">
 
-          <!-------------------------- MERCI <3 ME BLACK TEE -------------------------->
-            <div class="merch-item">
-                <h3>MERCI &lt;3 ME BLACK TEE</h3>
-                <div class="merch-image-wrapper">
-                <img 
-                  class="merch-gif" 
-                  src="https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735531/mercilovesme_black_rejusn.gif"
-                  alt="MERCI <3 ME BLACK TEE"
-                  loading="lazy"
-                  decoding="async"
-                  onclick="openMerchDetail({ 
-                    title: 'MERCI <3 ME BLACK TEE',
-                    price: '$37.990',  
-                    main: 'mercilovesme_black.gif', 
-                    thumbnails: ['mercilovesme_black.gif', 'mercilovesme_black_frente.png', 'mercilovesme_black_espalda.png', 'mercilovesme_black_tabla.jpeg'],
-                    hasSize: true,
-                    sizes: ['S', 'M', 'L', 'XL'],
-                    available: true
-                  })"
-                />
-                        <!-- <span class="sold-out-badge">SOON</span> -->
-                        </div>
-                <h4><span class="price">$37.990</span></h4> <!--Se cambia a "old-price" en vez de solo "price" al principio y luego enseguida se añade <span class="new-price">$23.800</span></h4> -->
-                <button onclick="openMerchDetail({ 
-                  title: 'MERCI <3 ME BLACK TEE', 
-                  price: '$37.990',
-                  main: 'mercilovesme_black.gif', 
-                  thumbnails: [
-                    'mercilovesme_black.gif',
-                    'mercilovesme_black_frente.png',
-                    'mercilovesme_black_espalda.png',
-                    'mercilovesme_black_tabla.jpeg'
-                  ],
-                  hasSize: true,
-                  sizes: ['S', 'M', 'L', 'XL']
-              })">
-                BUY
-              </button>
-            </div>
-
-          
-<!-------------------------- MERCI <3 ME GREEN TEE -------------------------->
-<div class="merch-item">
-
-    <h3>MERCI &lt;3 ME GREEN TEE</h3>
-
-    <div class="merch-image-wrapper">
-        <img 
-            class="merch-gif" 
-            src="https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735532/mercilovesme_green_angdov.gif"
-            alt="MERCI <3 ME GREEN TEE"
-            loading="lazy"
-            decoding="async"
-            onclick="openMerchDetail({ 
-                title: 'MERCI <3 ME GREEN TEE',
-                price: '$37.990',
-                main: 'mercilovesme_green.gif',
-                thumbnails: [
-                    'mercilovesme_green.gif',
-                    'mercilovesme_green_frente.png',
-                    'mercilovesme_green_espalda.png',
-                    'mercilovesme_green_tabla.jpeg'
-                ],
-                hasSize: true,
-                sizes: ['S', 'M', 'L', 'XL'],
-                available: true
-            })">
-        <!-- <span class="sold-out-badge">SOON</span> -->
-    </div>
-
-    <h4><span class="price">$37.990</span></h4>
-
-    <button onclick="openMerchDetail({ 
-        title: 'MERCI <3 ME GREEN TEE',
-        price: '$37.990',
-        main: 'mercilovesme_green.gif',
-        thumbnails: [
-            'mercilovesme_green.gif',
-            'mercilovesme_green_frente.png',
-            'mercilovesme_green_espalda.png',
-            'mercilovesme_green_tabla.jpeg'
-        ],
-        hasSize: true,
-        sizes: ['S', 'M', 'L', 'XL'],
-        available: true
-    })">
-        BUY
-    </button>
-
-</div>
-
-
-          <!-------------------------- MEMBER PASS CHAIN -------------------------->
-<div class="merch-item">
-
-    <h3>MEMBER PASS CHAIN</h3>
-
-    <div class="merch-image-wrapper">
-        <img 
-            class="merch-gif" 
-            src="https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735531/member_chain_vw0v18.gif"
-            alt="MEMBER PASS CHAIN"
-            loading="lazy"
-            decoding="async"
-            onclick="openMerchDetail({ 
-                title: 'MEMBER PASS CHAIN',
-                price: '$15.000',
-                main: 'member_chain.gif',
-                thumbnails: [
-                    'member_chain.gif',
-                    'member_chain_frente.png',
-                    'member_chain_atras.png'
-                ],
-                hasSize: false,
-                available: true,
-                description: `Tendrás acceso al Close Friends de Instagram, lo que significa:
-                — Acceso anticipado a cada colección, antes que cualquier otra persona.
-                — Prioridad total en los drops: si quieres comprar sin preocuparte por el stock, acá nos aseguramos de que todos puedan acceder con tiempo, incluyendo piezas especiales.
-                — Descuentos exclusivos solo para miembros.
-                — Beneficios en todos los eventos futuros que hagamos.`
-            })">
-        <!-- <span class="sold-out-badge">SOON</span> -->
-    </div>
-
-    <h4><span class="price">$15.000</span></h4>
-
-    <button onclick="openMerchDetail({ 
-        title: 'MEMBER PASS CHAIN',
-        price: '$15.000',
-        main: 'member_chain.gif',
-        thumbnails: [
-            'member_chain.gif',
-            'member_chain_frente.png',
-            'member_chain_atras.png'
-        ],
-        hasSize: false,
-        available: true,
-        description: `Tendrás acceso al Close Friends de Instagram, lo que significa:
-        — Acceso anticipado a cada colección, antes que cualquier otra persona.
-        — Prioridad total en los drops: si quieres comprar sin preocuparte por el stock, acá nos aseguramos de que todos puedan acceder con tiempo, incluyendo piezas especiales.
-        — Descuentos exclusivos solo para miembros.
-        — Beneficios en todos los eventos futuros que hagamos.`
-    })">
-        BUY
-    </button>
-
-</div>
-
-          
-          <!-------------------------- SHIT(A) CAP -------------------------->
-<div class="merch-item">
-
-    <h3>SHIT(A) CAP</h3>
-
-    <div class="merch-image-wrapper">
-        <img 
-            class="merch-gif" 
-            src="https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735531/hat_animal_print_ugkyye.gif"
-            alt="SHIT(A) CAP"
-            loading="lazy"
-            decoding="async"
-            onclick="openMerchDetail({ 
-                title: 'SHIT(A) CAP',
-                price: '$25.000',
-                main: 'hat_animal_print.gif',
-                thumbnails: [
-                    'hat_animal_print.gif',
-                    'hat_animal_print_frente.png',
-                    'hat_animal_print_atras.png'
-                ],
-                hasSize: false,
-                available: true
-            })">
-        <!-- <span class="sold-out-badge">SOON</span> -->
-    </div>
-
-    <h4><span class="price">$25.000</span></h4>
-
-    <button onclick="openMerchDetail({ 
-        title: 'SHIT(A) CAP',
-        price: '$25.000',
-        main: 'hat_animal_print.gif',
-        thumbnails: [
-            'hat_animal_print.gif',
-            'hat_animal_print_frente.png',
-            'hat_animal_print_atras.png'
-        ],
-        hasSize: false,
-        available: true
-    })">
-        BUY
-    </button>
-
-</div>
-
-<!-------------------------- DESTROYED CAP -------------------------->
-<div class="merch-item">
-
-    <h3>DESTROYED CAP</h3>
-
-    <div class="merch-image-wrapper">
-        <img 
-            class="merch-gif" 
-            src="https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735528/destroyed_hat_uve3te.gif"
-            alt="DESTROYED HAT"
-            loading="lazy"
-            decoding="async"
-            onclick="openMerchDetail({ 
-                title: 'DESTROYED HAT',
-                price: '$28.000',
-                main: 'destroyed_hat.gif',
-                thumbnails: [
-                    'destroyed_hat.gif',
-                    'destroyed_hat_frente.png',
-                    'destroyed_hat_atras.png'
-                ],
-                hasSize: false,
-                available: true
-            })">
-        <!-- <span class="sold-out-badge">SOON</span> -->
-    </div>
-
-    <h4><span class="price">$28.000</span></h4>
-
-    <button onclick="openMerchDetail({ 
-        title: 'DESTROYED HAT',
-        price: '$28.000',
-        main: 'destroyed_hat.gif',
-        thumbnails: [
-            'destroyed_hat.gif',
-            'destroyed_hat_frente.png',
-            'destroyed_hat_atras.png'
-        ],
-        hasSize: false,
-        available: true
-    })">
-        BUY
-    </button>
-
-</div>
-
-          <!-------------------------- ARABE WHITE CAP -------------------------->
-<div class="merch-item">
-
-    <h3>ARABE WHITE CAP</h3>
-
-    <div class="merch-image-wrapper">
-        <img 
-            class="merch-gif" 
-            src="https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735531/hat_arabe_white_tzf1fu.gif"
-            alt="ARABE WHITE HAT"
-            loading="lazy"
-            decoding="async"
-            onclick="openMerchDetail({ 
-                title: 'ARABE WHITE HAT',
-                price: '$25.000',
-                main: 'hat_arabe_white.gif',
-                thumbnails: [
-                    'hat_arabe_white.gif',
-                    'hat_arabe_white_frente.png',
-                    'hat_arabe_white_atras.png'
-                ],
-                hasSize: false,
-                available: true
-            })">
-        <!-- <span class="sold-out-badge">SOON</span> -->
-    </div>
-
-    <h4><span class="price">$25.000</span></h4>
-
-    <button onclick="openMerchDetail({ 
-        title: 'ARABE WHITE HAT',
-        price: '$25.000',
-        main: 'hat_arabe_white.gif',
-        thumbnails: [
-            'hat_arabe_white.gif',
-            'hat_arabe_white_frente.png',
-            'hat_arabe_white_atras.png'
-        ],
-        hasSize: false,
-        available: true
-    })">
-        BUY
-    </button>
-
-</div>
-            
-<!-------------------------- ARABE BLACK HAT -------------------------->
-<div class="merch-item">
-
-    <h3>ARABE BLACK CAP</h3>
-
-    <div class="merch-image-wrapper">
-        <img 
-            class="merch-gif" 
-            src="https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735530/hat_arabe_black_xwnx5i.gif"
-            alt="ARABE BLACK HAT"
-            loading="lazy"
-            decoding="async"
-            onclick="openMerchDetail({ 
-                title: 'ARABE BLACK HAT',
-                price: '$25.000',
-                main: 'hat_arabe_black.gif',
-                thumbnails: [
-                    'hat_arabe_black.gif',
-                    'hat_arabe_black_frente.png',
-                    'hat_arabe_black_atras.png'
-                ],
-                hasSize: false,
-                available: true
-            })">
-        <!-- <span class="sold-out-badge">SOON</span> -->
-    </div>
-
-    <h4><span class="price">$25.000</span></h4>
-
-    <button onclick="openMerchDetail({ 
-        title: 'ARABE BLACK HAT',
-        price: '$25.000',
-        main: 'hat_arabe_black.gif',
-        thumbnails: [
-            'hat_arabe_black.gif',
-            'hat_arabe_black_frente.png',
-            'hat_arabe_black_atras.png'
-        ],
-        hasSize: false,
-        available: true
-    })">
-        BUY
-    </button>
-
-</div>
-
-
-          <!-------------------------- PUNK GOALS WHITE -------------------------->
-<div class="merch-item">
-    <h3>PUNK GOALS WHITE</h3>
-
-    <div class="merch-image-wrapper">
-        <img 
-            class="merch-gif" 
-            src="https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735533/punk_white_ymxwfi.gif"
-            alt="PUNK GOALS WHITE"
-            loading="lazy"
-            decoding="async"
-            onclick="openMerchDetail({ 
-                title: 'PUNK GOALS WHITE',
-                price: '$26.990',
-                main: 'punk_white.gif',
-                thumbnails: [
-                    'punk_white.gif',
-                    'punk_white_frente.png',
-                    'punk_white_espalda.png',
-                    'punk_white_tabla.jpeg'
-                ],
-                hasSize: true,
-                sizes: ['XS', 'S', 'M', 'L', 'XL', 'baby tee S', 'baby tee M'],
-                available: true
-            })">
-    </div>
-
-    <h4><span class="price">$26.990</span></h4>
-
-    <button onclick="openMerchDetail({ 
-        title: 'PUNK GOALS WHITE',
-        price: '$26.990',
-        main: 'punk_white.gif',
-        thumbnails: [
-            'punk_white.gif',
-            'punk_white_frente.png',
-            'punk_white_espalda.png',
-            'punk_white_tabla.jpeg'
-        ],
-        hasSize: true,
-        sizes: ['XS', 'S', 'M', 'L', 'XL', 'baby tee S', 'baby tee M'],
-        available: true
-    })">BUY</button>
-</div>
-
-
-<!-------------------------- PUNK GOALS BLACK -------------------------->
-<div class="merch-item">
-    <h3>PUNK GOALS BLACK</h3>
-
-    <div class="merch-image-wrapper">
-        <img 
-            class="merch-gif" 
-            src="https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735533/punk_black_x5vr5v.gif"
-            alt="PUNK GOALS BLACK"
-            loading="lazy"
-            decoding="async"
-            onclick="openMerchDetail({ 
-                title: 'PUNK GOALS BLACK',
-                price: '$26.990',
-                main: 'punk_black.gif',
-                thumbnails: [
-                    'punk_black.gif',
-                    'punk_black_frente.png',
-                    'punk_black_espalda.png',
-                    'punk_black_tabla.jpeg'
-                ],
-                hasSize: true,
-                sizes: ['XS', 'S', 'M', 'L', 'XL', 'baby tee S', 'baby tee M'],
-                available: true
-            })">
-    </div>
-
-    <h4><span class="price">$26.990</span></h4>
-
-    <button onclick="openMerchDetail({ 
-        title: 'PUNK GOALS BLACK',
-        price: '$26.990',
-        main: 'punk_black.gif',
-        thumbnails: [
-            'punk_black.gif',
-            'punk_black_frente.png',
-            'punk_black_espalda.png',
-            'punk_black_tabla.jpeg'
-        ],
-        hasSize: true,
-        sizes: ['XS', 'S', 'M', 'L', 'XL', 'baby tee S', 'baby tee M'],
-        available: true
-    })">BUY</button>
-</div>
-
-
-<!------------------------ FREE LOHAN WHITE TEE ------------------->
-<div class="merch-item">
-
-    <h3>FREE&nbsp;LOHAN WHITE<br>TEE</h3>
-
-    <div class="merch-image-wrapper">
-        <img 
-            class="merch-gif" 
-            src="https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735530/freelohan_blanca1_yhlolf.gif"
-            alt="FREE LOHAN WHITE TEE"
-            loading="lazy"
-            decoding="async"
-            onclick="openMerchDetail({ 
-                title: 'FREE LOHAN WHITE TEE',
-                price: '$26.990',
-                main: 'freelohan_blanca1.gif',
-                thumbnails: [
-                    'freelohan_blanca1.gif',
-                    'freelohan_blanca_frente.png',
-                    'freelohan_blanca_espalda.png',
-                    'freelohan_blanca_tabla.png'
-                ],
-                hasSize: true,
-                sizes: ['S', 'M', 'L', 'baby tee S', 'baby tee M'],
-                available: true
-            })">
-    </div>
-
-    <h4><span class="price">$26.990</span></h4>
-
-    <button onclick="openMerchDetail({ 
-        title: 'FREE LOHAN WHITE TEE',
-        price: '$26.990',
-        main: 'freelohan_blanca1.gif',
-        thumbnails: [
-            'freelohan_blanca1.gif',
-            'freelohan_blanca_frente.png',
-            'freelohan_blanca_espalda.png',
-            'freelohan_blanca_tabla.png'
-        ],
-        hasSize: true,
-        sizes: ['S', 'M', 'L', 'baby tee S', 'baby tee M'],
-        available: true
-    })">BUY</button>
-</div>
-
-
-<!-------------------------- FREE LOHAN BLACK TEE ----------------------->
-<div class="merch-item">
-
-    <h3>FREE&nbsp;LOHAN BLACK<br>TEE</h3>
-
-    <div class="merch-image-wrapper">
-        <img 
-            class="merch-gif" 
-            src="https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735530/freelohan_negra_hn1osi.gif"
-            alt="FREE LOHAN BLACK TEE"
-            loading="lazy"
-            decoding="async"
-            onclick="openMerchDetail({ 
-                title: 'FREE LOHAN BLACK TEE',
-                price: '$26.990',
-                main: 'freelohan_negra.gif',
-                thumbnails: [
-                    'freelohan_negra.gif',
-                    'freelohan_negra_frente.png',
-                    'freelohan_negra_espalda.png',
-                    'freelohan_negra_tabla.png'
-                ],
-                hasSize: true,
-                sizes: ['S', 'M', 'L', 'baby tee S', 'baby tee M'],
-                available: true
-            })">
-    </div>
-
-    <h4><span class="price">$26.990</span></h4>
-
-    <button onclick="openMerchDetail({ 
-        title: 'FREE LOHAN BLACK TEE',
-        price: '$26.990',
-        main: 'freelohan_negra.gif',
-        thumbnails: [
-            'freelohan_negra.gif',
-            'freelohan_negra_frente.png',
-            'freelohan_negra_espalda.png',
-            'freelohan_negra_tabla.png'
-        ],
-        hasSize: true,
-        sizes: ['S', 'M', 'L', 'baby tee S', 'baby tee M'],
-        available: true
-    })">BUY</button>
-</div>
-
-
-<!-------------------------- MERCI POLO SHIRT -------------------------->
-<div class="merch-item">
-
-    <h3>MERCI POLO SHIRT</h3>
-
-    <div class="merch-image-wrapper">
-        <img 
-            class="merch-gif" 
-            src="https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735531/merci_polo_shirt_ofeicl.gif"
-            alt="MERCI POLO SHIRT"
-            loading="lazy"
-            decoding="async"
-            onclick="openMerchDetail({ 
-                title: 'MERCI POLO SHIRT',
-                price: '$32.990',
-                main: 'merci_polo_shirt.gif',
-                thumbnails: [
-                    'merci_polo_shirt.gif',
-                    'merci_polo_delante.png',
-                    'merci_polo_atras.png',
-                    'tabla_merci_polo.png'
-                ],
-                hasSize: true,
-                available: true
-            })">
-    </div>
-
-    <h4><span class="price">$32.990</span></h4>
-
-    <button onclick="openMerchDetail({ 
-        title: 'MERCI POLO SHIRT',
-        price: '$32.990',
-        main: 'merci_polo_shirt.gif',
-        thumbnails: [
-            'merci_polo_shirt.gif',
-            'merci_polo_delante.png',
-            'merci_polo_atras.png',
-            'tabla_merci_polo.png'
-        ],
-        hasSize: true,
-        available: true
-    })">BUY</button>
-</div>
 
 <!------------------------- ITEM MERCI X BBJUANKI ------------------------->
-<div class="merch-item">
+<div class="merch-item merch-static-keep">
 
     <h3>MERCI X JUANKI COLLAB</h3>
 
@@ -798,237 +338,7 @@
 <div class="merch-list" id="merchListBBJuanki" style="display:none;">
     <img src="imagenes/back.png" loading="eager" alt="Back Icon" id="back-icon-juanki" class="back-icon" onclick="backToMainMerch()" />
 
-     <!------------------------ FA SWAG WHITE TEE ------------------->
-<div class="merch-item">
-    <h3>FA SWAG WHITE TEE</h3>
-    <div class="merch-image-wrapper">
-        <img 
-            class="merch-gif" 
-            src="https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735532/polera_swag_blanca1_wtsx1u.gif"
-            alt="FA SWAG WHITE TEE"
-            loading="lazy"
-            decoding="async"
-            onclick="openMerchDetail({ 
-                title: 'FA SWAG WHITE TEE', 
-                price: '$24.990', 
-                main: 'polera_swag_blanca1.gif', 
-                thumbnails: ['polera_swag_blanca1.gif', 'polera_blanca_frente.png', 'polera_blanca_atras.png', 'fa_white_tabla.jpg'],
-                hasSize: true,
-                sizes: ['S', 'M', 'L'],
-                available: true,
-                fromBBJ: true 
-            })">
-    </div>
-    <h4><span class="price">$24.990</span></h4>
-    <button onclick="openMerchDetail({ 
-        title: 'FA SWAG WHITE TEE', 
-        price: '$24.990', 
-        main: 'polera_swag_blanca1.gif', 
-        thumbnails: ['polera_swag_blanca1.gif', 'polera_blanca_frente.png', 'polera_blanca_atras.png', 'fa_white_tabla.jpg'], 
-        hasSize: true,
-        sizes: ['S', 'M', 'L'],
-        available: true,
-        fromBBJ: true 
-    })">BUY</button>
-</div>
-
-<!------------------------- FA SWAG BLACK TEE ---------------------->
-<div class="merch-item">
-    <h3>FA SWAG BLACK TEE</h3>
-    <div class="merch-image-wrapper">
-        <img 
-            class="merch-gif" 
-            src="https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735533/polera_swag_negra1_awzgyi.gif"
-            alt="FA SWAG BLACK TEE"
-            loading="lazy"
-            decoding="async"
-            onclick="openMerchDetail({ 
-                title: 'FA SWAG BLACK TEE',
-                price: '$24.990', 
-                main: 'polera_swag_negra1.gif', 
-                thumbnails: ['polera_swag_negra1.gif', 'polera_negra_frente.png', 'polera_negra_atras.png', 'fa_black_tabla.jpg'],
-                hasSize: true,
-                sizes: ['S', 'M', 'L'],
-                available: true,
-                fromBBJ: true 
-            })">
-    </div>
-    <h4><span class="price">$24.990</span></h4>
-    <button onclick="openMerchDetail({ 
-        title: 'FA SWAG BLACK TEE',
-        price: '$24.990', 
-        main: 'polera_swag_negra1.gif', 
-        thumbnails: ['polera_swag_negra1.gif', 'polera_negra_frente.png', 'polera_negra_atras.png', 'fa_black_tabla.jpg'], 
-        hasSize: true,
-        sizes: ['S', 'M', 'L'],
-        available: true,
-        fromBBJ: true 
-    })">BUY</button>
-</div>
-
-<!------------------------- FA WHITE TEE ---------------------->
-<div class="merch-item">
-    <h3>FA WHITE TEE</h3>
-    <div class="merch-image-wrapper">
-        <img 
-            class="merch-gif" 
-            src="https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735529/fa_blanca_tz6akv.gif"
-            alt="FA WHITE TEE"
-            loading="lazy"
-            decoding="async"
-            onclick="openMerchDetail({ 
-                title: 'FA WHITE TEE',
-                price: '$24.990', 
-                main: 'fa_blanca.gif', 
-                thumbnails: ['fa_blanca.gif', 'fa_blanca_frente.png', 'fa_blanca_espalda.png', 'fa_blanca_tabla.jpg'],
-                hasSize: true,
-                sizes: ['S', 'M', 'L', 'baby tee S', 'baby tee M'],
-                available: true,
-                fromBBJ: true 
-            })">
-    </div>
-    <h4><span class="price">$24.990</span></h4>
-    <button onclick="openMerchDetail({ 
-        title: 'FA WHITE TEE',
-        price: '$24.990', 
-        main: 'fa_blanca.gif', 
-        thumbnails: ['fa_blanca.gif', 'fa_blanca_frente.png', 'fa_blanca_espalda.png', 'fa_blanca_tabla.jpg'], 
-        hasSize: true,
-        sizes: ['S', 'M', 'L', 'baby tee S', 'baby tee M'],
-        available: true,
-        fromBBJ: true 
-    })">BUY</button>
-</div>
-
-<!------------------------- FA BLACK TEE ---------------------->
-<div class="merch-item">
-    <h3>FA BLACK TEE</h3>
-    <div class="merch-image-wrapper">
-        <img 
-            class="merch-gif" 
-            src="https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735530/fa_negra_ucfcj3.gif"
-            alt="FA BLACK TEE"
-            loading="lazy"
-            decoding="async"
-            onclick="openMerchDetail({ 
-                title: 'FA BLACK TEE',
-                price: '$24.990', 
-                main: 'fa_negra.gif', 
-                thumbnails: ['fa_negra.gif', 'fa_negra_frente.png', 'fa_negra_espalda.png', 'fa_negra_tabla.jpg'],
-                hasSize: true,
-                sizes: ['S', 'M', 'L', 'baby tee S', 'baby tee M'],
-                available: true,
-                fromBBJ: true 
-            })">
-    </div>
-    <h4><span class="price">$24.990</span></h4>
-    <button onclick="openMerchDetail({ 
-        title: 'FA BLACK TEE',
-        price: '$24.990', 
-        main: 'fa_negra.gif', 
-        thumbnails: ['fa_negra.gif', 'fa_negra_frente.png', 'fa_negra_espalda.png', 'fa_negra_tabla.jpg'], 
-        hasSize: true,
-        sizes: ['S', 'M', 'L', 'baby tee S', 'baby tee M'],
-        available: true,
-        fromBBJ: true 
-    })">BUY</button>
-</div>
-
-<!--------------------------- Sticker #FA SWAG (BLANCO) ---------------------->
-<div class="merch-item">
-    <h3>Sticker #FA SWAG Blanco</h3>
-    <div class="merch-image-wrapper">
-        <img 
-            class="merch-gif" 
-            src="https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735534/sticker_swag_blanco_icv3cz.gif"
-            alt="Sticker #FA SWAG Blanco"
-            loading="lazy"
-            decoding="async"
-            onclick="openMerchDetail({ 
-                title: 'Sticker #FA SWAG Blanco', 
-                price: '$2.000', 
-                main: 'sticker_swag_blanco.gif', 
-                thumbnails: ['sticker_swag_blanco.gif', 'sticker_blanco_delante.png', 'sticker_blanco_atras.png'],
-                hasSize: false,
-                available: true,
-                fromBBJ: true 
-            })">
-    </div>
-    <h4><span class="new-price">$2.000</span></h4>
-    <button onclick="openMerchDetail({ 
-        title: 'Sticker #FA SWAG Blanco', 
-        price: '$2.000', 
-        main: 'sticker_swag_blanco.gif', 
-        thumbnails: ['sticker_swag_blanco.gif', 'sticker_blanco_delante.png', 'sticker_blanco_atras.png'],
-        hasSize: false,
-        available: true,
-        fromBBJ: true 
-    })">BUY</button>
-</div>
-
-<!--------------------------- Sticker #FA SWAG (NEGRO) ---------------------->
-<div class="merch-item">
-    <h3>Sticker #FA SWAG Negro</h3>
-    <div class="merch-image-wrapper">
-        <img 
-            class="merch-gif" 
-            src="https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735534/sticker_swag_negro_up9lpg.gif"
-            alt="Sticker #FA SWAG Negro"
-            loading="lazy"
-            decoding="async"
-            onclick="openMerchDetail({ 
-                title: 'Sticker #FA SWAG Negro', 
-                price: '$2.000', 
-                main: 'sticker_swag_negro.gif', 
-                thumbnails: ['sticker_swag_negro.gif', 'sticker_negro_delante.png', 'sticker_negro_atras.png'],
-                hasSize: false,
-                available: true,
-                fromBBJ: true 
-            })">
-    </div>
-    <h4><span class="new-price">$2.000</span></h4>
-    <button onclick="openMerchDetail({ 
-        title: 'Sticker #FA SWAG Negro', 
-        price: '$2.000', 
-        main: 'sticker_swag_negro.gif', 
-        thumbnails: ['sticker_swag_negro.gif', 'sticker_negro_delante.png', 'sticker_negro_atras.png'],
-        hasSize: false,
-        available: true,
-        fromBBJ: true 
-    })">BUY</button>
-</div>
-
-<!--------------------------- CD "BBJUANKI" ---------------------->
-<div class="merch-item">
-    <h3>CD "BBJUANKI"</h3>
-    <div class="merch-image-wrapper">
-        <img 
-            class="merch-gif" 
-            src="https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735472/CD_sqxldw.gif"
-            alt="CD BBJUANKI"
-            loading="lazy"
-            decoding="async"
-            onclick="openMerchDetail({ 
-                title: 'CD BBJUANKI',
-                price: '$15.000', 
-                main: 'CD.gif', 
-                thumbnails: ['CD.gif', 'CD_adelante.png', 'CD_atras.png'],
-                hasSize: false,
-                available: true,
-                fromBBJ: true 
-            })">
-    </div>
-    <h4><span class="price">$15.000</span></h4>
-    <button onclick="openMerchDetail({ 
-        title: 'CD BBJUANKI',
-        price: '$15.000', 
-        main: 'CD.gif', 
-        thumbnails: ['CD.gif', 'CD_adelante.png', 'CD_atras.png'],
-        hasSize: false,
-        available: true,
-        fromBBJ: true 
-    })">BUY</button>
-</div>
+     
 </div>
 
 
@@ -1068,6 +378,7 @@
         <span onclick="showPolicy('returns')">Cambios y devoluciones</span>
       </div>
     </div>
+    </div> <!-- cierre shopContentWrapper -->
   </div>
 </div>
 
@@ -1365,7 +676,7 @@
 <!-------------------------------------------------------------------- SCRIPT USUARIOS ACTIVOS -------------------------------------------------------------------->
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getDatabase, ref, onValue, set, remove, onDisconnect } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  import { getDatabase, ref, onValue, set, remove, onDisconnect, push, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAXgNKx6ZXwmJMqE0Cnm25IkB138GCcnBA",
@@ -1468,6 +779,91 @@ function initializeUserCountBadge() {
 
   // Exportar para usar en login()
   window.registerUser = registerUser;
+
+const PRODUCTS_DB_PATH =
+  location.hostname === "127.0.0.1" || location.hostname === "localhost"
+    ? "adminProducts_dev"
+    : "adminProducts";
+
+window.adminFirebaseSaveProduct = async function(product) {
+  const productsRef = ref(db, PRODUCTS_DB_PATH);
+  const newProductRef = push(productsRef);
+
+  const productToSave = {
+    ...product,
+    firebaseId: newProductRef.key,
+    createdAt: Date.now()
+  };
+
+  await set(newProductRef, productToSave);
+
+  return productToSave;
+};
+
+
+window.adminFirebaseLoadProducts = async function() {
+  const productsRef = ref(db, PRODUCTS_DB_PATH);
+  const snapshot = await get(productsRef);
+
+  if (!snapshot.exists()) return [];
+
+  return Object.values(snapshot.val());
+};
+
+
+window.adminFirebaseDeleteProduct = async function(firebaseId) {
+  await remove(ref(db, `${PRODUCTS_DB_PATH}/${firebaseId}`));
+};
+
+window.adminFirebaseUpdateProduct = async function(product) {
+  if (!product.firebaseId) throw new Error("Producto sin firebaseId");
+
+  await set(ref(db, `${PRODUCTS_DB_PATH}/${product.firebaseId}`), {
+    ...product,
+    updatedAt: Date.now()
+  });
+
+  return product;
+};
+
+
+window.adminFirebaseSaveShopConfig = async function(config) {
+  await set(ref(db, "shopConfig"), {
+    ...config,
+    updatedAt: Date.now()
+  });
+
+  return config;
+};
+
+window.adminFirebaseLoadShopConfig = async function() {
+  const snapshot = await get(ref(db, "shopConfig"));
+
+  if (!snapshot.exists()) {
+    return {
+      passwordEnabled: false,
+      password: ""
+    };
+  }
+
+  return snapshot.val();
+};
+
+window.dispatchEvent(new Event("merciFirebaseAdminReady"));
+
+window.adminFirebaseReorderProducts = async function(products) {
+  const updates = products.map((product, index) => {
+    return set(ref(db, `${PRODUCTS_DB_PATH}/${product.firebaseId}`), {
+      ...product,
+      position: index,
+      updatedAt: Date.now()
+    });
+  });
+
+  await Promise.all(updates);
+
+  return products;
+};
 </script>
 
 </body>

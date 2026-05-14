@@ -39,7 +39,7 @@ function login() {
   }
 
   /* contraseña--------------------------*/
-
+/*
   if (!password.trim()) {
     if (message) {
       message.textContent = "Por favor ingresa la contraseña.";
@@ -443,6 +443,627 @@ document.querySelectorAll('.mac-window').forEach(win => {
     document.body.style.userSelect = '';
   });
 });
+
+
+//================================================================================================//
+//-------------------------------------- ADMIN PANEL - FASE 1 -------------------------------------//
+//================================================================================================//
+
+const ADMIN_CREDENTIALS = {
+  username: "admin",
+  password: "merciadmin"
+};
+
+let isAdminLoggedIn = false;
+
+function toggleAdminFileMenu(event) {
+  event.stopPropagation();
+
+  const dropdown = document.getElementById("fileDropdown");
+  if (!dropdown) return;
+
+  dropdown.classList.toggle("show");
+}
+
+function openAdminLogin(event) {
+  event.stopPropagation();
+
+  const dropdown = document.getElementById("fileDropdown");
+  if (dropdown) dropdown.classList.remove("show");
+
+  openWindow("adminLoginWindow");
+}
+
+function adminLogin() {
+  const username = document.getElementById("adminUsername")?.value.trim();
+  const password = document.getElementById("adminPassword")?.value.trim();
+  const message = document.getElementById("adminLoginMessage");
+
+  if (!username || !password) {
+    message.textContent = "Completa usuario y contraseña.";
+    return;
+  }
+
+  if (
+    username !== ADMIN_CREDENTIALS.username ||
+    password !== ADMIN_CREDENTIALS.password
+  ) {
+    message.textContent = "Credenciales incorrectas.";
+    return;
+  }
+
+  isAdminLoggedIn = true;
+  message.style.color = "green";
+  message.textContent = "Admin conectado.";
+
+  setTimeout(() => {
+    closeWindow("adminLoginWindow");
+    openWindow("adminPanelWindow");
+  }, 500);
+}
+
+document.addEventListener("click", () => {
+  const dropdown = document.getElementById("fileDropdown");
+  if (dropdown) dropdown.classList.remove("show");
+});
+
+
+function adminOpenCreateProduct() {
+  const form = document.getElementById("adminCreateProductForm");
+  const message = document.getElementById("adminPanelMessage");
+
+  if (!form) return;
+
+  form.style.display = form.style.display === "none" ? "flex" : "none";
+
+  if (message) {
+    message.textContent = "Completa los datos del producto.";
+  }
+}
+
+function adminPreviewProduct() {
+  const productPreview = adminBuildProductFromForm();
+  const message = document.getElementById("adminPanelMessage");
+
+  if (!productPreview) return;
+
+  console.log("Producto admin preview:", productPreview);
+
+  if (message) {
+    message.style.color = "green";
+    message.textContent = "Producto previsualizado correctamente.";
+  }
+
+  window.adminCurrentProductPreview = productPreview;
+
+  adminRemovePreviewProduct();
+
+  if (productPreview.firebaseId) {
+    document.querySelectorAll(`[data-firebase-id="${productPreview.firebaseId}"]`).forEach(el => el.remove());
+  }
+
+  adminAddProductToMerchList(productPreview, true);
+
+  openWindow("merch");
+  openMerchDetail(productPreview);
+}
+
+
+function adminBuildProductFromForm() {
+  const title = document.getElementById("adminProductTitle")?.value.trim();
+  const price = document.getElementById("adminProductPrice")?.value.trim();
+  const gif = document.getElementById("adminProductGif")?.value.trim();
+  const imagesRaw = document.getElementById("adminProductImages")?.value.trim();
+  const sizesRaw = document.getElementById("adminProductSizes")?.value.trim();
+  const variantId = document.getElementById("adminProductVariantId")?.value.trim();
+  const variantMapRaw = document.getElementById("adminProductVariantMap")?.value.trim();
+  const collection = document.getElementById("adminProductCollection")?.value;
+  const description = document.getElementById("adminProductDescription")?.value.trim();
+  const soldOut = document.getElementById("adminProductSoldOut")?.checked || false;
+  const message = document.getElementById("adminPanelMessage");
+
+  if (!title || !price || !gif) {
+    if (message) {
+      message.style.color = "red";
+      message.textContent = "Nombre, precio y GIF son obligatorios.";
+    }
+    return null;
+  }
+
+  const images = imagesRaw
+    ? imagesRaw.split(",").map(img => img.trim()).filter(Boolean)
+    : [];
+
+  const sizes = sizesRaw
+    ? sizesRaw.split(",").map(size => size.trim()).filter(Boolean)
+    : [];
+
+  const variantMap = {};
+
+  if (variantMapRaw) {
+    variantMapRaw.split(",").forEach(pair => {
+      const [size, id] = pair.split(":").map(value => value.trim());
+
+      if (size && id) {
+        variantMap[size] = id;
+      }
+    });
+  }
+
+  return {
+    firebaseId: window.adminEditingProductId || window.adminCurrentProductPreview?.firebaseId || null,
+    title,
+    price,
+    main: gif,
+    thumbnails: [gif, ...images],
+    hasSize: sizes.length > 0,
+    sizes,
+    available: true,
+    soldOut,
+    fromBBJ: collection === "bbj",
+    description: description || "",
+    variantId: variantId || "",
+    variants: variantMap
+  };
+}
+
+
+async function adminSaveCurrentProduct() {
+  const message = document.getElementById("adminPanelMessage");
+
+  const product = adminBuildProductFromForm();
+
+  if (!product) return;
+
+  let savedProduct = null;
+
+  if (window.adminEditingProductId) {
+    savedProduct = await window.adminFirebaseUpdateProduct(product);
+    window.adminEditingProductId = null;
+  } else {
+    product.position = 0;
+    savedProduct = await adminSaveProduct(product);
+    await adminNormalizeProductPositions(product.fromBBJ === true);
+  }
+
+  if (!savedProduct) return;
+
+  adminRemovePreviewProduct();
+
+  if (savedProduct.firebaseId) {
+    document.querySelectorAll(`[data-firebase-id="${savedProduct.firebaseId}"]`).forEach(el => el.remove());
+  }
+
+  adminAddProductToMerchList(savedProduct, false);
+
+  window.adminCurrentProductPreview = savedProduct;
+
+  if (message) {
+    message.style.color = "green";
+    message.textContent = "Producto guardado correctamente.";
+  }
+
+  await adminRenderProductManager?.();
+}
+
+
+async function adminNormalizeProductPositions(isBBJ) {
+  const products = await window.adminFirebaseLoadProducts();
+
+  const sameCollection = products
+    .filter(product => product.fromBBJ === isBBJ)
+    .sort((a, b) => {
+      const createdA = a.createdAt || 0;
+      const createdB = b.createdAt || 0;
+      return createdB - createdA;
+    });
+
+  await window.adminFirebaseReorderProducts(sameCollection);
+}
+
+
+function adminAddProductToMerchList(product, isPreview = false) {
+  const targetList = product.fromBBJ
+    ? document.getElementById("merchListBBJuanki")
+    : document.getElementById("merchList");
+
+  if (!targetList) return;
+
+  const item = document.createElement("div");
+  item.className = "merch-item";
+  if (product.firebaseId) {
+  item.dataset.firebaseId = product.firebaseId;
+}
+
+  if (isPreview) {
+    item.dataset.adminPreview = "true";
+  } else {
+    item.dataset.adminProduct = "true";
+  }
+
+  item.innerHTML = `
+    <h3>${product.title}</h3>
+
+    <div class="merch-image-wrapper">
+    <img 
+      class="merch-gif"
+      src="${getAssetUrl(product.main)}"
+      alt="${product.title}"
+      loading="lazy"
+      decoding="async"
+    >
+
+    ${product.soldOut ? '<span class="sold-out-badge">SOLD OUT</span>' : ''}
+  </div>
+
+  <h4><span class="price">${product.price}</span></h4>
+
+    <button>BUY</button>
+  `;
+
+  if (product.soldOut) {
+  item.classList.add("is-sold-out");
+}
+
+  const img = item.querySelector(".merch-gif");
+  const button = item.querySelector("button");
+
+  img.addEventListener("click", () => {
+    if (product.soldOut) return;
+    openMerchDetail(product);
+  });
+
+  button.addEventListener("click", () => {
+    if (product.soldOut) return;
+    openMerchDetail(product);
+  });
+
+  const firstProduct = targetList.querySelector(".merch-item");
+
+if (firstProduct) {
+  targetList.insertBefore(item, firstProduct);
+} else {
+  targetList.appendChild(item);
+}
+}
+
+function adminRemovePreviewProduct() {
+  document.querySelectorAll('[data-admin-preview="true"]').forEach(item => {
+    item.remove();
+  });
+}
+
+
+async function adminSaveProduct(product) {
+
+  if (typeof window.adminFirebaseSaveProduct !== "function") {
+    console.error("❌ window.adminFirebaseSaveProduct no existe");
+    alert("Firebase admin no está disponible todavía.");
+    return null;
+  }
+
+  try {
+    const savedProduct = await window.adminFirebaseSaveProduct(product);
+    return savedProduct;
+  } catch (error) {
+    console.error("❌ Error guardando producto en Firebase:", error);
+    alert("Error guardando producto. Revisa consola.");
+    return null;
+  }
+}
+
+async function adminLoadSavedProducts() {
+
+  if (typeof window.adminFirebaseLoadProducts !== "function") {
+    console.error("❌ window.adminFirebaseLoadProducts no existe");
+    return;
+  }
+
+  try {
+    const savedProducts = await window.adminFirebaseLoadProducts();
+
+    savedProducts.sort((a, b) => {
+      const posA = typeof a.position === "number" ? a.position : 9999;
+      const posB = typeof b.position === "number" ? b.position : 9999;
+      return posA - posB;
+    });
+
+    document.querySelectorAll('[data-admin-product="true"]').forEach(item => item.remove());
+
+    savedProducts.reverse().forEach(product => {
+      adminAddProductToMerchList(product, false);
+    });
+  } catch (error) {
+    console.error("❌ Error cargando productos admin:", error);
+  }
+}
+
+window.addEventListener("merciFirebaseAdminReady", () => {
+  console.log("✅ Firebase admin listo. Cargando productos...");
+  adminLoadSavedProducts();
+  loadShopPasswordConfig();
+});
+
+
+async function adminOpenProductManager() {
+  const manager = document.getElementById("adminProductManager");
+  const form = document.getElementById("adminCreateProductForm");
+  const message = document.getElementById("adminPanelMessage");
+
+  if (!manager) return;
+
+  if (form) form.style.display = "none";
+
+  manager.style.display = manager.style.display === "none" ? "flex" : "none";
+
+  if (message) {
+    message.style.color = "#333";
+    message.textContent = "Productos guardados por admin.";
+  }
+
+  await adminRenderProductManager();
+}
+
+function adminLogout() {
+  isAdminLoggedIn = false;
+
+  closeWindow("adminPanelWindow");
+
+  const usernameInput = document.getElementById("adminUsername");
+  const passwordInput = document.getElementById("adminPassword");
+  const message = document.getElementById("adminLoginMessage");
+
+  if (usernameInput) usernameInput.value = "";
+  if (passwordInput) passwordInput.value = "";
+
+  if (message) {
+    message.style.color = "red";
+    message.textContent = "";
+  }
+
+  alert("Sesión admin cerrada.");
+}
+
+
+async function adminRenderProductManager() {
+  const list = document.getElementById("adminProductManagerList");
+  const collectionSelect = document.getElementById("adminManagerCollection");
+
+  if (!list) return;
+
+  list.innerHTML = "";
+
+  const selectedCollection = collectionSelect?.value || "main";
+  const products = await window.adminFirebaseLoadProducts();
+
+  const filteredProducts = products
+    .filter(product => {
+      if (selectedCollection === "bbj") return product.fromBBJ === true;
+      return product.fromBBJ !== true;
+    })
+    .sort((a, b) => {
+      const posA = typeof a.position === "number" ? a.position : 9999;
+      const posB = typeof b.position === "number" ? b.position : 9999;
+      return posA - posB;
+    });
+
+  if (!filteredProducts.length) {
+    list.innerHTML = "<p>No hay productos guardados en esta colección.</p>";
+    return;
+  }
+
+  filteredProducts.forEach((product, index) => {
+    const row = document.createElement("div");
+    row.className = "admin-manager-row";
+
+    row.innerHTML = `
+      <strong>${product.title}</strong>
+      <span>${product.price}</span>
+      <div>
+        <button type="button">↑</button>
+        <button type="button">↓</button>
+        <button type="button">Editar</button>
+        <button type="button">Eliminar</button>
+      </div>
+    `;
+
+    const [upBtn, downBtn, editBtn, deleteBtn] = row.querySelectorAll("button");
+
+    upBtn.disabled = index === 0;
+    downBtn.disabled = index === filteredProducts.length - 1;
+
+    upBtn.addEventListener("click", () => adminMoveProduct(filteredProducts, index, -1));
+    downBtn.addEventListener("click", () => adminMoveProduct(filteredProducts, index, 1));
+    editBtn.addEventListener("click", () => adminEditProduct(product));
+    deleteBtn.addEventListener("click", () => adminDeleteProduct(product));
+
+    list.appendChild(row);
+  });
+}
+
+
+async function adminMoveProduct(products, index, direction) {
+  const newIndex = index + direction;
+
+  if (newIndex < 0 || newIndex >= products.length) return;
+
+  const reordered = [...products];
+  const [movedProduct] = reordered.splice(index, 1);
+  reordered.splice(newIndex, 0, movedProduct);
+
+  await window.adminFirebaseReorderProducts(reordered);
+
+  await adminRenderProductManager();
+  await adminLoadSavedProducts();
+
+  const message = document.getElementById("adminPanelMessage");
+
+  if (message) {
+    message.style.color = "green";
+    message.textContent = "Orden actualizado.";
+  }
+}
+
+
+function adminEditProduct(product) {
+  document.getElementById("adminCreateProductForm").style.display = "flex";
+  document.getElementById("adminProductManager").style.display = "none";
+  document.getElementById("adminProductSoldOut").checked = product.soldOut === true;
+  document.getElementById("adminProductTitle").value = product.title || "";
+  document.getElementById("adminProductPrice").value = product.price || "";
+  document.getElementById("adminProductGif").value = product.main || "";
+  document.getElementById("adminProductImages").value = (product.thumbnails || []).slice(1).join(", ");
+  document.getElementById("adminProductSizes").value = (product.sizes || []).join(", ");
+  document.getElementById("adminProductVariantId").value = product.variantId || "";
+  document.getElementById("adminProductVariantMap").value = product.variants
+    ? Object.entries(product.variants).map(([size, id]) => `${size}:${id}`).join(", ")
+    : "";
+  document.getElementById("adminProductCollection").value = product.fromBBJ ? "bbj" : "main";
+  document.getElementById("adminProductDescription").value = product.description || "";
+
+  window.adminCurrentProductPreview = product;
+  window.adminEditingProductId = product.firebaseId || null;
+
+  const message = document.getElementById("adminPanelMessage");
+  if (message) {
+    message.style.color = "green";
+    message.textContent = "Editando producto existente. Puedes guardar directamente.";
+  }
+}
+
+async function adminDeleteProduct(product) {
+  if (!product.firebaseId) return;
+
+  const confirmDelete = confirm(`¿Eliminar "${product.title}"?`);
+  if (!confirmDelete) return;
+
+  await window.adminFirebaseDeleteProduct(product.firebaseId);
+
+  document.querySelectorAll(`[data-firebase-id="${product.firebaseId}"]`).forEach(el => el.remove());
+
+  await adminRenderProductManager();
+}
+
+
+let merciShopConfig = {
+  passwordEnabled: false,
+  password: ""
+};
+
+let merciShopUnlocked = false;
+
+async function loadShopPasswordConfig() {
+  if (typeof window.adminFirebaseLoadShopConfig !== "function") {
+    console.warn("Firebase shop config no disponible.");
+    return;
+  }
+
+  merciShopConfig = await window.adminFirebaseLoadShopConfig();
+  console.log("Shop config cargada:", merciShopConfig);
+}
+
+function adminToggleShopPasswordPanel() {
+  const panel = document.getElementById("adminShopPasswordPanel");
+  const createForm = document.getElementById("adminCreateProductForm");
+  const manager = document.getElementById("adminProductManager");
+
+  if (!panel) return;
+
+  if (createForm) createForm.style.display = "none";
+  if (manager) manager.style.display = "none";
+
+  panel.style.display = panel.style.display === "none" ? "flex" : "none";
+
+  document.getElementById("adminShopPasswordEnabled").checked = merciShopConfig.passwordEnabled === true;
+  document.getElementById("adminShopPasswordValue").value = merciShopConfig.password || "";
+}
+
+async function adminSaveShopPasswordConfig() {
+  const enabled = document.getElementById("adminShopPasswordEnabled")?.checked || false;
+  const password = document.getElementById("adminShopPasswordValue")?.value.trim() || "";
+  const message = document.getElementById("adminPanelMessage");
+
+  if (enabled && !password) {
+    if (message) {
+      message.style.color = "red";
+      message.textContent = "Debes ingresar una contraseña.";
+    }
+    return;
+  }
+
+  merciShopConfig = {
+    passwordEnabled: enabled,
+    password
+  };
+
+  await window.adminFirebaseSaveShopConfig(merciShopConfig);
+
+  merciShopUnlocked = false;
+
+  if (message) {
+    message.style.color = "green";
+    message.textContent = "Configuración de Shop guardada.";
+  }
+}
+
+
+function openProtectedShop() {
+  openWindow("merch");
+
+  const overlay = document.getElementById("shopPasswordOverlay");
+  const content = document.getElementById("shopContentWrapper");
+  const input = document.getElementById("shopPasswordInput");
+  const message = document.getElementById("shopPasswordMessage");
+
+  if (!overlay || !content) return;
+
+  if (!merciShopConfig.passwordEnabled || merciShopUnlocked) {
+    overlay.style.display = "none";
+    content.style.display = "block";
+    return;
+  }
+
+  overlay.style.display = "flex";
+  content.style.display = "none";
+
+  if (input) input.value = "";
+  if (message) message.textContent = "";
+
+  setTimeout(() => input?.focus(), 100);
+}
+
+function submitShopPassword() {
+  const input = document.getElementById("shopPasswordInput");
+  const message = document.getElementById("shopPasswordMessage");
+  const overlay = document.getElementById("shopPasswordOverlay");
+  const content = document.getElementById("shopContentWrapper");
+
+  const value = input?.value.trim() || "";
+
+  if (value === merciShopConfig.password) {
+    merciShopUnlocked = true;
+
+    overlay.style.display = "none";
+    content.style.display = "block";
+
+    return;
+  }
+
+  if (message) {
+    message.textContent = "Contraseña incorrecta.";
+  }
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Enter") return;
+
+  const overlay = document.getElementById("shopPasswordOverlay");
+
+  if (overlay && overlay.style.display === "flex") {
+    submitShopPassword();
+  }
+});
+
 
 //=================================================================================================//
 //------------------------------------------- COVERFLOW -------------------------------------------//
@@ -1153,7 +1774,23 @@ function updateCart() {
     const numericPrice = parseInt(item.price.replace("$", "").replace("CLP", "").replace(/\./g, "").trim());
     const itemTotal = numericPrice * item.quantity;
     totalPrice += itemTotal;
-    const shopifyId = getShopifyProductID(item.title, item.size);
+    let shopifyId = null;
+
+    // Producto con tallas
+    if (item.hasSize && item.variants && item.size) {
+      shopifyId = item.variants[item.size];
+    }
+
+    // Producto sin talla
+    else if (!item.hasSize && item.variantId) {
+      shopifyId = item.variantId;
+    }
+
+    // Compatibilidad antigua
+    else {
+      shopifyId = getShopifyProductID(item.title, item.size);
+    }
+
     if (shopifyId) {
       cartShopifyItems.push(`${shopifyId}:${item.quantity}`);
     }
@@ -1161,20 +1798,14 @@ function updateCart() {
     const cartItem = document.createElement("div");
     cartItem.classList.add("cart-item");
     
-    let gifSrc = '';
-    if (item.title.includes('White')) {
-      gifSrc = 'freelohan_blanca.gif';
-    } else if (item.title.includes('Black')) {
-      gifSrc = 'freelohan_negra.gif';
-    } else if (item.main) {
-      gifSrc = item.main;
-    }
+  let gifSrc = item.main || "";
+  const gifUrl = getAssetUrl(gifSrc);
 
     const sizeInfo = item.hasSize ? ` - SIZE ${item.size}` : '';
     
     cartItem.innerHTML = `
       <button class="remove-btn" onclick="removeFromCart(${index})">x</button>
-      <img src="imagenes/${gifSrc}" alt="${item.title}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;">
+      <img src="${gifUrl}" alt="${item.title}" loading="lazy" decoding="async" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;">
       <div class="cart-item-text">
         <p>${item.title}${sizeInfo}</p>
       </div>
