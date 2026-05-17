@@ -592,6 +592,7 @@ function adminBuildProductFromForm() {
 
   return {
     firebaseId: window.adminEditingProductId || window.adminCurrentProductPreview?.firebaseId || null,
+    position: window.adminCurrentProductPreview?.position ?? 9999,
     title,
     price,
     main: gif,
@@ -599,8 +600,8 @@ function adminBuildProductFromForm() {
     hasSize: sizes.length > 0,
     sizes,
     available: true,
-    soldOut,
     fromBBJ: collection === "bbj",
+    soldOut,
     description: description || "",
     variantId: variantId || "",
     variants: variantMap
@@ -610,16 +611,14 @@ function adminBuildProductFromForm() {
 
 async function adminSaveCurrentProduct() {
   const message = document.getElementById("adminPanelMessage");
-
   const product = adminBuildProductFromForm();
 
   if (!product) return;
 
   let savedProduct = null;
 
-  if (window.adminEditingProductId) {
+  if (product.firebaseId) {
     savedProduct = await window.adminFirebaseUpdateProduct(product);
-    window.adminEditingProductId = null;
   } else {
     product.position = 0;
     savedProduct = await adminSaveProduct(product);
@@ -630,20 +629,18 @@ async function adminSaveCurrentProduct() {
 
   adminRemovePreviewProduct();
 
-  if (savedProduct.firebaseId) {
-    document.querySelectorAll(`[data-firebase-id="${savedProduct.firebaseId}"]`).forEach(el => el.remove());
-  }
-
-  adminAddProductToMerchList(savedProduct, false);
-
   window.adminCurrentProductPreview = savedProduct;
+  window.adminEditingProductId = savedProduct.firebaseId || null;
+
+  await adminLoadSavedProducts();
+  await adminRenderProductManager?.();
 
   if (message) {
     message.style.color = "green";
-    message.textContent = "Producto guardado correctamente.";
+    message.textContent = product.firebaseId
+      ? "Producto actualizado correctamente."
+      : "Producto guardado correctamente.";
   }
-
-  await adminRenderProductManager?.();
 }
 
 
