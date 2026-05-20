@@ -510,16 +510,44 @@ document.addEventListener("click", () => {
 
 function adminOpenCreateProduct() {
   const form = document.getElementById("adminCreateProductForm");
+  const manager = document.getElementById("adminProductManager");
+  const shopPasswordPanel = document.getElementById("adminShopPasswordPanel");
   const message = document.getElementById("adminPanelMessage");
 
   if (!form) return;
 
-  form.style.display = form.style.display === "none" ? "flex" : "none";
+  window.adminEditingProductId = null;
+  window.adminCurrentProductPreview = null;
+
+  adminClearProductForm();
+
+  if (manager) manager.style.display = "none";
+  if (shopPasswordPanel) shopPasswordPanel.style.display = "none";
+
+  form.style.display = "flex";
 
   if (message) {
-    message.textContent = "Completa los datos del producto.";
+    message.style.color = "#333";
+    message.textContent = "Formulario nuevo listo para agregar producto.";
   }
 }
+
+
+function adminClearProductForm() {
+  document.getElementById("adminProductTitle").value = "";
+  document.getElementById("adminProductPrice").value = "";
+  document.getElementById("adminProductGif").value = "";
+  document.getElementById("adminProductImages").value = "";
+  document.getElementById("adminProductSizes").value = "";
+  document.getElementById("adminProductVariantId").value = "";
+  document.getElementById("adminProductVariantMap").value = "";
+  document.getElementById("adminProductCollection").value = "main";
+  document.getElementById("adminProductDescription").value = "";
+
+  const soldOut = document.getElementById("adminProductSoldOut");
+  if (soldOut) soldOut.checked = false;
+}
+
 
 function adminPreviewProduct() {
   const productPreview = adminBuildProductFromForm();
@@ -617,12 +645,18 @@ async function adminSaveCurrentProduct() {
 
   let savedProduct = null;
 
+  // EDITAR PRODUCTO EXISTENTE
   if (product.firebaseId) {
     savedProduct = await window.adminFirebaseUpdateProduct(product);
-  } else {
-    product.position = 0;
+  }
+
+  // CREAR PRODUCTO NUEVO
+  else {
     savedProduct = await adminSaveProduct(product);
-    await adminNormalizeProductPositions(product.fromBBJ === true);
+
+    if (savedProduct) {
+      await adminPlaceNewProductAtTop(savedProduct);
+    }
   }
 
   if (!savedProduct) return;
@@ -641,6 +675,29 @@ async function adminSaveCurrentProduct() {
       ? "Producto actualizado correctamente."
       : "Producto guardado correctamente.";
   }
+}
+
+
+async function adminPlaceNewProductAtTop(newProduct) {
+  const products = await window.adminFirebaseLoadProducts();
+  const isBBJ = newProduct.fromBBJ === true;
+
+  const sameCollection = products
+    .filter(product => (product.fromBBJ === true) === isBBJ)
+    .filter(product => product.firebaseId !== newProduct.firebaseId)
+    .sort((a, b) => {
+      const posA = typeof a.position === "number" ? a.position : 9999;
+      const posB = typeof b.position === "number" ? b.position : 9999;
+      return posA - posB;
+    });
+
+  const reordered = [newProduct, ...sameCollection];
+
+  reordered.forEach((product, index) => {
+    product.position = index;
+  });
+
+  await window.adminFirebaseReorderProducts(reordered);
 }
 
 
@@ -717,11 +774,13 @@ function adminAddProductToMerchList(product, isPreview = false) {
 
   const firstProduct = targetList.querySelector(".merch-item");
 
-if (firstProduct) {
-  targetList.insertBefore(item, firstProduct);
-} else {
-  targetList.appendChild(item);
-}
+  const staticItem = targetList.querySelector(".merch-static-keep");
+
+  if (staticItem) {
+    targetList.insertBefore(item, staticItem);
+  } else {
+    targetList.appendChild(item);
+  }
 }
 
 function adminRemovePreviewProduct() {
@@ -767,7 +826,7 @@ async function adminLoadSavedProducts() {
 
     document.querySelectorAll('[data-admin-product="true"]').forEach(item => item.remove());
 
-    savedProducts.reverse().forEach(product => {
+    savedProducts.forEach(product => {
       adminAddProductToMerchList(product, false);
     });
   } catch (error) {
@@ -898,6 +957,33 @@ async function adminMoveProduct(products, index, direction) {
   if (message) {
     message.style.color = "green";
     message.textContent = "Orden actualizado.";
+  }
+}
+
+
+async function adminNormalizeAllProductPositions() {
+  const products = await window.adminFirebaseLoadProducts();
+
+  for (const isBBJ of [false, true]) {
+    const sameCollection = products
+      .filter(product => (product.fromBBJ === true) === isBBJ)
+      .sort((a, b) => {
+        const posA = typeof a.position === "number" ? a.position : 9999;
+        const posB = typeof b.position === "number" ? b.position : 9999;
+
+        if (posA !== posB) return posA - posB;
+
+        const createdA = a.createdAt || 0;
+        const createdB = b.createdAt || 0;
+
+        return createdA - createdB;
+      });
+
+    sameCollection.forEach((product, index) => {
+      product.position = index;
+    });
+
+    await window.adminFirebaseReorderProducts(sameCollection);
   }
 }
 
