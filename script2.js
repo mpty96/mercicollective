@@ -14,9 +14,15 @@ window.addEventListener('load', () => {
 
   setTimeout(() => {
     loadingScreen.style.opacity = '0';
+
     setTimeout(() => {
       loadingScreen.style.display = 'none';
-      document.getElementById('appleMenu')?.classList.add('show');
+      document.body.classList.remove('apple-lockdown');
+      document.body.classList.add('loaded');
+
+      if (typeof registerUser === "function") {
+        registerUser("visitante");
+      }
     }, 800);
   }, 2200);
 });
@@ -239,10 +245,10 @@ function openWindow(id) {
   if (!el) return;
 
   if (isMobileDevice()) {
-  // Cierra cualquier otra ventana abierta en móviles antes de abrir la nueva
-  openWindowsOnMobile.forEach(openId => {
-    if (openId !== id) closeWindow(openId);
-  });
+    openWindowsOnMobile.forEach(openId => {
+      if (openId !== id) closeWindow(openId);
+    });
+
     el.style.position = 'fixed';
     el.style.left = '50%';
     el.style.top = '50%';
@@ -250,38 +256,48 @@ function openWindow(id) {
     el.style.display = 'flex';
     el.style.visibility = 'visible';
     el.style.opacity = '1';
-    
-    // Para ventana de contacto
+
     if (id === 'contact') {
-      document.getElementById('icon-close-contact').style.display = 'flex';
+      const contactIcon = document.getElementById('icon-contact');
+      const closeIcon = document.getElementById('icon-close-contact');
+
+      contactIcon.style.visibility = 'hidden';
+      contactIcon.style.pointerEvents = 'none';
+
+      closeIcon.style.display = 'block';
     }
+
     openWindowsOnMobile.add(id);
-    el.offsetHeight; 
+    el.offsetHeight;
+
     setTimeout(() => {
       el.classList.add('show');
       bringToFront(el);
     }, 10);
-    
+
     return;
   }
 
-  // CODIGO PARA VERSIÖN PC
   if (id === 'contact') {
     const icon = document.getElementById('icon-contact');
     const rect = icon.getBoundingClientRect();
+
     document.querySelectorAll(".mac-window.show, .genie-window.show").forEach(win => {
       win.classList.remove('show');
       win.style.display = 'none';
     });
+
     document.getElementById('icon-close-contact').style.display = 'flex';
     document.getElementById('icon-close-safari').style.display = 'none';
     document.querySelector('.dock').style.display = 'none';
     document.getElementById('desktop').style.display = 'none';
+
     el.style.top = `${rect.top}px`;
     el.style.left = `${rect.left}px`;
     el.style.transform = 'scale(0.1)';
     el.style.opacity = '0';
     el.style.display = 'flex';
+
     setTimeout(() => {
       el.style.top = '50%';
       el.style.left = '50%';
@@ -292,60 +308,76 @@ function openWindow(id) {
     const screenW = window.innerWidth;
     const screenH = window.innerHeight;
     const dockHeight = 90;
+
     el.style.display = 'block';
     el.style.visibility = 'hidden';
     el.style.transform = 'none';
+
     const winHeight = el.offsetHeight || 400;
     const winWidth = el.offsetWidth || 500;
+
     el.style.display = 'none';
     el.style.visibility = 'visible';
+
     const maxTop = screenH - winHeight - dockHeight;
     const maxLeft = screenW - winWidth;
     const minTop = 40;
     const minLeft = 40;
     const top = Math.floor(Math.random() * (maxTop - minTop + 1)) + minTop;
     const left = Math.floor(Math.random() * (maxLeft - minLeft + 1)) + minLeft;
+
     el.style.left = `${left}px`;
     el.style.top = `${top}px`;
     el.style.transform = 'none';
     el.style.display = 'flex';
+
     setTimeout(() => el.classList.add('show'), 10);
     bringToFront(el);
   }
 }
 
-// Función closeWindow para móviles
 function closeWindow(id) {
   const el = document.getElementById(id);
   if (!el) return;
 
   if (isMobileDevice()) {
     if (id === 'contact') {
-      document.getElementById('icon-close-contact').style.display = 'none';
+      const contactIcon = document.getElementById('icon-contact');
+      const closeIcon = document.getElementById('icon-close-contact');
+
+      contactIcon.style.visibility = 'visible';
+      contactIcon.style.pointerEvents = 'auto';
+
+      closeIcon.style.display = 'none';
     }
-    
+
     el.classList.remove('show');
-    
+
     setTimeout(() => {
       el.style.display = 'none';
       el.style.visibility = 'hidden';
       el.style.opacity = '0';
       openWindowsOnMobile.delete(id);
     }, 300);
+
     return;
   }
+
   if (id === 'contact') {
     const icon = document.getElementById('icon-contact');
     const rect = icon.getBoundingClientRect();
+
     el.style.transform = 'scale(0.1)';
     el.style.opacity = '0';
     el.style.top = `${rect.top}px`;
     el.style.left = `${rect.left}px`;
+
     setTimeout(() => {
       el.style.display = 'none';
       el.style.transform = 'translate(-50%, -50%) scale(1)';
       el.style.top = '50%';
       el.style.left = '50%';
+
       document.querySelector('.dock').style.display = 'flex';
       document.getElementById('desktop').style.display = 'flex';
       document.getElementById('icon-close-contact').style.display = 'none';
@@ -353,6 +385,7 @@ function closeWindow(id) {
     }, 600);
   } else {
     el.classList.remove('show');
+
     setTimeout(() => {
       el.style.display = 'none';
     }, 300);
@@ -536,6 +569,7 @@ function adminOpenCreateProduct() {
 function adminClearProductForm() {
   document.getElementById("adminProductTitle").value = "";
   document.getElementById("adminProductPrice").value = "";
+  document.getElementById("adminProductOldPrice").value = "";
   document.getElementById("adminProductGif").value = "";
   document.getElementById("adminProductImages").value = "";
   document.getElementById("adminProductSizes").value = "";
@@ -580,6 +614,7 @@ function adminPreviewProduct() {
 function adminBuildProductFromForm() {
   const title = document.getElementById("adminProductTitle")?.value.trim();
   const price = document.getElementById("adminProductPrice")?.value.trim();
+  const oldPrice = document.getElementById("adminProductOldPrice")?.value.trim();
   const gif = document.getElementById("adminProductGif")?.value.trim();
   const imagesRaw = document.getElementById("adminProductImages")?.value.trim();
   const sizesRaw = document.getElementById("adminProductSizes")?.value.trim();
@@ -623,6 +658,7 @@ function adminBuildProductFromForm() {
     position: window.adminCurrentProductPreview?.position ?? 9999,
     title,
     price,
+    oldPrice: oldPrice || "",
     main: gif,
     thumbnails: [gif, ...images],
     hasSize: sizes.length > 0,
@@ -750,7 +786,10 @@ function adminAddProductToMerchList(product, isPreview = false) {
     ${product.soldOut ? '<span class="sold-out-badge">SOLD OUT</span>' : ''}
   </div>
 
-  <h4><span class="price">${product.price}</span></h4>
+  <h4>
+    ${product.oldPrice ? `<span class="old-price">${product.oldPrice}</span> ` : ""}
+    <span class="${product.oldPrice ? "new-price" : "price"}">${product.price}</span>
+  </h4>
 
     <button>BUY</button>
   `;
@@ -994,6 +1033,7 @@ function adminEditProduct(product) {
   document.getElementById("adminProductSoldOut").checked = product.soldOut === true;
   document.getElementById("adminProductTitle").value = product.title || "";
   document.getElementById("adminProductPrice").value = product.price || "";
+  document.getElementById("adminProductOldPrice").value = product.oldPrice || "";
   document.getElementById("adminProductGif").value = product.main || "";
   document.getElementById("adminProductImages").value = (product.thumbnails || []).slice(1).join(", ");
   document.getElementById("adminProductSizes").value = (product.sizes || []).join(", ");

@@ -9,13 +9,13 @@
         src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
 </script>
   <!--SCRIPT.JS-->
-  <script src="script2.js?v=2.6.7" defer></script>
+  <script src="script2.js?v=2.6.8" defer></script>
   <!--SCRIPT SOUNDCLOUD-->
   <script src="https://w.soundcloud.com/player/api.js"></script>
   <!--SCRIPT YOUTUBE-->
   <script src="https://www.youtube.com/iframe_api"></script>
   <!--STYLES.CSS-->
-  <link rel="stylesheet" href="styles.css?v=2.6.7">
+  <link rel="stylesheet" href="styles.css?v=2.6.8">
   <link rel="icon" type="image/png" href="imagenes/mercimetalic.png">
 </head>
 <body >
@@ -120,8 +120,8 @@
     <div class="dock-icon" data-title="Movies" onclick="openWindow('gallery')">
       <img src="imagenes/dvdplayer1.png" alt="Fotos" />
     </div>
-    <div class="dock-icon" data-title="Shop" onclick="openProtectedShop()">
-      <img src="imagenes/shop1.png" alt="Merch" />
+    <div class="dock-icon dock-shop-icon" data-title="Shop" onclick="openProtectedShop()">
+      <img src="imagenes/SHOPCART.gif" alt="Shop" />
     </div>
   </nav>
 </div>
@@ -210,7 +210,8 @@
       <h3>Agregar producto</h3>
 
       <input id="adminProductTitle" class="admin-input" placeholder="Nombre del producto">
-      <input id="adminProductPrice" class="admin-input" placeholder="Precio Ej: $24.990">
+      <input id="adminProductOldPrice" class="admin-input" placeholder="Precio anterior opcional Ej: $39.990">
+      <input id="adminProductPrice" class="admin-input" placeholder="Nuevo precio / Precio actual Ej: $24.990">
       <input id="adminProductGif" class="admin-input" placeholder="Link GIF Cloudinary">
       <input id="adminProductImages" class="admin-input" placeholder="Links imágenes separados por coma">
       <input id="adminProductSizes" class="admin-input" placeholder="Tallas separadas por coma Ej: S,M,L,XL">
@@ -780,10 +781,16 @@ function initializeUserCountBadge() {
   // Exportar para usar en login()
   window.registerUser = registerUser;
 
-const PRODUCTS_DB_PATH =
-  location.hostname === "127.0.0.1" || location.hostname === "localhost"
-    ? "adminProducts_dev"
-    : "adminProducts";
+const isLocalDev =
+  location.hostname === "127.0.0.1" ||
+  location.hostname === "localhost" ||
+  location.hostname.startsWith("192.168.") ||
+  location.hostname.startsWith("10.") ||
+  location.hostname.startsWith("172.");
+
+const PRODUCTS_DB_PATH = isLocalDev
+  ? "adminProducts_dev"
+  : "adminProducts";
 
 window.adminFirebaseSaveProduct = async function(product) {
   const productsRef = ref(db, PRODUCTS_DB_PATH);
