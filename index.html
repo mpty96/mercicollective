@@ -9,13 +9,13 @@
         src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
 </script>
   <!--SCRIPT.JS-->
-  <script src="script2.js?v=2.6.8" defer></script>
+  <script src="script2.js?v=2.6.9" defer></script>
   <!--SCRIPT SOUNDCLOUD-->
   <script src="https://w.soundcloud.com/player/api.js"></script>
   <!--SCRIPT YOUTUBE-->
   <script src="https://www.youtube.com/iframe_api"></script>
   <!--STYLES.CSS-->
-  <link rel="stylesheet" href="styles.css?v=2.6.8">
+  <link rel="stylesheet" href="styles.css?v=2.6.9">
   <link rel="icon" type="image/png" href="imagenes/mercimetalic.png">
 </head>
 <body >
@@ -55,7 +55,7 @@
   <div class="apple-window-body">
     <img src="imagenes/mercimetalic.png" alt="Apple Logo" class="login-logo" />
     <h1>Merci WebOS</h1>
-    <p class="version">Version 1.7.9</p>
+    <p class="version">Version 1.8.0</p>
 
     <!-- Input de usuario -->
     <input type="text" id="username" placeholder="Nombre de usuario" class="login-input" />
@@ -694,17 +694,31 @@
 
   let currentUsername = '';
 
-  function registerUser(username) {
-    currentUsername = username;
-    const userRef = ref(db, 'activeUsers/' + username);
+  async function registerUser(username = "Visitante") {
+    const usersRef = ref(db, "activeUsers");
+    const snapshot = await get(usersRef);
+    const users = snapshot.val() || {};
 
-    // Agrega el usuario a Firebase
-    set(userRef, true);
+    let visitorNumber = 1;
+    let finalUsername = "Visitante";
 
-    // Borra el usuario si cierra la pestaña
+    while (users[finalUsername]) {
+      visitorNumber++;
+      finalUsername = `Visitante${visitorNumber}`;
+    }
+
+    currentUsername = finalUsername;
+
+    const userRef = ref(db, "activeUsers/" + finalUsername);
+
+    set(userRef, {
+      online: true,
+      connectedAt: Date.now()
+    });
+
     onDisconnect(userRef).remove();
 
-    console.log(`[+] Usuario registrado en Firebase: ${username}`);
+    console.log(`[+] Usuario registrado en Firebase: ${finalUsername}`);
   }
 
   function updateUserList() {
