@@ -1473,7 +1473,7 @@ const CLOUDINARY_GIFS = {
   "freelohan_blanca1.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735530/freelohan_blanca1_yhlolf.gif",
   "freelohan_negra.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735530/freelohan_negra_hn1osi.gif",
   "merci_polo_shirt.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735531/merci_polo_shirt_ofeicl.gif",
-  "merci_x_bbjuanki.gif": "https://res.cloudinary.com/dvtmkiag9/image/upload/v1790038227/merci_x_bbjuanki_xwsp2o.gif",
+  "merci_x_bbjuanki.gif": "https://res.cloudinary.com/dvtmkiag9/image/upload/v1790039034/merci_x_bbjuanki_dgmdal.gif",
   "polera_swag_blanca1.gif": "https://res.cloudinary.com/dvtmkiag9/image/upload/v1790038293/polera_swag_blanca1_kjo5mz.gif",
   "polera_swag_negra1.gif": "https://res.cloudinary.com/dvtmkiag9/image/upload/v1790038309/polera_swag_negra1_csds14.gif",
   "fa_blanca.gif": "https://res.cloudinary.com/dvtmkiag9/image/upload/v1790038326/fa_blanca_cu2wr4.gif",
