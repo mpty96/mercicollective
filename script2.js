@@ -1457,7 +1457,7 @@ function audioPlayer() {
 //---------------------------------------------- MERCH -------------------------------------------//
 //================================================================================================//
 
-const MERCI_ASSET_BASE = "https://res.cloudinary.com/ddyg0qocs/image/upload";
+const MERCI_ASSET_BASE = "https://res.cloudinary.com/dvtmkiag9/image/upload";
 
 const CLOUDINARY_GIFS = {
   "shiva_god.gif": "https://res.cloudinary.com/ddyg0qocs/image/upload/v1778735534/shiva_god_gjdzi2.gif",
